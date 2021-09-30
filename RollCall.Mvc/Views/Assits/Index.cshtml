@@ -1,7 +1,14 @@
 ﻿@model IEnumerable<RollCall.Dto.AssistanceDto>
 
 @{
+    @using Microsoft.AspNetCore.Http
+    @using RollCall.Dto
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
     ViewData["Title"] = "Index";
+    int rolId;
+
+    rolId = (int)HttpContextAccessor.HttpContext.Session.GetInt32("userRolId");
 }
 
 <h1>Index</h1>
@@ -25,23 +32,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegistrationDate)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegistrationDate)
+                </td>
+                <td>
+                    @switch (rolId)
+                    {
+                        case Rol.Administrador:
+                            @Html.ActionLink("Edit", "Edit", new { id=item.Id })
+                            <span>|</span>
+                            @Html.ActionLink("Details", "Details", new { id=item.Id  })
+                            <span>|</span>
+                            @Html.ActionLink("Delete", "Delete", new {  id=item.Id  })
+                            break;
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

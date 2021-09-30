@@ -48,5 +48,24 @@ namespace RollCall.BusinessLayer
 				throw;
 			}
 		}
-	}
+
+        public static async Task<List<AssistanceDto>> GetAllAsync(int userId, int month)
+        {
+			try
+			{
+				List<AssistanceDto> list;
+				List<Assistance> entities;
+
+				entities = await AssistanceDao.GetAllAsync(userId,month, DateTime.Now.Year);
+				list = AssistanceMapper.GetAll(entities);
+
+				return list;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+    }
 }

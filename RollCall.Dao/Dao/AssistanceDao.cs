@@ -93,7 +93,7 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<List<Assistance>> GetAllByMothAndYear(int month, int year)
+		public static async Task<List<Assistance>> GetAll(int month, int year)
 		{
 			try
 			{
@@ -117,7 +117,7 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<List<Assistance>> GetAllByUserId(int userId, int month, int year)
+		public static async Task<List<Assistance>> GetAllAsync(int userId, int month, int year)
 		{
 			try
 			{

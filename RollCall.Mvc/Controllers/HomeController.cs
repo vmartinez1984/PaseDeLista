@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RollCall.Mvc.Models;
 using System;
@@ -20,6 +21,9 @@ namespace RollCall.Mvc.Controllers
 
 		public IActionResult Index()
 		{
+			if (HttpContext.Session.GetInt32("userId") is null)
+				return RedirectToAction("Index", "Login");
+
 			return View();
 		}
 

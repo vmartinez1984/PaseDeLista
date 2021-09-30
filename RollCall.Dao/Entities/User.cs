@@ -40,7 +40,7 @@ namespace RollCall.Persistence.Entities
 		[Required]
 		public bool IsActive { get; set; }
 
-		public DateTime DischargeDate { get; set; }
+		public DateTime? DischargeDate { get; set; }
 
 		[Required]
 		[ForeignKey(nameof(Rol))]

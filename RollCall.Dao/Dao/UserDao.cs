@@ -115,7 +115,8 @@ namespace RollCall.Persistence.Dao
 
 				using (var db = new AppDbContext())
 				{
-					item = await db.User.Where(x => x.Email == email && x.Password == password).FirstOrDefaultAsync();
+					//item = await db.User.Where(x => x.Email == email && x.Password == password).FirstOrDefaultAsync();
+					item = db.User.Where(x => x.Email == email && x.Password == password && x.IsActive == true).FirstOrDefault();
 				}
 
 				return item;

@@ -11,6 +11,7 @@ namespace RollCall.Dto
 		[Display(Name = "Usuario")]
 		public int UserId { get; set; }
 
+		[Display(Name = "Fecha de registro")]
 		public DateTime RegistrationDate { get; set; }
 	}
 }

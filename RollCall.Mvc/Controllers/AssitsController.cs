@@ -14,9 +14,27 @@ namespace RollCall.Mvc.Controllers
 		// GET: AsistencesController
 		public async Task<ActionResult> Index()
 		{
-			List<AssistanceDto> list;
+			if (HttpContext.Session.GetInt32("userId") is null)
+				return RedirectToAction("Index", "Login");
 
-			list = await AssistanceBl.GetAllAsync();
+			List<AssistanceDto> list;
+			int rolId;
+			int userId;
+
+			userId = (int)HttpContext.Session.GetInt32("userId");
+			rolId = (int)HttpContext.Session.GetInt32("userRolId");
+			switch (rolId)
+			{
+				case Rol.Administrador:
+					list = await AssistanceBl.GetAllAsync();
+					break;
+				case Rol.Empleado:
+					list = await AssistanceBl.GetAllAsync(userId, DateTime.Now.Month);
+					break;
+				default:
+					list = new List<AssistanceDto>();
+					break;
+			}
 
 			return View(list);
 		}

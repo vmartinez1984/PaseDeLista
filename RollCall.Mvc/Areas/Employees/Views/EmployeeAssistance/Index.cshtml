@@ -1,0 +1,37 @@
+﻿@model IEnumerable<RollCall.Dto.AssistanceDto>
+
+@{
+    @using Microsoft.AspNetCore.Http
+    @using RollCall.Dto
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+    ViewData["Title"] = "Index";
+    int rolId;
+
+    rolId = (int)HttpContextAccessor.HttpContext.Session.GetInt32("userRolId");
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>            
+            <th>
+                @Html.DisplayNameFor(model => model.RegistrationDate)
+            </th>            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>               
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegistrationDate)
+                </td>                
+            </tr>
+        }
+    </tbody>
+</table>

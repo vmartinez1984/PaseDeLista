@@ -29,23 +29,26 @@ namespace RollCall.Dto
 
 		public string PhotoInBase64 { get; set; }
 
-		[Display(Name ="Fecha de registro")]
+		[Display(Name = "Fecha de registro")]
 		public DateTime RegistrationDate { get; set; }
-		
+
 		[Required]
-		[Display(Name ="Área")]
+		[Display(Name = "Área")]
 		public int AreaId { get; set; }
 		//public virtual AreaDto Area { get; set; }
 
 		[Required]
-		[Display(Name = "Área")]
+		[Display(Name = "Horario")]
 		public int ScheduleId { get; set; }
 		//public virtual Schedule Schedule { get; set; }
 
 		//[Required]
 		//public bool IsActive { get; set; }
+		[Required]
+		[Display(Name = "Rol")]
+        public int RolId { get; set; }
 
-		[Display(Name = "Fecha de baja")]
+        [Display(Name = "Fecha de baja")]
 		public DateTime? DischargeDate { get; set; }
 	}
 }
