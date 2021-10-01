@@ -60,6 +60,11 @@ namespace RollCall.Mvc
 					"Employees",
 					"{controller=Home}/{action=Index}/{id?}"
 				);
+				endpoints.MapAreaControllerRoute(
+					"Administrators",
+					"Administrators",
+					"{controller=Home}/{action=Index}/{id?}"
+				);
 			});
 		}
 	}

@@ -3,6 +3,30 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Bienvenido</h1>
+    <h2 id="clock"></h2>
+    <p>Ingrese su codigo de empleado</p>
+    <form method="get" action="/Home/Employee">
+        <input type="text" name="id" class="form-control"/>
+        <br/>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <h3 class="text-danger">@ViewBag.Error</h3>
+    }
 </div>
+@section Scripts{
+<script>
+    setInterval(function(){
+        var time;
+        var now;
+
+        now = new Date();
+        time = now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
+        console.log(time);
+        document.getElementById("clock").innerHTML = time;
+    },1000);
+
+</script>
+}

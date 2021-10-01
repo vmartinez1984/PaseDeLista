@@ -35,7 +35,18 @@ namespace RollCall.Mvc.Controllers
 						HttpContext.Session.SetInt32("userRolId", userDto.RolId);
 						HttpContext.Session.SetString("userName", $"{userDto.Name} {userDto.LastName}");
 
-						return RedirectToAction("Index", "Home");
+						switch (userDto.RolId)
+						{
+							case Rol.Administrador:
+								return RedirectToAction("Index", "Administrators", new { area = "Administrators" });
+								break;
+							case Rol.Empleado:
+								return RedirectToAction("Index", "EmployeeAssistance", new { area = "Employees" });
+								break;
+							default:
+								return RedirectToAction("Index", "Home");
+								break;
+						}
 					}
 				}
 				else

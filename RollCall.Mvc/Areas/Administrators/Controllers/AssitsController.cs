@@ -4,11 +4,11 @@ using RollCall.BusinessLayer;
 using RollCall.Dto;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RollCall.Mvc.Controllers
+namespace RollCall.Mvc.Areas.Administrators.Controllers
 {
+	[Area("Administrators")]
 	public class AssitsController : Controller
 	{
 		// GET: AsistencesController

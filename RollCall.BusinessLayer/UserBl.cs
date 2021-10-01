@@ -103,5 +103,23 @@ namespace RollCall.BusinessLayer
 				throw;
 			}
 		}
+
+		public static async Task DeleteAsync(UserDto dto)
+		{
+			try
+			{
+				User user;
+
+				user = await UserDao.GetAsync(dto.Id);
+				user.IsActive = false;
+				user.DischargeDate = DateTime.Now;
+				await UserDao.UpdateAsync(user);
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
 	}
 }
