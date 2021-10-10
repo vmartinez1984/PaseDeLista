@@ -23,4 +23,8 @@
     <ProjectReference Include="..\RollCall.Dto\RollCall.Dto.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Administrators\Views\Users\" />
+  </ItemGroup>
+
 </Project>

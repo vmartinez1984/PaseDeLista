@@ -1,172 +1,87 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RollCall.BusinessLayer;
-using RollCall.Dto;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RollCall.Mvc.Areas.Administrators.Controllers
 {
-	[Area("Administrators")]
 	public class UsersController : Controller
 	{
-		public async Task<IActionResult> Index()
+		// GET: UsersController
+		public ActionResult Index()
 		{
-			try
-			{
-				List<UserDto> list;
-
-				list = await UserBl.GetAllAsync();
-
-				return View(list);
-			}
-			catch (Exception)
-			{
-
-				throw;
-			}
+			return View();
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> Create()
+		// GET: UsersController/Details/5
+		public ActionResult Details(int id)
+		{
+			return View();
+		}
+
+		// GET: UsersController/Create
+		public ActionResult Create()
+		{
+			return View();
+		}
+
+		// POST: UsersController/Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Create(IFormCollection collection)
 		{
 			try
 			{
-				ViewBag.AreaList = await AreaBl.GetAllAsync();
-				ViewBag.ScheduleList = await ScheduleBl.GetAllAsync();
-				ViewBag.RolList = await RolBl.GetAllAsync();
-
+				return RedirectToAction(nameof(Index));
+			}
+			catch
+			{
 				return View();
 			}
-			catch (Exception)
-			{
-
-				throw;
-			}
 		}
 
-		public async Task<IActionResult> Details(int id)
+		// GET: UsersController/Edit/5
+		public ActionResult Edit(int id)
 		{
-			try
-			{
-				UserDto dto;
-
-				dto = await UserBl.GetAsync(id);
-
-				return View(dto);
-			}
-			catch (Exception)
-			{
-
-				throw;
-			}
+			return View();
 		}
 
+		// POST: UsersController/Edit/5
 		[HttpPost]
-		public async Task<IActionResult> Create(UserDto dto)
+		[ValidateAntiForgeryToken]
+		public ActionResult Edit(int id, IFormCollection collection)
 		{
 			try
 			{
-				if (ModelState.IsValid)
-				{
-					await UserBl.AddAsync(dto);
-					return RedirectToAction(nameof(Index));
-				}
-				else
-				{
-					ViewBag.AreaList = await AreaBl.GetAllAsync();
-					ViewBag.ScheduleList = await ScheduleBl.GetAllAsync();
-					ViewBag.RolList = await RolBl.GetAllAsync();
-
-					return View();
-				}
+				return RedirectToAction(nameof(Index));
 			}
-			catch (Exception)
+			catch
 			{
-
-				throw;
+				return View();
 			}
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> Edit(int id)
+		// GET: UsersController/Delete/5
+		public ActionResult Delete(int id)
 		{
-			try
-			{
-				UserDto dto;
-
-				dto = await UserBl.GetAsync(id);
-
-				return View(dto);
-			}
-			catch (Exception)
-			{
-
-				throw;
-			}
+			return View();
 		}
 
+		// POST: UsersController/Delete/5
 		[HttpPost]
-		public async Task<IActionResult> Edit(UserDto dto)
+		[ValidateAntiForgeryToken]
+		public ActionResult Delete(int id, IFormCollection collection)
 		{
 			try
 			{
-				if (ModelState.IsValid)
-				{
-					await UserBl.AddAsync(dto);
-
-					return RedirectToAction(nameof(Index));	
-				}
-				else
-				{
-					ViewBag.AreaList = await AreaBl.GetAllAsync();
-					ViewBag.ScheduleList = await ScheduleBl.GetAllAsync();
-					ViewBag.RolList = await RolBl.GetAllAsync();
-
-					return View();
-				}
+				return RedirectToAction(nameof(Index));
 			}
-			catch (Exception)
+			catch
 			{
-
-				throw;
+				return View();
 			}
 		}
-
-		[HttpGet]
-		public async Task<IActionResult> Delete(int id)
-		{
-			try
-			{
-				UserDto dto;
-
-				dto = await UserBl.GetAsync(id);
-
-				return View(dto);
-			}
-			catch (Exception)
-			{
-
-				throw;
-			}
-		}
-
-		[HttpPost]
-		public async Task<IActionResult> Delete(UserDto dto)
-		{
-			try
-			{
-
-					await UserBl.DeleteAsync(dto);
-
-					return RedirectToAction(nameof(Index));			
-			}
-			catch (Exception)
-			{
-
-				throw;
-			}
-		}
-
 	}
 }

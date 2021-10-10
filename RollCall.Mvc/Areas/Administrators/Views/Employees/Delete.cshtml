@@ -1,4 +1,4 @@
-﻿@model RollCall.Dto.UserDto
+﻿@model RollCall.Dto.EmployeeDto
 
 @{
     ViewData["Title"] = "Delete";
@@ -30,18 +30,6 @@
             @Html.DisplayFor(model => model.LastName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PhotoInBase64)
         </dt>
         <dd class = "col-sm-10">
@@ -64,13 +52,7 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ScheduleId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RolId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RolId)
-        </dd>
+        </dd>      
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DischargeDate)
         </dt>

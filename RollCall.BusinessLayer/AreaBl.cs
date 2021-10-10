@@ -29,7 +29,7 @@ namespace RollCall.BusinessLayer
 			}
 		}
 
-		public static async Task AddAsync(AreaDto dto)
+		public static async Task<int> AddAsync(AreaDto dto)
 		{
 			try
 			{
@@ -37,7 +37,9 @@ namespace RollCall.BusinessLayer
 
 				entity = AreaMapper.Get(dto);
 				entity.IsActive = true;
-				await AreaDao.AddAsync(entity);
+				dto.Id = await AreaDao.AddAsync(entity);
+
+				return dto.Id;
 			}
 			catch (Exception)
 			{

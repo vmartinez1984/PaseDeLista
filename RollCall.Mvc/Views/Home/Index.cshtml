@@ -6,27 +6,53 @@
     <h1 class="display-4">Bienvenido</h1>
     <h2 id="clock"></h2>
     <p>Ingrese su codigo de empleado</p>
-    <form method="get" action="/Home/Employee">
-        <input type="text" name="id" class="form-control"/>
-        <br/>
-        <button type="submit" class="btn btn-primary">Buscar</button>
-    </form>
-    @if (!string.IsNullOrEmpty(ViewBag.Error))
-    {
-        <h3 class="text-danger">@ViewBag.Error</h3>
-    }
+    <input id="userId" type="text" class="form-control"/>
+    <br/>
+    <button type="button" onclick="searchEmployee();" class="btn btn-primary">
+        Buscar
+    </button>    
+    <div id="error"></div>
+    <div id="content"></div>
 </div>
 @section Scripts{
 <script>
+    var divLoading = '<br/><div class="d-flex justify-content-center text-primary">';
+    divLoading += '<p>Cargando</p><br/><br/>';
+    divLoading += '<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div> <br/>';
+
     setInterval(function(){
         var time;
         var now;
 
         now = new Date();
         time = now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
-        console.log(time);
+        //console.log(time);
         document.getElementById("clock").innerHTML = time;
     },1000);
 
+    function searchEmployee(){
+        if(document.getElementById("userId").value !== ""){
+            var url;
+
+            document.getElementById("content").innerHTML = divLoading;
+            url = "home/employee/"+document.getElementById("userId").value;
+            fetch(url)
+            .then(response=>{
+                if(response.ok){
+                    return response.text();
+                }else{
+                    throw response.error;
+                }
+            })
+            .then(data=>{
+                document.getElementById("content").innerHTML = data;
+            })
+            .catch(error=>{
+                console.log(error);
+            });
+        }else{
+            document.getElementById("error").innerHTML = "Anote un número";
+        }
+    }
 </script>
 }

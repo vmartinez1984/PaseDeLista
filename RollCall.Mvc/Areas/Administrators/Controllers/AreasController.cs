@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using RollCall.BusinessLayer;
 using RollCall.Dto;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RollCall.Mvc.Areas.Administrators.Controllers
@@ -36,13 +36,27 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create(AreaDto area)
+		//[ValidateAntiForgeryToken]
+		//public async Task<IActionResult> Create([Bind("Name,Description")]AreaDto area)
+		public async Task<IActionResult> Create(IFormCollection formCollection)
 		{
 			try
 			{
-				await AreaBl.AddAsync(area);
+				AreaDto areaDto = new AreaDto()
+				{
+					Name = formCollection["Name"],
+					Description = formCollection["Description"]
+				};				
+				if (ModelState.IsValid)
+				{
+					await AreaBl.AddAsync(areaDto);
 
-				return RedirectToAction(nameof(Index));
+					return RedirectToAction(nameof(Index));
+				}
+				else
+				{
+					return View();
+				}
 			}
 			catch (Exception)
 			{

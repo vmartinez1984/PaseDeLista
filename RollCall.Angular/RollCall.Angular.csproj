@@ -24,13 +24,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\components\area\add-area\add-area.component.ts" />
+    <None Remove="ClientApp\src\app\components\area\edit-area\edit-area.component.ts" />
+    <None Remove="ClientApp\src\app\components\area\list-area\list-area.component.ts" />
+    <None Remove="ClientApp\src\app\components\employee\list-employee.component.ts" />
+    <None Remove="ClientApp\src\app\components\schedule\list-schedule\list-schedule.component.ts" />
+    <None Remove="ClientApp\src\app\components\schedule\save-schedule\save-schedule.component.ts" />
     <None Remove="ClientApp\src\app\components\user\add-user\add-user.component.ts" />
     <None Remove="ClientApp\src\app\components\user\user-component.ts" />
     <None Remove="ClientApp\src\app\models\Area.ts" />
+    <None Remove="ClientApp\src\app\models\Employee.ts" />
+    <None Remove="ClientApp\src\app\models\Schedule.ts" />
     <None Remove="ClientApp\src\app\models\User.ts" />
     <None Remove="ClientApp\src\app\models\WeatherForecast.ts" />
     <None Remove="ClientApp\src\app\services\areaService.ts" />
+    <None Remove="ClientApp\src\app\services\EmployeeService.ts" />
     <None Remove="ClientApp\src\app\services\fetchDataService.ts" />
+    <None Remove="ClientApp\src\app\services\scheduleService.ts" />
     <None Remove="ClientApp\src\app\services\userService.ts" />
   </ItemGroup>
 
@@ -40,13 +50,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\components\area\add-area\add-area.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\area\edit-area\edit-area.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\area\list-area\list-area.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\employee\list-employee.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\schedule\list-schedule\list-schedule.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\schedule\save-schedule\save-schedule.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\user\add-user\add-user.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\user\list-user\list-user.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\Area.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\Employee.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\Schedule.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\User.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\WeatherForecast.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\areaService.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\EmployeeService.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\fetchDataService.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\ScheduleService.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\userService.ts" />
   </ItemGroup>
 

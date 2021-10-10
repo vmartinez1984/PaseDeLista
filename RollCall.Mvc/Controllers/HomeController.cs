@@ -5,9 +5,7 @@ using RollCall.BusinessLayer;
 using RollCall.Dto;
 using RollCall.Mvc.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RollCall.Mvc.Controllers
@@ -26,13 +24,14 @@ namespace RollCall.Mvc.Controllers
 			return View();
 		}
 
-		public async Task<ActionResult> Employee(int id)
+		[HttpGet]
+		public async Task<ActionResult> Employee(string	employeeNumber)
 		{
 			try
 			{
-				UserDto user;
+				EmployeeDto user;
 
-				user = await UserBl.GetAsync(id);
+				user = await EmployeeBl.GetAsync(employeeNumber);
 				if (user is null)
 				{
 					ViewBag.Error = "No encontrado";

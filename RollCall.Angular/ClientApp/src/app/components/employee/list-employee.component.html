@@ -1,0 +1,39 @@
+<div class="card">
+  <div class="card-header">
+    Áreas
+  </div>
+  <div class="card-body">
+    <a routerLink="/save-employee/0" class="btn btn-success">Agregar nuevo</a>
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Número de empleado</th>
+          <th>Nombre</th>
+          <th>Apellidos</th>
+          <th>Fecha de registro</th>
+          <th>Área</th>
+          <th>Horario</th>
+          <th>Preguntas completas</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of Employees; let index= index">
+          <td>{{item.photoInBase64}}</td>
+          <td>{{item.employeeNumber}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.lastName}}</td>
+          <td>{{item.registrationDate}}</td>
+          <td>{{item.area.name}}</td>
+          <td>{{item.schedule.schedule}}</td>
+          <td>{{item.listSecurityQuestions.length}}</td>
+          <td>
+            <a routerLink="/save-employee/{{item.id}}" class="btn btn-warning text-white">Editar</a>
+            <a (click)="delete(item.id,index);" class="btn btn-danger">Borrar</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

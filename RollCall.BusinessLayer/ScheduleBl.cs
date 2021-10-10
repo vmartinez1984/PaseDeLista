@@ -47,14 +47,14 @@ namespace RollCall.BusinessLayer
 			}
 		}
 
-		public static async Task<List<ScheduleDto>> GetAllAsync()
+		public static async Task<List<ScheduleDto>> GetAllAsync(bool isActive = true)
 		{
 			try
 			{
 				List<ScheduleDto> dtos;
 				List<Schedule> entities;
 
-				entities = await ScheduleDao.GetAllAsync(true);
+				entities = await ScheduleDao.GetAllAsync(isActive);
 				dtos = ScheduleMapper.GetAll(entities);
 
 				return dtos;
@@ -96,6 +96,23 @@ namespace RollCall.BusinessLayer
 				schedule = await ScheduleDao.GetAsync(dto.Id);
 				entity.IsActive = schedule.IsActive;
 				entity.RegistrationDate = schedule.RegistrationDate;
+				ScheduleDao.Update(entity);
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
+		public static async Task DeleteAsync(int scheduleId)
+		{
+			try
+			{
+				Schedule entity;
+
+				entity = await ScheduleDao.GetAsync(scheduleId);
+				entity.IsActive = false;
 				ScheduleDao.Update(entity);
 			}
 			catch (Exception)

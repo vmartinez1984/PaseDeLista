@@ -20,9 +20,10 @@ namespace RollCall.Angular.Controllers
 		{
 			try
 			{
-				List<UserDto> list;
+				List<EmployeeDto> list;
 
-				list = await UserBl.GetAllAsync(isActive);
+				//list = await UserBl.GetAllAsync(isActive);
+				list = new List<EmployeeDto>();
 
 				return Ok(list);
 			}

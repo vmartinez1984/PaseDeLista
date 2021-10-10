@@ -1,0 +1,10 @@
+﻿@using RollCall.Dto;
+@model List<SecurityQuestionDto>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    @await Html.PartialAsync("_Create",new SecurityQuestionDto())
+    @await Html.PartialAsync("_List", Model)
+</div>

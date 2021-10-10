@@ -1,4 +1,4 @@
-﻿@model RollCall.Dto.UserDto
+﻿@model RollCall.Dto.EmployeeDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -26,17 +26,7 @@
                 <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+            </div>            
             <div class="form-group">
                 <label asp-for="PhotoInBase64" class="control-label"></label>
                 <input asp-for="PhotoInBase64" class="form-control" />
@@ -56,11 +46,6 @@
                 <label asp-for="ScheduleId" class="control-label"></label>
                 <input asp-for="ScheduleId" class="form-control" />
                 <span asp-validation-for="ScheduleId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RolId" class="control-label"></label>
-                <input asp-for="RolId" class="form-control" />
-                <span asp-validation-for="RolId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DischargeDate" class="control-label"></label>

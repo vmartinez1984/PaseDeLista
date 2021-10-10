@@ -3,9 +3,6 @@ using RollCall.Dto;
 using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RollCall.BusinessLayer.Mappers
 {
@@ -35,7 +32,10 @@ namespace RollCall.BusinessLayer.Mappers
 			IMapper mapper;
 			MapperConfiguration configuration;
 
-			configuration = new MapperConfiguration(x => x.CreateMap<User, UserDto>());
+			configuration = new MapperConfiguration(x => {
+				x.CreateMap<User, UserDto>();
+				x.CreateMap<Employee, EmployeeDto>();
+				});
 			mapper = configuration.CreateMapper();
 
 			return mapper;
@@ -50,6 +50,7 @@ namespace RollCall.BusinessLayer.Mappers
 
 				mapper = GetMapperToDtos();
 				dto = mapper.Map<UserDto>(entity);
+				//dto.Employee = EmployeeMapper.Get(entity.Employee);
 
 				return dto;
 			}

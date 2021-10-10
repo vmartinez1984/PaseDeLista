@@ -1,0 +1,23 @@
+<div class="card">
+    <div class="card-header">
+        Editar Area
+    </div>
+    <div class="card-body">
+        <form [formGroup]="formGroup" (submit)="update();">
+            <input type="hidden" formControlName="id" />
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" placeholder="Escriba el area" formControlName="name" autofocus>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Descripción</label>
+              <input type="email" class="form-control" formControlName="description" placeholder="Escriba descripción">              
+            </div>
+            <div class="btn-group" role="group" aria-label="">
+                <button type="submit" class="btn btn-success">Agregar</button>
+                <a routerLink="/list-area/" class="btn btn-primary">Cancelar</a>                
+            </div>
+        </form>
+    </div>
+</div>
+

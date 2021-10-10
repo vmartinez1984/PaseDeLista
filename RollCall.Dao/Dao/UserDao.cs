@@ -37,7 +37,7 @@ namespace RollCall.Persistence.Dao
 
 				using (var db = new AppDbContext())
 				{
-					list = await db.User.Where(x => x.IsActive == isActive && x.Id != 1).ToListAsync();
+					list = await db.User.Where(x => x.IsActive == true).ToListAsync();
 				}
 
 				return list;
@@ -115,7 +115,7 @@ namespace RollCall.Persistence.Dao
 
 				using (var db = new AppDbContext())
 				{
-					item = await db.User
+					item = await db.User						
 						.Where(x => x.Email == email && x.Password == password && x.IsActive == true)
 						.FirstOrDefaultAsync();
 				}

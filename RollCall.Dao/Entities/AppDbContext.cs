@@ -11,10 +11,11 @@ namespace RollCall.Persistence.Entities
 	{
 		public DbSet<Area> Area { get; set; }
 		public DbSet<Assistance> Assistance { get; set; }
+		public DbSet<Employee> Employee { get; set; }
 		public DbSet<Rol> Rol { get; set; }
 		public DbSet<Schedule> Schedule { get; set; }
+		public DbSet<SecurityQuestion> SecurityQuestions { get; set; }
 		public DbSet<User> User { get; set; }
-		//public DbSet<User_Rol> User_Rol { get; set; }
 
 		public AppDbContext()
 		{
@@ -40,30 +41,23 @@ namespace RollCall.Persistence.Entities
 		{
 			modelBuilder.Entity<Rol>().HasData(
 				new Rol { Id = 1, Name = "Administrador", IsActive = true },
-				new Rol { Id = 2, Name = "Supervisor", IsActive = true },
-				new Rol { Id = 3, Name = "Empleado", IsActive = true }
-			);
+				new Rol { Id = 2, Name = "Supervisor", IsActive = true }
+			);			
 
 			modelBuilder.Entity<User>().HasData(
 				new User
 				{
 					Id = 1,
-					Name = "Administrador",
-					LastName = string.Empty,
-					RegistrationDate = DateTime.Now,
+					Name = "Admin",
+					LastName = "Admin",
+					DischargeDate = null,
 					Email = "administrador@administrador.com",
 					Password = "123456",
 					IsActive = true,
-					AreaId = null,
-					PhotoInBase64 = string.Empty,
-					ScheduleId = null,
+					RegistrationDate = DateTime.Now,
 					RolId = 1
 				}
 			);
-
-			//modelBuilder.Entity<User_Rol>().HasData(
-			//	new User_Rol { Id = 1, IsActive = true, RolId = 1, RegistrationDate = DateTime.Now, UserId = 1 }
-			//);
 		}
 	}
 }

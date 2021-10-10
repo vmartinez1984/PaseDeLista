@@ -10,8 +10,8 @@ using RollCall.Persistence.Entities;
 namespace RollCall.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210925204458_V1")]
-    partial class V1
+    [Migration("20211010002325_v5")]
+    partial class v5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,7 +45,7 @@ namespace RollCall.Persistence.Migrations
                     b.ToTable("Area");
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.Asistance", b =>
+            modelBuilder.Entity("RollCall.Persistence.Entities.Assistance", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,7 +62,55 @@ namespace RollCall.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Asistance");
+                    b.ToTable("Assistance");
+                });
+
+            modelBuilder.Entity("RollCall.Persistence.Entities.Employee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AreaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DischargeDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeNumber")
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("PhotoInBase64")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ScheduleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.ToTable("Employee");
                 });
 
             modelBuilder.Entity("RollCall.Persistence.Entities.Rol", b =>
@@ -94,6 +142,12 @@ namespace RollCall.Persistence.Migrations
                             Id = 1,
                             IsActive = true,
                             Name = "Administrador"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsActive = true,
+                            Name = "Supervisor"
                         });
                 });
 
@@ -103,6 +157,12 @@ namespace RollCall.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
@@ -115,6 +175,37 @@ namespace RollCall.Persistence.Migrations
                     b.ToTable("Schedule");
                 });
 
+            modelBuilder.Entity("RollCall.Persistence.Entities.SecurityQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Answer")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Question")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("SecurityQuestions");
+                });
+
             modelBuilder.Entity("RollCall.Persistence.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -122,10 +213,7 @@ namespace RollCall.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AreaId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DischargeDate")
+                    b.Property<DateTime?>("DischargeDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -138,60 +226,18 @@ namespace RollCall.Persistence.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("PhotoInBase64")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ScheduleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AreaId");
-
-                    b.HasIndex("ScheduleId");
-
-                    b.ToTable("User");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DischargeDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "administrador@administrador.com",
-                            IsActive = true,
-                            LastName = "",
-                            Name = "Administrador",
-                            Password = "123456",
-                            PhotoInBase64 = "",
-                            RegistrationDate = new DateTime(2021, 9, 25, 15, 44, 57, 737, DateTimeKind.Local).AddTicks(5737)
-                        });
-                });
-
-            modelBuilder.Entity("RollCall.Persistence.Entities.User_Rol", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
@@ -199,31 +245,29 @@ namespace RollCall.Persistence.Migrations
                     b.Property<int>("RolId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RolId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("User_Rol");
+                    b.ToTable("User");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            Email = "administrador@administrador.com",
                             IsActive = true,
-                            RegistrationDate = new DateTime(2021, 9, 25, 15, 44, 57, 741, DateTimeKind.Local).AddTicks(8944),
-                            RolId = 1,
-                            UserId = 1
+                            LastName = "Admin",
+                            Name = "Admin",
+                            Password = "123456",
+                            RegistrationDate = new DateTime(2021, 10, 9, 19, 23, 24, 382, DateTimeKind.Local).AddTicks(6898),
+                            RolId = 1
                         });
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.Asistance", b =>
+            modelBuilder.Entity("RollCall.Persistence.Entities.Assistance", b =>
                 {
-                    b.HasOne("RollCall.Persistence.Entities.User", "User")
+                    b.HasOne("RollCall.Persistence.Entities.Employee", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -232,7 +276,7 @@ namespace RollCall.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.User", b =>
+            modelBuilder.Entity("RollCall.Persistence.Entities.Employee", b =>
                 {
                     b.HasOne("RollCall.Persistence.Entities.Area", "Area")
                         .WithMany()
@@ -247,7 +291,18 @@ namespace RollCall.Persistence.Migrations
                     b.Navigation("Schedule");
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.User_Rol", b =>
+            modelBuilder.Entity("RollCall.Persistence.Entities.SecurityQuestion", b =>
+                {
+                    b.HasOne("RollCall.Persistence.Entities.Employee", "Employee")
+                        .WithMany("ListSecurityQuestions")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("RollCall.Persistence.Entities.User", b =>
                 {
                     b.HasOne("RollCall.Persistence.Entities.Rol", "Rol")
                         .WithMany()
@@ -255,15 +310,12 @@ namespace RollCall.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RollCall.Persistence.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Rol");
+                });
 
-                    b.Navigation("User");
+            modelBuilder.Entity("RollCall.Persistence.Entities.Employee", b =>
+                {
+                    b.Navigation("ListSecurityQuestions");
                 });
 #pragma warning restore 612, 618
         }
