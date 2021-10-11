@@ -18,6 +18,7 @@ import { AddAreaComponent } from "./components/area/add-area/add-area.component"
 import { ListSchedulesComponent } from './components/schedule/list-schedule/list-schedule.component';
 import { SaveScheduleComponent } from './components/schedule/save-schedule/save-schedule.component';
 import { ListEmployeeComponent } from './components/employee/list-employee.component';
+import { SaveEmployeeComponent } from './components/employee/save-employee.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ListEmployeeComponent } from './components/employee/list-employee.compo
     AddAreaComponent,
     ListSchedulesComponent,
     SaveScheduleComponent,
-    ListEmployeeComponent
+    ListEmployeeComponent,
+    SaveEmployeeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -49,7 +51,8 @@ import { ListEmployeeComponent } from './components/employee/list-employee.compo
       { path: 'add-area', component: AddAreaComponent },
       { path: "list-schedule", component: ListSchedulesComponent },
       { path: "save-schedule/:id", component: SaveScheduleComponent },
-      { path: "list-employee", component: ListEmployeeComponent }
+      { path: "list-employee", component: ListEmployeeComponent },
+      { path: "save-employee/:id", component: SaveEmployeeComponent }
     ])
   ],
   providers: [],

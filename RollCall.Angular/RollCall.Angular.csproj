@@ -28,6 +28,7 @@
     <None Remove="ClientApp\src\app\components\area\edit-area\edit-area.component.ts" />
     <None Remove="ClientApp\src\app\components\area\list-area\list-area.component.ts" />
     <None Remove="ClientApp\src\app\components\employee\list-employee.component.ts" />
+    <None Remove="ClientApp\src\app\components\employee\save-employee.component.ts" />
     <None Remove="ClientApp\src\app\components\schedule\list-schedule\list-schedule.component.ts" />
     <None Remove="ClientApp\src\app\components\schedule\save-schedule\save-schedule.component.ts" />
     <None Remove="ClientApp\src\app\components\user\add-user\add-user.component.ts" />
@@ -54,6 +55,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\area\edit-area\edit-area.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\area\list-area\list-area.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\employee\list-employee.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\employee\save-employee.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\schedule\list-schedule\list-schedule.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\schedule\save-schedule\save-schedule.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\user\add-user\add-user.component.ts" />

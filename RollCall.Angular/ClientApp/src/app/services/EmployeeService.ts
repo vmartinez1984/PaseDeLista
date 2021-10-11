@@ -22,7 +22,7 @@ export class EmployeeService {
   }
 
   update(employee: Employee): Observable<any> {
-    return this.httpClient.put("Api/Areas", employee);
+    return this.httpClient.put("Api/Employees", employee);
   }
 
   delete(id: number): Observable<any> {

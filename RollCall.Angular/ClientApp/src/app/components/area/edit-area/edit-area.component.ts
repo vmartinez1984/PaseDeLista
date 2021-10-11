@@ -18,6 +18,7 @@ export class EditAreaComponent implements OnInit {
     private router: Router
   ) {
     this.id = this.activateRoute.snapshot.paramMap.get('id');
+
     this.areaService.get(this.id).subscribe(data => {
       console.log(data);
       this.formGroup.setValue({
@@ -28,6 +29,7 @@ export class EditAreaComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+
     this.formGroup = formBuilder.group({
       id: [''],
       name: [''],

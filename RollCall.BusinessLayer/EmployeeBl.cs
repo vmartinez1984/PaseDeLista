@@ -40,9 +40,23 @@ namespace RollCall.BusinessLayer
 			}
 		}
 
-		public static Task<EmployeeDto> GetAsync(int id)
+		public static async Task<EmployeeDto> GetAsync(int id)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				EmployeeDto dto;
+				Employee entity;
+
+				entity = await EmployeeDao.GetAsync(id);
+				dto = EmployeeMapper.Get(entity);
+
+				return dto;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
 		}
 
 		public static async Task<int> AddAsync(EmployeeDto dto)
@@ -50,14 +64,18 @@ namespace RollCall.BusinessLayer
 			try
 			{
 				Employee entity;
+				DateTime now;
 
-				entity = EmployeeMapper.Get(dto);
+				entity = EmployeeMapper.Get(dto);				
 				entity.IsActive = true;
 				entity.RegistrationDate = DateTime.Now;
 				entity.DischargeDate = null;
 				using (var db = new AppDbContext())
 				{
 					db.Employee.Add(entity);
+					await db.SaveChangesAsync();
+					now = DateTime.Now;
+					entity.EmployeeNumber = $"{now.Year}"+entity.Id.ToString().PadLeft(4, '0');
 					await db.SaveChangesAsync();
 				}
 
