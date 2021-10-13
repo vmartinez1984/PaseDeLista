@@ -45,7 +45,8 @@ import { error } from "@angular/compiler/src/util";
       photoInBase64: [""],
       //registrationDate: [""],
       areaId: [""],
-      scheduleId:[""]
+      scheduleId: [""],
+      listSecurityQuestions: []
     });
   }
 
@@ -64,6 +65,7 @@ import { error } from "@angular/compiler/src/util";
 
   getEmployee(): void {
     this.employeeService.get(this.id).subscribe(data => {
+      console.log(data);
       this.formGroup.setValue({
         id: data['id'],
         employeeNumber: data["employeeNumber"],
@@ -72,7 +74,8 @@ import { error } from "@angular/compiler/src/util";
         photoInBase64: data["photoInBase64"],
         //registrationDate: data["registrationDate"],
         areaId: data["areaId"],
-        scheduleId: data["scheduleId"]
+        scheduleId: data["scheduleId"],
+        listSecurityQuestions: data["listSecurityQuestions"]
       });
     })
   }

@@ -1,0 +1,43 @@
+<div class="card">
+  <div class="card-header">
+    agregue al menos 3 preguntas de seguridad
+  </div>
+  <div class="card-body">
+    <div class="mb-3">
+      <label for="question">Pregunta</label>
+      <input formControlName="question" type="text" class="form-control" />
+    </div>
+    <div class="mb-3">
+      <label for="answer">Respuesta</label>
+      <input formControlName="answer" type="text" class="form-control" />
+    </div>
+    <div class="btn-group" role="group">
+      <button type="submit" class="btn btn-success">Guardar</button>
+      <a routerLink="/list-employee/" class="btn btn-primary">Cancelar</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      Preguntas de seguridad
+    </div>
+    <div class="card-body">
+      <table>
+        <thead>
+          <tr>
+            <th>Pregunta</th>
+            <th>Respuesta</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listSecurityQuestions">
+            <td>{{item.question}}</td>
+            <td>{{item.answer}}</td>
+            <td>{{item.id}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

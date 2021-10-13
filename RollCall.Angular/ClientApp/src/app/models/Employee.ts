@@ -1,5 +1,6 @@
 import { Area } from "./Area";
 import { Schedule } from "./Schedule";
+import { SecurityQuestion } from "./SecurtyQuestion";
 
 export class Employee {
   id: number;
@@ -12,4 +13,5 @@ export class Employee {
   area: Area;
   scheduleId: number;
   schedule: Schedule;
+  listSecurityQuestions: SecurityQuestion[];
 }

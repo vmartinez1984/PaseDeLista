@@ -89,7 +89,9 @@ namespace RollCall.Persistence.Dao
 
 				using (var db = new AppDbContext())
 				{
-					item = await db.Employee.Where(x => x.Id == id).FirstOrDefaultAsync();
+					item = await db.Employee
+						.Include(x=> x.ListSecurityQuestions)
+						.Where(x => x.Id == id).FirstOrDefaultAsync();
 				}
 
 				return item;
