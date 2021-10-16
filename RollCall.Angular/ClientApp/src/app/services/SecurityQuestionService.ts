@@ -13,7 +13,7 @@ import { SecurityQuestion } from "../models/SecurtyQuestion";
   }
 
   getAll(employeeId: number): Observable<any> {
-    return this.httpClient.get("Api/SecurityQuestions/employee/" + employeeId);
+    return this.httpClient.get("Api/SecurityQuestions/Employee/" + employeeId);
   }
 
   get(securityQuestionId: number) {

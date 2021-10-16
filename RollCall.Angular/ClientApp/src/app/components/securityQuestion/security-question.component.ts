@@ -22,6 +22,8 @@ import { SecurityQuestionService } from "../../services/SecurityQuestionService"
   }
 
   getAll(): any {
-    this.service.getAll(this.employeeId).subscribe();
+    this.service.getAll(this.employeeId).subscribe(data => {
+      console.log(data);
+    });
   }
 }

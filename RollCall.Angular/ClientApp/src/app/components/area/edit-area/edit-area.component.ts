@@ -30,7 +30,7 @@ export class EditAreaComponent implements OnInit {
       console.log(error);
     });
 
-    this.formGroup = formBuilder.group({
+    this.formGroup = this.formBuilder.group({
       id: [''],
       name: [''],
       description: ['']

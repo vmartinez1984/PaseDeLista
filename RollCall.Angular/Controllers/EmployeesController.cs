@@ -14,13 +14,14 @@ namespace RollCall.Angular.Controllers
 		// GET: api/<UsersController>
 		[HttpGet]
 		public async Task<IActionResult> Get(bool isActive = true)
+		
 		{
 			try
 			{
 				List<EmployeeDto> list;
 
 				list = await EmployeeBl.GetAllAsync(isActive);
-
+			
 				return Ok(list);
 			}
 			catch (Exception)

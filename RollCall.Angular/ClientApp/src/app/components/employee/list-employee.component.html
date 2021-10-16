@@ -3,7 +3,7 @@
     Áreas
   </div>
   <div class="card-body">
-    <a routerLink="/save-employee/0" class="btn btn-success">Agregar nuevo</a>
+    <a routerLink="/save-employee/" class="btn btn-success">Agregar nuevo</a>
     <table class="table">
       <thead>
         <tr>
@@ -29,7 +29,7 @@
           <td>{{item.schedule.schedule}}</td>
           <td>{{item.listSecurityQuestions.length}}</td>
           <td>
-            <a routerLink="/save-employee/{{item.id}}" class="btn btn-warning text-white">Editar</a>
+            <a routerLink="/edit-employee/{{item.id}}" class="btn btn-warning text-white">Editar</a>
             <a (click)="delete(item.id,index);" class="btn btn-danger">Borrar</a>
           </td>
         </tr>

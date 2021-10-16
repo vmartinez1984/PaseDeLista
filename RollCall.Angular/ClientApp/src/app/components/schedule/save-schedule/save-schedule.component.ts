@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ScheduleService } from "../../../services/scheduleService";
-import { error } from "@angular/compiler/src/util";
 
 @Component({
   selector: "app-save-schedule",
