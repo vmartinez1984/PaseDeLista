@@ -33,7 +33,7 @@ namespace RollCall.Mvc.Controllers
 					{
 						HttpContext.Session.SetInt32("userId", userDto.Id);
 						HttpContext.Session.SetInt32("userRolId", userDto.RolId);
-						HttpContext.Session.SetString("userName", $"{userDto.Employee.Name} {userDto.Employee.LastName}");
+						HttpContext.Session.SetString("userName", $"{userDto.Name} {userDto.LastName}");
 
 						switch (userDto.RolId)
 						{

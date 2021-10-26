@@ -8,7 +8,7 @@ namespace RollCall.BusinessLayer.Mappers
 {
 	public class EmployeeMapper
 	{
-		internal static List<EmployeeDto> GetAll(List<Employee> entities)
+		internal static List<EmployeeDto> GetAll(List<EmployeeEntity> entities)
 		{
 			try
 			{
@@ -33,7 +33,7 @@ namespace RollCall.BusinessLayer.Mappers
 			MapperConfiguration configuration;
 
 			configuration = new MapperConfiguration(x => {
-				x.CreateMap<Employee, EmployeeDto>();
+				x.CreateMap<EmployeeEntity, EmployeeDto>();
 				x.CreateMap<Area, AreaDto>();
 				x.CreateMap<Schedule, ScheduleDto>();
 				x.CreateMap<SecurityQuestion, SecurityQuestionDto>();
@@ -43,7 +43,7 @@ namespace RollCall.BusinessLayer.Mappers
 			return mapper;
 		}
 
-		internal static EmployeeDto Get(Employee entity)
+		internal static EmployeeDto Get(EmployeeEntity entity)
 		{
 			try
 			{
@@ -62,15 +62,15 @@ namespace RollCall.BusinessLayer.Mappers
 			}
 		}
 
-		internal static Employee Get(EmployeeDto dto)
+		internal static EmployeeEntity Get(EmployeeDto dto)
 		{
 			try
 			{
-				Employee entity;
+				EmployeeEntity entity;
 				IMapper mapper;
 
 				mapper = GetMapperToEntities();
-				entity = mapper.Map<Employee>(dto);
+				entity = mapper.Map<EmployeeEntity>(dto);
 
 				return entity;
 			}
@@ -86,7 +86,7 @@ namespace RollCall.BusinessLayer.Mappers
 			IMapper mapper;
 			MapperConfiguration configuration;
 
-			configuration = new MapperConfiguration(x => x.CreateMap<EmployeeDto, Employee>());
+			configuration = new MapperConfiguration(x => x.CreateMap<EmployeeDto, EmployeeEntity>());
 			mapper = configuration.CreateMapper();
 
 			return mapper;

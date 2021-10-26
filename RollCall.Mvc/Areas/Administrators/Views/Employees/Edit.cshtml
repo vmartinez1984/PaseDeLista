@@ -1,22 +1,16 @@
 ﻿@model RollCall.Dto.EmployeeDto
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar empleado";
 }
 
-<h1>Edit</h1>
-
-<h4>UserDto</h4>
+<h4>Editar usuario</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -26,16 +20,11 @@
                 <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>            
+            </div>
             <div class="form-group">
                 <label asp-for="PhotoInBase64" class="control-label"></label>
                 <input asp-for="PhotoInBase64" class="form-control" />
                 <span asp-validation-for="PhotoInBase64" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegistrationDate" class="control-label"></label>
-                <input asp-for="RegistrationDate" class="form-control" />
-                <span asp-validation-for="RegistrationDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AreaId" class="control-label"></label>
@@ -47,15 +36,45 @@
                 <input asp-for="ScheduleId" class="form-control" />
                 <span asp-validation-for="ScheduleId" class="text-danger"></span>
             </div>
+
+
             <div class="form-group">
-                <label asp-for="DischargeDate" class="control-label"></label>
-                <input asp-for="DischargeDate" class="form-control" />
-                <span asp-validation-for="DischargeDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary">
+                    Guardar
+                </button>
             </div>
         </form>
+        <div id="divSecurityQuestions">
+            @await Html.PartialAsync("_CreateSecurityQuestion",new RollCall.Dto.SecurityQuestionDto{EmployeeId= Model.Id})
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Pregunta</th>
+                    <th>Respuesta</th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                @foreach (var item in Model.ListSecurityQuestions)
+                {
+                    <tr id="tr_@item.Id">
+                        <td id="question_@item.Id">@item.Question</td>
+                        <td id="answer_@item.Id">@item.Answer</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-warning" id="btnEdit_@item.Id" onclick="edit(@item.Id,'@item.Question','@item.Answer')">
+                                Editar
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" id="btnDelete_@item.Id" onclick="deleteSecurityQuestion(@item.Id,'@item.Question','@item.Answer')">
+                                Borrar
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -64,5 +83,231 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+<script>
+    document.getElementById("formSecurityQuestion").addEventListener("submit",submitFormSecurityQuestion);
+    function submitFormSecurityQuestion(event){
+        debugger;
+        event.preventDefault();
+
+        if($("#formSecurityQuestion").valid()){
+            Swal.fire({
+                icon: 'info',
+                title: 'Un momento por favor...',
+                allowOutsideClick: false,
+                showConfirmButton: false
+            });
+            console.log(document.getElementById("SecurityQuestionId").value);
+            if(document.getElementById("SecurityQuestionId").value == 0)
+                addSecurityQuestion();
+            else
+                update();
+        }
+    }
+
+    function update(){
+        var url;
+        var requiredOptions;
+        var raw;
+
+        raw = JSON.stringify({
+            Id : document.getElementById("SecurityQuestionId").value,
+            Question : document.getElementById("Question").value,
+            Answer : document.getElementById("Answer").value,
+            EmployeeId : document.getElementById("EmployeeId").value
+        });
+        requiredOptions ={
+            method : "put",
+            body: raw,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        url = "/Api/SecurityQuestions/";
+        fetch(url,requiredOptions)
+        .then(response=>{
+            console.log(response);
+            if(response.ok){
+            }else{
+                throw response.statusText + " "+response.text();
+            }
+        })
+        .then(data=>{
+            updateRow();
+            console.log(data);
+            document.getElementById("formSecurityQuestion").reset();
+            loggedData();
+        })
+        .catch(error=>{
+            console.log(error);
+            anErrorOcurred();
+        });
+    }
+
+    function updateRow(){
+        var id;
+        var question;
+        var asnwer;
+
+        id = document.getElementById("SecurityQuestionId").value;
+        question = document.getElementById("Question").value;
+        answer = document.getElementById("Answer").value;
+        document.getElementById("question_"+id).innerHTML = document.getElementById("Question").value;
+        document.getElementById("answer_"+id).innerHTML = document.getElementById("Answer").value;
+        document.getElementById("btnEdit_"+id).setAttribute("onclick","edit("+id +",'"+question +"','"+answer+"');");
+        document.getElementById("btnDelete_"+id).setAttribute("onclick","deleteSecurityQuestion("+id +",'"+question +"','"+answer+"');");
+        document.getElementById("SecurityQuestionId").value =0;
+    }
+
+    function addSecurityQuestion(){
+        var url;
+        var requiredOptions;
+        var raw;
+
+        raw = JSON.stringify({
+            Id : document.getElementById("SecurityQuestionId").value,
+            Question : document.getElementById("Question").value,
+            Answer : document.getElementById("Answer").value,
+            EmployeeId : document.getElementById("EmployeeId").value
+        });
+        //console.log(raw);
+        requiredOptions ={
+            method : "post",
+            body: raw,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        url = "/Api/SecurityQuestions/";
+        fetch(url,requiredOptions)
+        .then(response=>{
+            console.log(response);
+            if(response.ok){
+                return response.json();
+            }else{
+                throw response.statusText + " "+response.text();
+            }
+        })
+        .then(data=>{
+            addRow(data.id);
+            console.log(data);
+            document.getElementById("formSecurityQuestion").reset();
+            loggedData();
+        })
+        .catch(error=>{
+            console.log(error);
+            anErrorOcurred();
+        });
+    }
+
+    function addRow(id){
+        var question;
+        var asnwer;
+        var tr
+        var tdQuestion;
+        var tdAnswer;
+        var tdButtons;
+        var textNode;
+        var button;
+        var tbody;
+
+        //Se agrega la pregunta
+        tr = document.createElement("tr");
+        tr.setAttribute("id","tr_"+id)
+        question = document.getElementById("Question").value;
+        tdQuestion = document.createElement("td");
+        tdQuestion.setAttribute("id","question_"+id);
+        textNode = document.createTextNode(question);
+        tdQuestion.appendChild(textNode);
+        tr.appendChild(tdQuestion);
+        //Se agrega la respuesta
+        answer = document.getElementById("Answer").value;
+        tdAnswer = document.createElement("td");
+        tdAnswer.setAttribute("id","answer_"+id);
+        textNode = document.createTextNode(answer);
+        tdAnswer.appendChild(textNode);
+        tr.appendChild(tdAnswer);
+        //Se agregan los botones
+        button = document.createElement("button");
+        button.type = "button";
+        button.setAttribute("onclick","edit("+id +",'"+question +"','"+answer+"');");
+        button.innerText = " Editar ";
+        button.className = "btn btn-outline-warning";
+        tdButtons = document.createElement("td");
+        tdButtons.appendChild(button);
+        button = document.createElement("button");
+        button.type = "button";
+        button.setAttribute("onclick","deleteSecurityQuestion("+id +",'"+question +"','"+answer+"');");
+        button.innerText = " Borrar ";
+        button.className = "btn btn-outline-danger";
+        tdButtons.appendChild(button);
+        tr.appendChild(tdButtons);
+        //se agreaga la fila a la tabla
+        tbody = document.getElementById("tbody");
+        tbody.appendChild(tr);
+    }
+
+    function deleteSecurityQuestion(securityQuestionId, question, answer){
+        //console.log(id);
+            Swal.fire({
+            title: '¿Deseas borrar la pregunta de seguridad?',
+            text: question + " "+answer,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, deseo borrarlo',
+            cancelButtonText : 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var url;
+
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Cargando...',
+                    allowOutsideClick: false,
+                    showConfirmButton: false
+                });
+                url = "/Api/SecurityQuestions/"+securityQuestionId;
+                fetch(url,{ method : "Delete"}).then(response=>{
+                    if(response.ok){
+                        var node ;
+
+                        node =  document.getElementById("tr_"+securityQuestionId);
+
+                        node.parentNode.removeChild(node);
+                        loggedData();
+                    }else{
+                       anErrorOcurred();
+                    }
+                });
+            }
+        });
+    }
+
+    function edit(securityQuestionId, question, answer){
+        document.getElementById("Question").value = question;
+        document.getElementById("Answer").value = answer;
+        document.getElementById("SecurityQuestionId").value = securityQuestionId;
+    }
+
+    function anErrorOcurred(){
+         Swal.fire({
+            title: 'Ocurrio un error',
+            icon: 'error'
+        });
+    }
+
+    function loggedData(){
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Datos registrados',
+          showConfirmButton: false,
+          timer: 1500
+        });
+    }
+</script>
 }

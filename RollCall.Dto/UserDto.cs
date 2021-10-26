@@ -9,7 +9,7 @@ namespace RollCall.Dto
 
 		[Required]		
 		public int EmployeeId { get; set; }
-		public  EmployeeDto Employee { get; set; }
+		//public  EmployeeDto Employee { get; set; }
 
 		[Required]
 		[StringLength(50)]
@@ -22,5 +22,13 @@ namespace RollCall.Dto
 		[Required]		
 		public int RolId { get; set; }
 		public virtual Rol Rol { get; set; }
+
+		[Required]
+		[StringLength(50)]
+		public string Name { get; set; }
+
+		[Required]
+		[StringLength(50)]
+		public string LastName { get; set; }
 	}
 }

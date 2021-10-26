@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RollCall.Persistence.Entities
 {
-	public class Employee
+	public class EmployeeEntity
 	{
 		[Key]
 		public int Id { get; set; }

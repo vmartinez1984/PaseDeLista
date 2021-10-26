@@ -9,11 +9,11 @@ namespace RollCall.Persistence.Dao
 {
 	public class EmployeeDao
 	{
-		public static List<Employee> GetAll()
+		public static List<EmployeeEntity> GetAll()
 		{
 			try
 			{
-				List<Employee> list;
+				List<EmployeeEntity> list;
 
 				using (var db = new AppDbContext())
 				{
@@ -29,16 +29,16 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static Task<Employee> GetAllAsync(string employeeNumber)
+		public static Task<EmployeeEntity> GetAllAsync(string employeeNumber)
 		{
 			throw new NotImplementedException();
 		}
 
-		public static async Task<Employee> GetAllAsync(int employeeId, string employeeNumber)
+		public static async Task<EmployeeEntity> GetAllAsync(int employeeId, string employeeNumber)
 		{
 			try
 			{
-				Employee item;
+				EmployeeEntity item;
 
 				using (var db = new AppDbContext())
 				{
@@ -57,18 +57,18 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<List<Employee>> GetAllAsync(bool isActive)
+		public static async Task<List<EmployeeEntity>> GetAllAsync(bool isActive)
 		{
 			try
 			{
-				List<Employee> list;
+				List<EmployeeEntity> list;
 
 				using (var db = new AppDbContext())
 				{
 					list = await db.Employee
-						.Include(x => x.ListSecurityQuestions)
+						.Include(x => x.ListSecurityQuestions.Where(x => x.IsActive))
 						.Include(x => x.Area)
-						.Include(x=> x.Schedule)
+						.Include(x => x.Schedule)
 						.Where(x => x.IsActive == isActive && x.Id != 1).ToListAsync();
 				}
 
@@ -81,17 +81,18 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<Employee> GetAsync(int id)
+		public static async Task<EmployeeEntity> GetAsync(int id)
 		{
 			try
 			{
-				Employee item;
+				EmployeeEntity item;
 
 				using (var db = new AppDbContext())
 				{
 					item = await db.Employee
-						.Include(x=> x.ListSecurityQuestions)
-						.Where(x => x.Id == id).FirstOrDefaultAsync();
+						.Include(x => x.ListSecurityQuestions.Where(x => x.IsActive))
+						.Where(x => x.Id == id)
+						.FirstOrDefaultAsync();
 				}
 
 				return item;
@@ -103,7 +104,7 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<int> AddAsync(Employee entity)
+		public static async Task<int> AddAsync(EmployeeEntity entity)
 		{
 			try
 			{
@@ -124,13 +125,13 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task UpdateAsync(Employee entity)
+		public static async Task UpdateAsync(EmployeeEntity entity)
 		{
 			try
 			{
 				using (var db = new AppDbContext())
 				{
-					db.Entry<Employee>(entity).State = EntityState.Modified;
+					db.Entry<EmployeeEntity>(entity).State = EntityState.Modified;
 					await db.SaveChangesAsync();
 				}
 			}

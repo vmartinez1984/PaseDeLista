@@ -1,0 +1,32 @@
+﻿@model RollCall.Dto.SecurityQuestionDto
+
+<h4>Preguntas de seguridad</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="create" asp-controller="SecurityQuestions" asp-area="Administrators" id="formSecurityQuestion">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="EmployeeId" type="hidden" />
+            <input id="SecurityQuestionId" name="SecurityQuestionId" type="hidden" value="0" />
+
+            <div class="form-group">
+                <label asp-for="Question" class="control-label"></label>
+                <input asp-for="Question" class="form-control" />
+                <span asp-validation-for="Question" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Answer" class="control-label"></label>
+                <input asp-for="Answer" class="form-control" />
+                <span asp-validation-for="Answer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" value="Create" class="btn btn-outline-primary">
+                    Agregar
+                </button>
+                <button type="reset" class="btn btn-outline-secondary">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

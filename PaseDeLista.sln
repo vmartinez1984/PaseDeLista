@@ -3,19 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollCall.Persistence", "RollCall.Dao\RollCall.Persistence.csproj", "{D9EF7741-BBBC-4C81-9426-37D7A373738B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.Persistence", "RollCall.Dao\RollCall.Persistence.csproj", "{D9EF7741-BBBC-4C81-9426-37D7A373738B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollCall.Dto", "RollCall.Dto\RollCall.Dto.csproj", "{F9F21459-11B3-42DE-804F-8AF403AA3143}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.Dto", "RollCall.Dto\RollCall.Dto.csproj", "{F9F21459-11B3-42DE-804F-8AF403AA3143}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollCall.BusinessLayer", "RollCall.BusinessLayer\RollCall.BusinessLayer.csproj", "{44CA74AF-F28D-4626-AF15-0FA1F1F6C1AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.BusinessLayer", "RollCall.BusinessLayer\RollCall.BusinessLayer.csproj", "{44CA74AF-F28D-4626-AF15-0FA1F1F6C1AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollCall.Services", "RollCall.Services\RollCall.Services.csproj", "{7DD40272-D893-4C93-9424-1508D276473F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.Services", "RollCall.Services\RollCall.Services.csproj", "{7DD40272-D893-4C93-9424-1508D276473F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollCall.Mvc", "RollCall.Mvc\RollCall.Mvc.csproj", "{E5D7BE8B-1F81-4E6A-A921-FC9456B6FB0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.Mvc", "RollCall.Mvc\RollCall.Mvc.csproj", "{E5D7BE8B-1F81-4E6A-A921-FC9456B6FB0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollCall.WsApi", "RollCall.WsApi\RollCall.WsApi.csproj", "{F3AFF04C-FB86-4338-AF50-7ECEEB4B15C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.WsApi", "RollCall.WsApi\RollCall.WsApi.csproj", "{F3AFF04C-FB86-4338-AF50-7ECEEB4B15C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollCall.Angular", "RollCall.Angular\RollCall.Angular.csproj", "{2DDADDC8-2330-4057-BEEB-61B3AD1FCA85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.Angular", "RollCall.Angular\RollCall.Angular.csproj", "{2DDADDC8-2330-4057-BEEB-61B3AD1FCA85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollCall.AngularV2", "RollCall.AngularV2\RollCall.AngularV2.csproj", "{AFFAA6C9-75E6-4EC2-8EF2-B2DB26A515FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{2DDADDC8-2330-4057-BEEB-61B3AD1FCA85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DDADDC8-2330-4057-BEEB-61B3AD1FCA85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DDADDC8-2330-4057-BEEB-61B3AD1FCA85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFFAA6C9-75E6-4EC2-8EF2-B2DB26A515FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFFAA6C9-75E6-4EC2-8EF2-B2DB26A515FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFFAA6C9-75E6-4EC2-8EF2-B2DB26A515FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFFAA6C9-75E6-4EC2-8EF2-B2DB26A515FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

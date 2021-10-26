@@ -30,13 +30,13 @@ namespace RollCall.BusinessLayer
 			}
 		}
 
-		public static async Task DeleteAsync(SecurityQuestionDto dto)
+		public static async Task DeleteAsync(int id)
 		{
 			try
 			{
 				SecurityQuestion entity;
 
-				entity = await SecurityQuestionDao.GetAsync(dto.Id);
+				entity = await SecurityQuestionDao.GetAsync(id);
 				entity.IsActive = false;
 				await SecurityQuestionDao.UpdateAsync(entity);
 			}

@@ -13,7 +13,7 @@ namespace RollCall.BusinessLayer
 		public static async Task<EmployeeDto> GetAsync(string employeeNumber)
 		{
 			EmployeeDto dto;
-			Employee entity;
+			EmployeeEntity entity;
 
 			entity = await EmployeeDao.GetAllAsync(employeeNumber);
 			dto = EmployeeMapper.Get(entity);
@@ -26,7 +26,7 @@ namespace RollCall.BusinessLayer
 			try
 			{
 				List<EmployeeDto> dtos;
-				List<Employee> entities;
+				List<EmployeeEntity> entities;
 
 				entities = await EmployeeDao.GetAllAsync(isActive);
 				dtos = EmployeeMapper.GetAll(entities);
@@ -45,7 +45,7 @@ namespace RollCall.BusinessLayer
 			try
 			{
 				EmployeeDto dto;
-				Employee entity;
+				EmployeeEntity entity;
 
 				entity = await EmployeeDao.GetAsync(id);
 				dto = EmployeeMapper.Get(entity);
@@ -63,7 +63,7 @@ namespace RollCall.BusinessLayer
 		{
 			try
 			{
-				Employee entity;
+				EmployeeEntity entity;
 				DateTime now;
 
 				entity = EmployeeMapper.Get(dto);				
@@ -88,16 +88,28 @@ namespace RollCall.BusinessLayer
 			}
 		}
 
-		public static Task DeleteAsync(EmployeeDto dto)
+		public static async Task DeleteAsync(EmployeeDto dto)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				EmployeeEntity entity;
+
+				entity = await EmployeeDao.GetAsync(dto.Id);
+				entity.IsActive = false;
+				await EmployeeDao.UpdateAsync(entity);
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
 		}
 
 		public static async Task UpdateAsync(EmployeeDto employeeDto)
 		{
 			try
 			{
-				Employee entity;
+				EmployeeEntity entity;
 
 				entity = await EmployeeDao.GetAsync(employeeDto.Id);
 				entity.Name = employeeDto.Name;
@@ -118,7 +130,7 @@ namespace RollCall.BusinessLayer
 		{
 			try
 			{
-				Employee entity;
+				EmployeeEntity entity;
 
 				entity = await EmployeeDao.GetAsync(employeeId);
 				entity.IsActive = false;

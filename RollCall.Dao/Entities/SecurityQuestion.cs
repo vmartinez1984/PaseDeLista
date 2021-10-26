@@ -10,7 +10,7 @@ namespace RollCall.Persistence.Entities
 
 		[ForeignKey(nameof(Employee))]
 		public int EmployeeId { get; set; }
-		public virtual Employee Employee { get; set; }
+		public virtual EmployeeEntity Employee { get; set; }
 
 		[StringLength(150)]
 		[Display(Name = "Pregunta")]

@@ -12,7 +12,7 @@ namespace RollCall.Persistence.Entities
 		[Required]
 		[ForeignKey(nameof(User))]
 		public int UserId { get; set; }
-		public virtual Employee User { get; set; }
+		public virtual EmployeeEntity User { get; set; }
 
 		[Required]
 		public DateTime RegistrationDate { get; set; }

@@ -11,7 +11,7 @@ namespace RollCall.Persistence.Entities
 	{
 		public DbSet<Area> Area { get; set; }
 		public DbSet<Assistance> Assistance { get; set; }
-		public DbSet<Employee> Employee { get; set; }
+		public DbSet<EmployeeEntity> Employee { get; set; }
 		public DbSet<Rol> Rol { get; set; }
 		public DbSet<Schedule> Schedule { get; set; }
 		public DbSet<SecurityQuestion> SecurityQuestions { get; set; }
