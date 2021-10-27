@@ -12,7 +12,7 @@ namespace RollCall.Persistence.Entities
 		public DbSet<Area> Area { get; set; }
 		public DbSet<Assistance> Assistance { get; set; }
 		public DbSet<EmployeeEntity> Employee { get; set; }
-		public DbSet<Rol> Rol { get; set; }
+		public DbSet<RolEntity> Rol { get; set; }
 		public DbSet<Schedule> Schedule { get; set; }
 		public DbSet<SecurityQuestion> SecurityQuestions { get; set; }
 		public DbSet<User> User { get; set; }
@@ -39,9 +39,9 @@ namespace RollCall.Persistence.Entities
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Rol>().HasData(
-				new Rol { Id = 1, Name = "Administrador", IsActive = true },
-				new Rol { Id = 2, Name = "Supervisor", IsActive = true }
+			modelBuilder.Entity<RolEntity>().HasData(
+				new RolEntity { Id = 1, Name = "Administrador", IsActive = true },
+				new RolEntity { Id = 2, Name = "Supervisor", IsActive = true }
 			);			
 
 			modelBuilder.Entity<User>().HasData(

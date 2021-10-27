@@ -63,15 +63,30 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create(EmployeeDto dto)
+		public async Task<IActionResult> Create([Bind("Name, LastName, PhotoInBase64, AreaId, ScheduleId, ListSecurityQuestions[]")] EmployeeDto dto)
 		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
+					dto.ListSecurityQuestions.Add(new SecurityQuestionDto
+					{
+						Question = this.Request.Form["ListSecurityQuestions[0].Question"].ToString(),
+						Answer = this.Request.Form["ListSecurityQuestions[0].Answer"].ToString()
+					}); 
+					dto.ListSecurityQuestions.Add(new SecurityQuestionDto
+					{
+						Question = this.Request.Form["ListSecurityQuestions[1].Question"].ToString(),
+						Answer = this.Request.Form["ListSecurityQuestions[1].Answer"].ToString()
+					}); 
+					dto.ListSecurityQuestions.Add(new SecurityQuestionDto
+					{
+						Question = this.Request.Form["ListSecurityQuestions[2].Question"].ToString(),
+						Answer = this.Request.Form["ListSecurityQuestions[2].Answer"].ToString()
+					});
 					dto.Id = await EmployeeBl.AddAsync(dto);
 
-					return RedirectToAction("Index", "SecurityQuestions", new { employeeId = dto.Id });
+					return RedirectToAction(nameof(Index));
 				}
 				else
 				{

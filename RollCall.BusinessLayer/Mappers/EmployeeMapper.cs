@@ -32,7 +32,8 @@ namespace RollCall.BusinessLayer.Mappers
 			IMapper mapper;
 			MapperConfiguration configuration;
 
-			configuration = new MapperConfiguration(x => {
+			configuration = new MapperConfiguration(x =>
+			{
 				x.CreateMap<EmployeeEntity, EmployeeDto>();
 				x.CreateMap<Area, AreaDto>();
 				x.CreateMap<Schedule, ScheduleDto>();
@@ -86,7 +87,13 @@ namespace RollCall.BusinessLayer.Mappers
 			IMapper mapper;
 			MapperConfiguration configuration;
 
-			configuration = new MapperConfiguration(x => x.CreateMap<EmployeeDto, EmployeeEntity>());
+			configuration = new MapperConfiguration(x =>
+			{
+				x.CreateMap<EmployeeDto, EmployeeEntity>();
+				x.CreateMap<AreaDto, Area>();
+				x.CreateMap<ScheduleDto, Schedule>();
+				x.CreateMap<SecurityQuestionDto, SecurityQuestion>();
+			});
 			mapper = configuration.CreateMapper();
 
 			return mapper;

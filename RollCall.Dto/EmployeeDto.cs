@@ -6,6 +6,10 @@ namespace RollCall.Dto
 {
 	public class EmployeeDto
 	{
+		public EmployeeDto()
+		{
+			this.ListSecurityQuestions = new List<SecurityQuestionDto>();
+		}
 		public int Id { get; set; }
 
 		[StringLength(8)]

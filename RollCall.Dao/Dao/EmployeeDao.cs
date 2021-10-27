@@ -29,12 +29,7 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static Task<EmployeeEntity> GetAllAsync(string employeeNumber)
-		{
-			throw new NotImplementedException();
-		}
-
-		public static async Task<EmployeeEntity> GetAllAsync(int employeeId, string employeeNumber)
+		public static async Task<EmployeeEntity> GetAsync(string employeeNumber)
 		{
 			try
 			{

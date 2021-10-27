@@ -15,7 +15,7 @@ namespace RollCall.BusinessLayer
 			EmployeeDto dto;
 			EmployeeEntity entity;
 
-			entity = await EmployeeDao.GetAllAsync(employeeNumber);
+			entity = await EmployeeDao.GetAsync(employeeNumber);
 			dto = EmployeeMapper.Get(entity);
 
 			return dto;
@@ -66,7 +66,7 @@ namespace RollCall.BusinessLayer
 				EmployeeEntity entity;
 				DateTime now;
 
-				entity = EmployeeMapper.Get(dto);				
+				entity = EmployeeMapper.Get(dto);
 				entity.IsActive = true;
 				entity.RegistrationDate = DateTime.Now;
 				entity.DischargeDate = null;
@@ -75,9 +75,23 @@ namespace RollCall.BusinessLayer
 					db.Employee.Add(entity);
 					await db.SaveChangesAsync();
 					now = DateTime.Now;
-					entity.EmployeeNumber = $"{now.Year}"+entity.Id.ToString().PadLeft(4, '0');
+					entity.EmployeeNumber = $"{now.Year}" + entity.Id.ToString().PadLeft(4, '0');
 					await db.SaveChangesAsync();
 				}
+				dto.ListSecurityQuestions.ForEach(item =>
+				{
+					SecurityQuestion securityQuestion;
+
+					securityQuestion = new SecurityQuestion
+					{
+						Answer = item.Answer,
+						EmployeeId = entity.Id,
+						IsActive = true,
+						Question = item.Question,
+						RegistrationDate = now,
+					};
+					SecurityQuestionDao.Add(securityQuestion);
+				});
 
 				return entity.Id;
 			}

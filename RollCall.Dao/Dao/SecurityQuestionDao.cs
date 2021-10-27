@@ -83,5 +83,22 @@ namespace RollCall.Persistence.Dao
 				throw;
 			}
 		}
+
+		public static void Add(SecurityQuestion entity)
+		{
+			try
+			{
+				using (var db = new AppDbContext())
+				{
+					db.SecurityQuestions.Add(entity);
+					db.SaveChanges();
+				}
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
 	}
 }

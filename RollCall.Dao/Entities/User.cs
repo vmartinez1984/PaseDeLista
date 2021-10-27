@@ -28,7 +28,7 @@ namespace RollCall.Persistence.Entities
 		[Required]
 		[ForeignKey(nameof(Rol))]
 		public int RolId { get; set; }
-		public virtual Rol Rol { get; set; }
+		public virtual RolEntity Rol { get; set; }
 
 		[Required]
 		public bool IsActive { get; set; }

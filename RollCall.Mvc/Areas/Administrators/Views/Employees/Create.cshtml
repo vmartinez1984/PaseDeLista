@@ -38,7 +38,43 @@
                     <option>Seleccione</option>
                 </select>
                 <span asp-validation-for="ScheduleId" class="text-danger"></span>
-            </div>            
+            </div>    
+            
+            <h3>Preguntas de seguridad</h3>
+            <h5>Agregue las preguntas con su respuesta, estas serán utilizadas para confirmar su asistencia</h5>
+             <div class="form-group">
+                <label asp-for="ListSecurityQuestions[0].Question" class="control-label"></label>
+                <input asp-for="ListSecurityQuestions[0].Question" id="ListSecurityQuestions[].Question" class="form-control" />
+                <span asp-validation-for="ListSecurityQuestions[0].Question" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ListSecurityQuestions[0].Answer" class="control-label"></label>
+                <input asp-for="ListSecurityQuestions[0].Answer" class="form-control" />
+                <span asp-validation-for="ListSecurityQuestions[0].Answer" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ListSecurityQuestions[1].Question" class="control-label"></label>
+                <input asp-for="ListSecurityQuestions[1].Question" id="ListSecurityQuestions[].Question" class="form-control" />
+                <span asp-validation-for="ListSecurityQuestions[1].Question" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ListSecurityQuestions[1].Answer" class="control-label"></label>
+                <input asp-for="ListSecurityQuestions[1].Answer" class="form-control" />
+                <span asp-validation-for="ListSecurityQuestions[1].Answer" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ListSecurityQuestions[2].Question" class="control-label"></label>
+                <input asp-for="ListSecurityQuestions[2].Question" id="ListSecurityQuestions[].Question" class="form-control" />
+                <span asp-validation-for="ListSecurityQuestions[2].Question" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ListSecurityQuestions[2].Answer" class="control-label"></label>
+                <input asp-for="ListSecurityQuestions[2].Answer" class="form-control" />
+                <span asp-validation-for="ListSecurityQuestions[2].Answer" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <button type="submit" class="btn btn-primary ">Guardar</button>
             </div>
@@ -47,7 +83,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Regresar a la lista</a>
 </div>
 
 @section Scripts {

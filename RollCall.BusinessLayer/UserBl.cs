@@ -73,6 +73,7 @@ namespace RollCall.BusinessLayer
 				User entity;
 
 				entity = UserMapper.Get(dto);
+				entity.IsActive = true;
 				await UserDao.UpdateAsync(entity);
 			}
 			catch (Exception)

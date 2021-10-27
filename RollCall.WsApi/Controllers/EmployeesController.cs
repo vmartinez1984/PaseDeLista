@@ -46,6 +46,24 @@ namespace RollCall.WsApi.Controllers
 			}
 		}
 
+		[HttpGet]
+		[Route("/Api/Employees/EmployeeNumber/{employeeNumber}/")]
+		public async Task<IActionResult> Get(string employeeNumber)
+		{
+			try
+			{
+				EmployeeDto dto;
+
+				dto = await EmployeeBl.GetAsync(employeeNumber);
+
+				return Ok(dto);
+			}
+			catch (Exception)
+			{
+				return StatusCode(500);
+			}
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> Post(EmployeeDto EmployeeDto)
 		{

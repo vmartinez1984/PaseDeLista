@@ -10,6 +10,12 @@ namespace RollCall.Mvc.Apis
 	[ApiController]
 	public class SecurityQuestionsController : ControllerBase
 	{
+		//[HttpGet("{id}")]
+		//public async Task<IActionResult> Get(int id)
+		//{
+
+		//}
+
 		[HttpPost]
 		public async Task<ActionResult> Post(SecurityQuestionDto securityQuestion)
 		{

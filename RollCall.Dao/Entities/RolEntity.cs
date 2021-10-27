@@ -2,7 +2,7 @@
 
 namespace RollCall.Persistence.Entities
 {
-	public	class Rol
+	public	class RolEntity
 	{
 		[Key]
 		public int Id { get; set; }

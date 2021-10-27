@@ -6,6 +6,7 @@ namespace RollCall.Persistence.Entities
 {
 	public class SecurityQuestion
 	{
+		[Key]
 		public int Id { get; set; }
 
 		[ForeignKey(nameof(Employee))]

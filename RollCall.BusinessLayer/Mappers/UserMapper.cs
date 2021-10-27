@@ -34,7 +34,7 @@ namespace RollCall.BusinessLayer.Mappers
 
 			configuration = new MapperConfiguration(x => {
 				x.CreateMap<User, UserDto>();
-				x.CreateMap<EmployeeEntity, EmployeeDto>();
+				x.CreateMap<RolEntity, RolDto>();
 				});
 			mapper = configuration.CreateMapper();
 
@@ -50,7 +50,6 @@ namespace RollCall.BusinessLayer.Mappers
 
 				mapper = GetMapperToDtos();
 				dto = mapper.Map<UserDto>(entity);
-				//dto.Employee = EmployeeMapper.Get(entity.Employee);
 
 				return dto;
 			}

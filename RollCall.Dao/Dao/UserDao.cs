@@ -57,7 +57,9 @@ namespace RollCall.Persistence.Dao
 
 				using (var db = new AppDbContext())
 				{
-					item = await db.User.Where(x => x.Id == id).FirstOrDefaultAsync();
+					item = await db.User.Where(x => x.Id == id)
+						.Include(x=> x.Rol)
+						.FirstOrDefaultAsync();
 				}
 
 				return item;

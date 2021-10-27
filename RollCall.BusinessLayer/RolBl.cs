@@ -15,7 +15,7 @@ namespace RollCall.BusinessLayer
 				{
 					new RolDto{Id = Rol.Administrador, Name = nameof(Rol.Administrador)},
 					new RolDto{Id = Rol.Supervisor, Name = nameof(Rol.Supervisor)},
-					new RolDto{Id = Rol.Empleado, Name = nameof(Rol.Empleado)},
+					//new RolDto{Id = Rol.Empleado, Name = nameof(Rol.Empleado)},
 				};
 			}
 			catch (Exception)
