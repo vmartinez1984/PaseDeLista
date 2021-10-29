@@ -93,6 +93,68 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
+		public static Task<int> GetTotalOfRecordsAsync()
+		{
+			throw new NotImplementedException();
+		}
+
+		public static async Task<int> GetTotalOfRecords()
+		{
+			try
+			{
+				int totalOfRecords;
+
+				using(var db = new AppDbContext())
+				{
+					totalOfRecords = await db.Assistance.CountAsync();
+				}
+
+				return totalOfRecords;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
+		public static async Task<List<Assistance>> GetAllAsync(string name, string lastName)
+		{
+			List<Assistance> list;
+
+			using (var db = new AppDbContext())
+			{
+				list = await db.Assistance
+					.Include(x => x.Employee)
+					.Where(x => x.Employee.Name.Contains(name) && x.Employee.LastName.Contains(lastName))
+					.ToListAsync();
+			}
+
+			return list;
+		}
+
+		public static async Task<List<Assistance>> GetAllAsync(int page, int numberOfRecordPerPage)
+		{
+			try
+			{
+				List<Assistance> entities;
+
+				using (var db = new AppDbContext())
+				{
+					entities = await db.Assistance.OrderBy(x=> x.Id)
+						.Skip((page - 1) * numberOfRecordPerPage)
+						.Take(numberOfRecordPerPage).ToListAsync();
+				}
+
+				return entities;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
 		public static async Task<List<Assistance>> GetAll(int month, int year)
 		{
 			try
@@ -126,7 +188,7 @@ namespace RollCall.Persistence.Dao
 				using (var db = new AppDbContext())
 				{
 					list = await db.Assistance.Where(x =>
-					x.UserId == userId
+					x.EmployeeId == userId
 					&&
 					x.RegistrationDate.Month == month
 					&&
@@ -152,9 +214,9 @@ namespace RollCall.Persistence.Dao
 				using (var db = new AppDbContext())
 				{
 					list = await db.Assistance
-					.Include(x => x.User)
+					.Include(x => x.Employee)
 					.Where(x =>
-					x.User.AreaId == areaId
+					x.Employee.AreaId == areaId
 					&&
 					x.RegistrationDate.Month == month
 					&&
@@ -180,9 +242,9 @@ namespace RollCall.Persistence.Dao
 				using (var db = new AppDbContext())
 				{
 					list = await db.Assistance
-					.Include(x => x.User)
+					.Include(x => x.Employee)
 					.Where(x =>
-					x.User.ScheduleId == scheduleId
+					x.Employee.ScheduleId == scheduleId
 					&&
 					x.RegistrationDate.Month == month
 					&&
@@ -208,9 +270,9 @@ namespace RollCall.Persistence.Dao
 				using (var db = new AppDbContext())
 				{
 					list = await db.Assistance
-					.Include(x => x.User)
+					.Include(x => x.Employee)
 					.Where(x =>
-					x.User.AreaId == areaId && x.User.ScheduleId == scheduleId
+					x.Employee.AreaId == areaId && x.Employee.ScheduleId == scheduleId
 					&&
 					x.RegistrationDate.Month == month
 					&&
@@ -235,7 +297,7 @@ namespace RollCall.Persistence.Dao
 
 				using (var db = new AppDbContext())
 				{
-					list = await db.Assistance.Where(x => x.UserId == userId).ToListAsync();
+					list = await db.Assistance.Where(x => x.EmployeeId == userId).ToListAsync();
 				}
 
 				return list;

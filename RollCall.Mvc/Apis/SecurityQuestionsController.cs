@@ -2,6 +2,7 @@
 using RollCall.BusinessLayer;
 using RollCall.Dto;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RollCall.Mvc.Apis
@@ -10,11 +11,28 @@ namespace RollCall.Mvc.Apis
 	[ApiController]
 	public class SecurityQuestionsController : ControllerBase
 	{
-		//[HttpGet("{id}")]
-		//public async Task<IActionResult> Get(int id)
-		//{
+		[HttpGet("{employeeId}")]
+		[Route("/api/SecurityQuestions/Employee/{employeeId}/RandomSecurityQuestion")]
+		public async Task<IActionResult> Get(int employeeId)
+		{
+			try
+			{
+				List<SecurityQuestionDto> list;
+				Random random;
+				int index;
 
-		//}
+				list = await SecurityQuestionBl.GetAllAsync(employeeId);
+				random = new Random();
+				index = random.Next(0, list.Count);
+				list[index].Answer = string.Empty;
+
+				return Ok(list[index]);
+			}
+			catch (Exception)
+			{
+				return StatusCode(500);
+			}
+		}
 
 		[HttpPost]
 		public async Task<ActionResult> Post(SecurityQuestionDto securityQuestion)

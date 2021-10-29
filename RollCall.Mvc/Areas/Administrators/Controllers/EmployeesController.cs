@@ -10,13 +10,16 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 	[Area("Administrators")]
 	public class EmployeesController : Controller
 	{
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(SearchEmployeeDto searchEmployee, int page = 1, bool isActive = true)
 		{
 			try
 			{
-				List<EmployeeDto> list;
+				ListEmployeeDto list;
+				int numberOfRecorPerPage;
 
-				list = await EmployeeBl.GetAllAsync();
+				numberOfRecorPerPage = 10;
+				list = await EmployeeBl.GetAllAsync(page, numberOfRecorPerPage, isActive);
+				list.SearchEmployee = searchEmployee;
 
 				return View(list);
 			}
@@ -73,12 +76,12 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 					{
 						Question = this.Request.Form["ListSecurityQuestions[0].Question"].ToString(),
 						Answer = this.Request.Form["ListSecurityQuestions[0].Answer"].ToString()
-					}); 
+					});
 					dto.ListSecurityQuestions.Add(new SecurityQuestionDto
 					{
 						Question = this.Request.Form["ListSecurityQuestions[1].Question"].ToString(),
 						Answer = this.Request.Form["ListSecurityQuestions[1].Answer"].ToString()
-					}); 
+					});
 					dto.ListSecurityQuestions.Add(new SecurityQuestionDto
 					{
 						Question = this.Request.Form["ListSecurityQuestions[2].Question"].ToString(),

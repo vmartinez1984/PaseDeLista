@@ -52,6 +52,53 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
+		public static async Task<int> CountAsync(bool isActive = true)
+		{
+			try
+			{
+				int total;
+
+				using (var db = new AppDbContext())
+				{
+					total = await db.Employee
+						.Where(x => x.IsActive == isActive)
+						.CountAsync();
+				}
+
+				return total;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
+		public static async Task<List<EmployeeEntity>> GetAllAsync(int page, int numberOfRecorPerPage, bool isActive = true)
+		{
+			try
+			{
+				List<EmployeeEntity> entities;
+
+				using (var db = new AppDbContext())
+				{
+					entities = await db.Employee
+						.Where(x => x.IsActive == isActive)
+						.OrderBy(x => x.Id)
+						.Skip((page - 1) * numberOfRecorPerPage)
+						.Take(numberOfRecorPerPage)						
+						.ToListAsync();
+				}
+
+				return entities;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
 		public static async Task<List<EmployeeEntity>> GetAllAsync(bool isActive)
 		{
 			try

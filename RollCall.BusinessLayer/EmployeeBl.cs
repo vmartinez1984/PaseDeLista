@@ -1,9 +1,11 @@
-﻿using RollCall.BusinessLayer.Mappers;
+﻿using Microsoft.EntityFrameworkCore;
+using RollCall.BusinessLayer.Mappers;
 using RollCall.Dto;
 using RollCall.Persistence.Dao;
 using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RollCall.BusinessLayer
@@ -19,6 +21,53 @@ namespace RollCall.BusinessLayer
 			dto = EmployeeMapper.Get(entity);
 
 			return dto;
+		}
+
+		public static async Task<ListEmployeeDto> GetAllAsync(int page, int numberOfRecorPerPage, bool isActive = true)
+		{
+			try
+			{
+				ListEmployeeDto dto;
+				List<EmployeeEntity> entities;
+
+				entities = await EmployeeDao.GetAllAsync(page, numberOfRecorPerPage, isActive);
+				dto = new ListEmployeeDto
+				{
+					ListEmployee = EmployeeMapper.GetAll(entities),
+					NumberOfRecordsPerPage = numberOfRecorPerPage,
+					TotalOfRecords = await EmployeeDao.CountAsync(isActive),
+					CurrentPage = page
+				};
+
+				return dto;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
+		public static async Task<int> CountAsync(bool isActive = true)
+		{
+			try
+			{
+				int totalOfRecords;
+
+				using (var db = new AppDbContext())
+				{
+					totalOfRecords = await db.Employee
+						.Where(x=>x.IsActive == isActive)
+						.CountAsync();
+				}
+
+				return totalOfRecords;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
 		}
 
 		public static async Task<List<EmployeeDto>> GetAllAsync(bool isActive = true)

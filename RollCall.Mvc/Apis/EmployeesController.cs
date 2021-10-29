@@ -19,7 +19,8 @@ namespace RollCall.Mvc.Apis
 				EmployeeDto employee;
 
 				employee = await EmployeeBl.GetAsync(employeeNumber);
-
+				if (employee is null)
+					return NotFound(new {response ="Empleado no encontrado"});
 				return Ok(employee);
 			}
 			catch (Exception)

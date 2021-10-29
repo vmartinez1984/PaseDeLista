@@ -13,7 +13,7 @@ namespace RollCall.WsApi.Controllers
 	public class SecurityQuestionsController : ControllerBase
 	{
 		[HttpGet]
-		[Route("/Api/SecurityQuestions/Employee/{employeeId}/RandomSecurityQuestion")]
+		[Route("/apiSecurityQuestions/Employee/{employeeId}/RandomSecurityQuestion")]
 		public async Task<IActionResult> Get(int employeeId)
 		{
 			try
@@ -33,6 +33,6 @@ namespace RollCall.WsApi.Controllers
 			{
 				return StatusCode(500);
 			}
-		}
+		}		
 	}
 }

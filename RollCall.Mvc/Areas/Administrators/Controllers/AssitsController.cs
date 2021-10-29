@@ -12,31 +12,53 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 	public class AssitsController : Controller
 	{
 		// GET: AsistencesController
-		public async Task<ActionResult> Index()
+		//public async Task<ActionResult> Index(SearchDto search)
+		//{
+		//	if (HttpContext.Session.GetInt32("userId") is null)
+		//		return RedirectToAction("Index", "Login");
+
+		//	List<AssistanceDto> list;
+		//	//int rolId;
+		//	//int userId;
+
+		//	//userId = (int)HttpContext.Session.GetInt32("userId");
+		//	//rolId = (int)HttpContext.Session.GetInt32("userRolId");
+		//	//switch (rolId)
+		//	//{
+		//	//	case Rol.Administrador:
+		//	//		list = await AssistanceBl.GetAllAsync();
+		//	//		break;
+		//	//	case Rol.Empleado:
+		//	//		list = await AssistanceBl.GetAllAsync(userId, DateTime.Now.Month);
+		//	//		break;
+		//	//	default:
+		//	//		list = new List<AssistanceDto>();
+		//	//		break;
+		//	//}
+		//	//if(assistance == null)
+		//	list = await AssistanceBl.GetAllAsync(search);
+
+		//	//list = await AssistanceBl.GetAllAsync();
+
+		//	return View(list);
+		//}
+
+		public async Task<ActionResult> Index(int page = 1)
 		{
-			if (HttpContext.Session.GetInt32("userId") is null)
-				return RedirectToAction("Index", "Login");
-
-			List<AssistanceDto> list;
-			int rolId;
-			int userId;
-
-			userId = (int)HttpContext.Session.GetInt32("userId");
-			rolId = (int)HttpContext.Session.GetInt32("userRolId");
-			switch (rolId)
+			try
 			{
-				case Rol.Administrador:
-					list = await AssistanceBl.GetAllAsync();
-					break;
-				case Rol.Empleado:
-					list = await AssistanceBl.GetAllAsync(userId, DateTime.Now.Month);
-					break;
-				default:
-					list = new List<AssistanceDto>();
-					break;
-			}
+				int numberOfRecordsPerPage;				
 
-			return View(list);
+				numberOfRecordsPerPage = 10;
+				ViewBag.TotalOfRecords = await AssistanceBl.GetTotalOfRecords();
+
+				return View();
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
 		}
 
 		// GET: AsistencesController/Create
