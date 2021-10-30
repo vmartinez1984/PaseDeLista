@@ -10,15 +10,13 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 	[Area("Administrators")]
 	public class EmployeesController : Controller
 	{
-		public async Task<IActionResult> Index(SearchEmployeeDto searchEmployee, int page = 1, bool isActive = true)
+		public async Task<IActionResult> Index(SearchEmployeeDto searchEmployee)
 		{
 			try
 			{
 				ListEmployeeDto list;
-				int numberOfRecorPerPage;
 
-				numberOfRecorPerPage = 10;
-				list = await EmployeeBl.GetAllAsync(page, numberOfRecorPerPage, isActive);
+				list = await EmployeeBl.GetAllAsync(searchEmployee);
 				list.SearchEmployee = searchEmployee;
 
 				return View(list);

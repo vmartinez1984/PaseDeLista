@@ -23,20 +23,31 @@ namespace RollCall.BusinessLayer
 			return dto;
 		}
 
-		public static async Task<ListEmployeeDto> GetAllAsync(int page, int numberOfRecorPerPage, bool isActive = true)
+		public static async Task<ListEmployeeDto> GetAllAsync(SearchEmployeeDto searchEmployeeDto)
 		{
 			try
 			{
 				ListEmployeeDto dto;
 				List<EmployeeEntity> entities;
+				SearchEmployee searchEmployee;
+				EmployeeSearchDao employeeSearchDao;
 
-				entities = await EmployeeDao.GetAllAsync(page, numberOfRecorPerPage, isActive);
+				searchEmployee = new SearchEmployee
+				{
+					Page = searchEmployeeDto.Page,
+					IsActive = searchEmployeeDto.IsActive,
+					NumberOfRecordsPerPage = searchEmployeeDto.NumberOfRecordsPerPage,
+					Name = searchEmployeeDto.Name,
+					LastName = searchEmployeeDto.LastName					
+				};
+				employeeSearchDao = new EmployeeSearchDao(searchEmployee);
+				entities = await employeeSearchDao.GetAllAsync();
 				dto = new ListEmployeeDto
 				{
 					ListEmployee = EmployeeMapper.GetAll(entities),
-					NumberOfRecordsPerPage = numberOfRecorPerPage,
-					TotalOfRecords = await EmployeeDao.CountAsync(isActive),
-					CurrentPage = page
+					NumberOfRecordsPerPage = searchEmployeeDto.NumberOfRecordsPerPage,
+					TotalOfRecords =  employeeSearchDao.Count(),
+					CurrentPage = searchEmployeeDto.Page
 				};
 
 				return dto;

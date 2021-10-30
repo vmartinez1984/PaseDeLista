@@ -20,5 +20,18 @@ namespace RollCall.Dto
 		[DataType(DataType.Date)]
 		[Display(Name = "Fecha fin")]
 		public DateTime? DateEnd { get; set; }
-	}
+
+        public int Page { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public int NumberOfRecordsPerPage { get; set; }
+
+        public SearchEmployeeDto()
+        {
+			this.IsActive = true;
+			this.Page = 1;
+			this.NumberOfRecordsPerPage = 6;
+        }
+    }
 }
