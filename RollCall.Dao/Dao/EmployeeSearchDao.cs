@@ -27,7 +27,7 @@ namespace RollCall.Persistence.Dao
 				entities = new List<EmployeeEntity>();
 				using (var db = new AppDbContext())
 				{
-					if (string.IsNullOrEmpty(this.SearchEmployee.Name) && string.IsNullOrEmpty(this.SearchEmployee.LastName))
+					if (string.IsNullOrEmpty(this.SearchEmployee.Name) && string.IsNullOrEmpty(this.SearchEmployee.LastName) && this.SearchEmployee.DateStart is null && this.SearchEmployee.DateStop is null)
 					{
 						entities = await db.Employee.Include(x=>x.Schedule).Include(x=>x.Area)
 							.Where(x => x.IsActive == this.SearchEmployee.IsActive)
@@ -37,6 +37,36 @@ namespace RollCall.Persistence.Dao
 							.ToListAsync();
 						this.CountRegister = await db.Employee
 							.Where(x => x.IsActive == this.SearchEmployee.IsActive).CountAsync();
+					}
+					else if (string.IsNullOrEmpty(this.SearchEmployee.Name) && string.IsNullOrEmpty(this.SearchEmployee.LastName) && this.SearchEmployee.DateStart != null && this.SearchEmployee.DateStop != null)
+					{
+						entities = await db.Employee.Include(x => x.Schedule).Include(x => x.Area)
+							.Where(x => x.IsActive == this.SearchEmployee.IsActive)
+							.Where(x=> x.RegistrationDate >= this.SearchEmployee.DateStart && x.RegistrationDate <= ((DateTime)this.SearchEmployee.DateStop).AddDays(1))
+							.OrderBy(x => x.Id)
+							.Skip((this.SearchEmployee.Page - 1) * this.SearchEmployee.NumberOfRecordsPerPage)
+							.Take(this.SearchEmployee.NumberOfRecordsPerPage)
+							.ToListAsync();
+						this.CountRegister = await db.Employee
+							.Where(x => x.IsActive == this.SearchEmployee.IsActive)
+							.Where(x => x.RegistrationDate >= this.SearchEmployee.DateStart && x.RegistrationDate <= ((DateTime)this.SearchEmployee.DateStop).AddDays(1))
+							.CountAsync();
+					}
+					else if ((!string.IsNullOrEmpty(this.SearchEmployee.Name) || !string.IsNullOrEmpty(this.SearchEmployee.LastName)) && (this.SearchEmployee.DateStart != null && this.SearchEmployee.DateStop != null))
+					{
+						entities = await db.Employee.Include(x => x.Schedule).Include(x => x.Area)
+							.Where(x => x.IsActive == this.SearchEmployee.IsActive)
+							.Where(x => x.RegistrationDate >= this.SearchEmployee.DateStart && x.RegistrationDate < ((DateTime)this.SearchEmployee.DateStop).AddDays(1))
+							.Where(x => x.Name.Contains(this.SearchEmployee.Name) || x.LastName.Contains(this.SearchEmployee.LastName))
+							.OrderBy(x => x.Id)
+							.Skip((this.SearchEmployee.Page - 1) * this.SearchEmployee.NumberOfRecordsPerPage)
+							.Take(this.SearchEmployee.NumberOfRecordsPerPage)
+							.ToListAsync();
+						this.CountRegister = await db.Employee
+							.Where(x => x.IsActive == this.SearchEmployee.IsActive)
+							.Where(x => x.RegistrationDate >= this.SearchEmployee.DateStart && x.RegistrationDate < ((DateTime)this.SearchEmployee.DateStop).AddDays(1))
+							.Where(x => x.Name.Contains(this.SearchEmployee.Name) || x.LastName.Contains(this.SearchEmployee.LastName))
+							.CountAsync();
 					}
 					else if (!string.IsNullOrEmpty(this.SearchEmployee.Name) || !string.IsNullOrEmpty(this.SearchEmployee.LastName))
                     {

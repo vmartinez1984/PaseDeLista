@@ -32,7 +32,11 @@ namespace RollCall.BusinessLayer.Mappers
 			IMapper mapper;
 			MapperConfiguration configuration;
 
-			configuration = new MapperConfiguration(x => x.CreateMap<Assistance, AssistanceDto>());
+			configuration = new MapperConfiguration(x => x.CreateMap<Assistance, AssistanceDto>()
+				.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Employee.Name))
+				.ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Employee.LastName))
+				.ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.Employee.Id))
+			);
 			mapper = configuration.CreateMapper();
 
 			return mapper;

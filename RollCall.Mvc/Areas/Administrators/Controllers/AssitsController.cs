@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using RollCall.BusinessLayer;
 using RollCall.Dto;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RollCall.Mvc.Areas.Administrators.Controllers
@@ -43,16 +42,17 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 		//	return View(list);
 		//}
 
-		public async Task<ActionResult> Index(int page = 1)
+		public async Task<ActionResult> Index(SearchAssistenceDto searchAssistenceDto)
 		{
 			try
 			{
-				int numberOfRecordsPerPage;				
+				ListAssitenceDto listAssitenceDto;
 
-				numberOfRecordsPerPage = 10;
-				ViewBag.TotalOfRecords = await AssistanceBl.GetTotalOfRecords();
+				listAssitenceDto = await AssistanceBl.GetAllAsync(searchAssistenceDto);
+				ViewBag.ListAreas = await AreaBl.GetAllAsync();
+				ViewBag.ListSchedules = await ScheduleBl.GetAllAsync();
 
-				return View();
+				return View(listAssitenceDto);
 			}
 			catch (Exception)
 			{

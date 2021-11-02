@@ -4,7 +4,6 @@ using RollCall.Persistence.Dao;
 using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RollCall.BusinessLayer
@@ -67,15 +66,26 @@ namespace RollCall.BusinessLayer
 			}
 		}
 
-		public static async Task<int> GetTotalOfRecords()
+		public static async Task<ListAssitenceDto> GetAllAsync(SearchAssistenceDto searchAssistenceDto)
 		{
 			try
 			{
-				int totalOfRecords;
+				ListAssitenceDto listAssitenceDto;
+				SearchAssitence searchAssitence;
+				AssitenceSearchDao assitenceSearchDao;
 
-				totalOfRecords =await AssistanceDao.GetTotalOfRecordsAsync();
 
-				return totalOfRecords;
+				searchAssitence = Get(searchAssistenceDto);
+				assitenceSearchDao = new AssitenceSearchDao(searchAssitence);
+				listAssitenceDto = new ListAssitenceDto
+				{
+					ListAssistances = AssistanceMapper.GetAll(await assitenceSearchDao.GetAllAsync()),
+					CurrentPage = searchAssistenceDto.Page,
+					NumberOfRecordsPerPage = searchAssistenceDto.NumberOfRecordsPerPage,
+					TotalOfRecords = assitenceSearchDao.Count()
+				};
+
+				return listAssitenceDto;
 			}
 			catch (Exception)
 			{
@@ -84,42 +94,25 @@ namespace RollCall.BusinessLayer
 			}
 		}
 
-		//public static async Task<List<AssistanceDto>> GetAllAsync(SearchDto search)
-		//{
-		//	try
-		//	{
-		//		List<Assistance> entities;
-		//		List<AssistanceDto> dtos;
+		private static SearchAssitence Get(SearchAssistenceDto searchAssistenceDto)
+		{
+			SearchAssitence searchAssitence;
 
-		//		if (!string.IsNullOrEmpty(search.Name))
-		//		{
-		//			entities = await AssistanceDao.GetAllAsync(search.Name, search.LastName);
-		//		}
+			searchAssitence = new SearchAssitence
+			{
+				 AreaId = searchAssistenceDto.AreaId,
+				 DateStart = searchAssistenceDto.DateStart,
+				 DateStop = searchAssistenceDto.DateStop,
+				 IsActive = searchAssistenceDto.IsActive,	
+				 LastName = searchAssistenceDto.LastName,
+				 Name = searchAssistenceDto.Name,
+				 NumberOfRecordsPerPage = searchAssistenceDto.NumberOfRecordsPerPage,
+				 Page = searchAssistenceDto.Page,	
+				 ScheduleId =searchAssistenceDto.ScheduleId
+			};
 
-
-		//	}
-		//	catch (Exception)
-		//	{
-
-		//		throw;
-		//	}
-		//}
-
-		//public static async Task<List<AssistanceDto>> GetAllAsync(int page, int numberOfRecordPerPage)
-		//{
-		//	try
-		//	{
-		//		List<Assistance> entities;
-		//		List<AssistanceDto> dtos;
-
-		//		entities = await AssistanceDao.GetAllAsync(page, numberOfRecordPerPage);
-		//	}
-		//	catch (Exception)
-		//	{
-
-		//		throw;
-		//	}
-		//}
+			return searchAssitence;
+		}
 
 		public static async Task<bool> RegisterAsync(AnswerDto answer)
 		{

@@ -9,7 +9,7 @@ namespace RollCall.Dto
 
 		[Required]
 		[Display(Name = "Usuario")]
-		public int UserId { get; set; }
+		public int EmployeeId { get; set; }
 
 		[Display(Name = "Nombre")]
 		public string Name { get; set; }

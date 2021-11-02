@@ -38,7 +38,9 @@ namespace RollCall.BusinessLayer
 					IsActive = searchEmployeeDto.IsActive,
 					NumberOfRecordsPerPage = searchEmployeeDto.NumberOfRecordsPerPage,
 					Name = searchEmployeeDto.Name,
-					LastName = searchEmployeeDto.LastName					
+					LastName = searchEmployeeDto.LastName,
+					DateStart = searchEmployeeDto.DateBegin,
+					DateStop = searchEmployeeDto.DateEnd
 				};
 				employeeSearchDao = new EmployeeSearchDao(searchEmployee);
 				entities = await employeeSearchDao.GetAllAsync();

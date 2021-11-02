@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RollCall.Dto.AssistanceDto>
+﻿@model RollCall.Dto.ListAssitenceDto
 
 @{
     @using Microsoft.AspNetCore.Http
@@ -12,24 +12,24 @@
 }
 
 <h1>Lista</h1>
-@await Html.PartialAsync("_FormSearch", new RollCall.Dto.AssistanceDto())
+@await Html.PartialAsync("_FormSearch", new RollCall.Dto.SearchAssistenceDto())
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Nombre
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+               Apellido
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RegistrationDate)
+                Fecha de registro
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.ListAssistances)
         {
             <tr>
                 <td>
@@ -39,7 +39,7 @@
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RegistrationDate.ToShortDateString())
+                    @Html.DisplayFor(modelItem => item.RegistrationDate)
                 </td>
                 <td>
                     @switch (rolId)
