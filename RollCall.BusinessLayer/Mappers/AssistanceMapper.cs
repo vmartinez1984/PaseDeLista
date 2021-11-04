@@ -8,7 +8,7 @@ namespace RollCall.BusinessLayer.Mappers
 {
 	public class AssistanceMapper
 	{
-		internal static List<AssistanceDto> GetAll(List<Assistance> entities)
+		internal static List<AssistanceDto> GetAll(List<AssistanceLog> entities)
 		{
 			try
 			{
@@ -32,25 +32,25 @@ namespace RollCall.BusinessLayer.Mappers
 			IMapper mapper;
 			MapperConfiguration configuration;
 
-			configuration = new MapperConfiguration(x => x.CreateMap<Assistance, AssistanceDto>()
+			configuration = new MapperConfiguration(x => x.CreateMap<AssistanceLog, AssistanceDto>()
 				.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Employee.Name))
 				.ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Employee.LastName))
-				.ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.Employee.Id))
+				.ForMember(dest => dest.EmployeeNumber, opt => opt.MapFrom(src => src.Employee.EmployeeNumber))	
 			);
 			mapper = configuration.CreateMapper();
 
 			return mapper;
 		}
 
-		internal static Assistance Get(AssistanceDto dto)
+		internal static AssistanceLog Get(AssistanceDto dto)
 		{
 			try
 			{
-				Assistance entity;
+				AssistanceLog entity;
 				IMapper mapper;
 
 				mapper = GetMapperToEntities();
-				entity = mapper.Map<Assistance>(dto);
+				entity = mapper.Map<AssistanceLog>(dto);
 
 				return entity;
 			}
@@ -66,13 +66,13 @@ namespace RollCall.BusinessLayer.Mappers
 			IMapper mapper;
 			MapperConfiguration configuration;
 
-			configuration = new MapperConfiguration(x => x.CreateMap<AssistanceDto, Assistance>());
+			configuration = new MapperConfiguration(x => x.CreateMap<AssistanceDto, AssistanceLog>());
 			mapper = configuration.CreateMapper();
 
 			return mapper;
 		}
 
-		internal static AssistanceDto Get(Assistance entity)
+		internal static AssistanceDto Get(AssistanceLog entity)
 		{
 			AssistanceDto dto;
 			IMapper mapper;

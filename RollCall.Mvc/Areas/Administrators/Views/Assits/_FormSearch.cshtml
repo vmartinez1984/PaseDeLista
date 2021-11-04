@@ -10,9 +10,9 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label asp-for="NumberEmployee" class="control-label"></label>
-                        <input asp-for="NumberEmployee" class="form-control" />
-                        <span asp-validation-for="NumberEmployee" class="text-danger"></span>
+                        <label asp-for="EmployeeNumber" class="control-label"></label>
+                        <input asp-for="EmployeeNumber" class="form-control" />
+                        <span asp-validation-for="EmployeeNumber" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -46,8 +46,7 @@
                         <label asp-for="ScheduleId" class="control-label"></label>
                         <select asp-for="ScheduleId" class="form-control" asp-items="@(new SelectList(ViewBag.ListSchedules,"Id","Schedule"))">
                             <option>Seleccione</option>
-                        </select>
-                        <span asp-validation-for="ScheduleId" class="text-danger"></span>
+                        </select>                        
                     </div>
                 </div>
             </div>

@@ -13,19 +13,36 @@
 
 <h1>Lista</h1>
 @await Html.PartialAsync("_FormSearch", new RollCall.Dto.SearchAssistenceDto())
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>
                 Nombre
             </th>
             <th>
-               Apellido
+                Apellido
             </th>
             <th>
                 Fecha de registro
             </th>
-            <th></th>
+            <th>
+                Entrada
+            </th>
+            <th>
+                Salida al lonche
+            </th>
+            <th>
+                Regreso del lonche
+            </th>
+            <th>
+                Minutos en el lonche
+            </th>
+            <th>
+                Salida
+            </th>
+            <th>
+                Asistencia
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -39,24 +56,87 @@
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RegistrationDate)
+                    @item.RegistrationDate.ToShortDateString()
                 </td>
                 <td>
-                    @switch (rolId)
+                    @if (item.Entry is not null)
                     {
-                        case Rol.Administrador:
-                            @Html.ActionLink("Edit", "Edit", new { id=item.Id })
-                            <span>|</span>
-                            @Html.ActionLink("Details", "Details", new { id=item.Id  })
-                            <span>|</span>
-                            @Html.ActionLink("Delete", "Delete", new {  id=item.Id  })
-                            break;
+                        if (item.Assitence == "Asistencia")
+                        {
+                            <span class="text-success">
+                                @{
+                                    var data = ((DateTime)item.Entry).ToString("HH:mm:ss");
+                                }
+                                @data
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">
+                                @{
+                                    var data = ((DateTime)item.Entry).ToString("HH:mm:ss");
+                                }
+                                @data
+                            </span>
+                        }
+                    }
+                </td>
+                <td>
+                    @if (item.LunchTimeDeparture is not null)
+                    {
+                        <span>
+                            @{
+                                var data = ((DateTime)item.LunchTimeDeparture).ToString("HH:mm:ss");
+                            }
+                            @data
+                        </span>
+                    }
+                </td>
+                <td>
+                    @if (item.LunchTimeReturn is not null)
+                    {
+                        <span>
+                            @{
+                                var data = ((DateTime)item.LunchTimeReturn).ToString("HH:mm:ss");
+                            }
+                            @data
+                        </span>
+                    }
+                </td>
+                <td>
+                    @item.LunchMinutes
+                </td>
+                <td>
+                    @if (item.Exit is not null)
+                    {
+                        <span>
+                            @{
+                                var data = ((DateTime)item.Exit).ToString("HH:mm:ss");
+                            }
+                            @data
+                        </span>
+                    }
+                </td>
+                <td>
+                    @if (item.Assitence == "Asistencia")
+                    {
+                        <span class="text-success">
+                            @item.Assitence
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">
+                            @item.Assitence
+                        </span>
                     }
                 </td>
             </tr>
         }
     </tbody>
 </table>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<div class="">
+</div>
+@{
+    await Html.RenderPartialAsync("_Pager", Model);
 }

@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.WsApi", "RollCall.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.Angular", "RollCall.Angular\RollCall.Angular.csproj", "{2DDADDC8-2330-4057-BEEB-61B3AD1FCA85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollCall.AngularV2", "RollCall.AngularV2\RollCall.AngularV2.csproj", "{AFFAA6C9-75E6-4EC2-8EF2-B2DB26A515FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.AngularV2", "RollCall.AngularV2\RollCall.AngularV2.csproj", "{AFFAA6C9-75E6-4EC2-8EF2-B2DB26A515FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollCall.Test", "RollCall.Test\RollCall.Test.csproj", "{3AECFD98-4730-4B09-89EF-9687BD06F41E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{AFFAA6C9-75E6-4EC2-8EF2-B2DB26A515FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFFAA6C9-75E6-4EC2-8EF2-B2DB26A515FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFFAA6C9-75E6-4EC2-8EF2-B2DB26A515FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AECFD98-4730-4B09-89EF-9687BD06F41E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AECFD98-4730-4B09-89EF-9687BD06F41E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AECFD98-4730-4B09-89EF-9687BD06F41E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AECFD98-4730-4B09-89EF-9687BD06F41E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

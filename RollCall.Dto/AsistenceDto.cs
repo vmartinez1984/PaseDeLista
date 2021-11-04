@@ -4,12 +4,8 @@ using System.ComponentModel.DataAnnotations;
 namespace RollCall.Dto
 {
 	public class AssistanceDto
-	{
-		public int Id { get; set; }
-
-		[Required]
-		[Display(Name = "Usuario")]
-		public int EmployeeId { get; set; }
+	{		
+		public string EmployeeNumber { get; set; }
 
 		[Display(Name = "Nombre")]
 		public string Name { get; set; }
@@ -19,6 +15,29 @@ namespace RollCall.Dto
 
 		[Display(Name = "Fecha de registro")]
 		[DataType(DataType.DateTime)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime RegistrationDate { get; set; }
-	}
+
+		[Display(Name ="Entrada")]
+		[DataType(DataType.Time)]
+		public DateTime? Entry { get; set; }
+
+		[Display(Name = "Salida al Lonche")]
+		[DataType(DataType.Time)]
+		public DateTime? LunchTimeDeparture { get; set; }
+		
+		[Display(Name = "Regreso del Lonche")]
+		[DataType(DataType.Time)]
+		public DateTime? LunchTimeReturn { get; set; }
+
+		[Display(Name = "Salida")]
+		[DataType(DataType.Time)]
+		public DateTime? Exit { get; set; }
+
+		[Display(Name = "Asistencia")]
+		public string Assitence { get; set; }
+
+		[Display(Name = "Minutos en el lonche")]
+		public int LunchMinutes { get; set; }
+	}	
 }

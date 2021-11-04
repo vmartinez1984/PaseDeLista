@@ -9,7 +9,7 @@ namespace RollCall.Persistence.Dao
 {
 	public class EmployeeDao
 	{
-		public static List<EmployeeEntity> GetAll()
+		public static List<EmployeeEntity> GetAll(bool isActive = true)
 		{
 			try
 			{
@@ -17,7 +17,9 @@ namespace RollCall.Persistence.Dao
 
 				using (var db = new AppDbContext())
 				{
-					list = db.Employee.Where(x => x.IsActive == true).ToList();
+					list = db.Employee
+						.Include(x=> x.Schedule)
+						.Where(x => x.IsActive == isActive).ToList();
 				}
 
 				return list;

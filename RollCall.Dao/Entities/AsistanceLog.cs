@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RollCall.Persistence.Entities
 {
-	public class Assistance
+	public class AssistanceLog
 	{
 		[Key]
 		public int Id { get; set; }
@@ -16,5 +16,10 @@ namespace RollCall.Persistence.Entities
 
 		[Required]
 		public DateTime RegistrationDate { get; set; }
+
+		[Required]
+		[ForeignKey(nameof(AssistenceStatus))]
+		public int AssistenceStatusId { get; set; }
+		public virtual AssistenceStatus AssistenceStatus { get; set; }
 	}
 }

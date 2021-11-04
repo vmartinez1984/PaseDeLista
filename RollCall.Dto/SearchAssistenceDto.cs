@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RollCall.Dto
 {
-	public class SearchAssistenceDto
+	public class SearchAssistenceDto : SearchDto
 	{
 		[Display(Name = "Número de empleado")]
-		public string NumberEmployee { get; set; }
+		public string EmployeeNumber { get; set; }
 
 		[Display(Name = "Nombre")]
 		public string Name { get; set; }
@@ -20,25 +20,33 @@ namespace RollCall.Dto
 		[Display(Name = "Horario")]
 		public int ScheduleId { get; set; }
 
-		public int Page { get; set; }
-
 		public bool IsActive { get; set; }
-
-		public int NumberOfRecordsPerPage { get; set; }
 
 		[Display(Name = "Fecha incio")]
 		[DataType(DataType.Date)]
-		public DateTime? DateStart { get; set; }
+		public DateTime DateStart { get; set; }
 
 		[Display(Name = "Fecha fin")]
 		[DataType(DataType.Date)]
-		public DateTime? DateStop { get; set; }
+		public DateTime DateStop { get; set; }
 
 		public SearchAssistenceDto()
 		{
 			this.Page = 1;
 			this.IsActive = true;
 			this.NumberOfRecordsPerPage = 25;
+			InitDates();
+		}
+
+		private void InitDates()
+		{
+			DateTime dateTime;
+
+			dateTime = DateTime.Now;
+			DateStart = new DateTime(dateTime.Year, dateTime.Month, 1);
+			DateStop = DateStart;
+			DateStop = DateStop.AddMonths(1);
+			DateStop = DateStop.AddDays(-1);
 		}
 	}
 }

@@ -3,18 +3,8 @@ using System.Collections.Generic;
 
 namespace RollCall.Dto
 {
-	public class ListAssitenceDto
+	public class ListAssitenceDto: ListPagerDto
 	{
-		public List<AssistanceDto> ListAssistances {  get; set; }
-		public int CurrentPage { get; set; }
-		public int NumberOfRecordsPerPage { get; set; }
-		public int TotalOfRecords { get; set; }
-		public int CountPage
-		{
-			get
-			{
-				return (int)Math.Ceiling((double)TotalOfRecords / NumberOfRecordsPerPage);
-			}
-		}
+		public List<AssistanceDto> ListAssistances {  get; set; }		
 	}
 }
