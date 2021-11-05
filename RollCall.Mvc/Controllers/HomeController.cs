@@ -53,7 +53,7 @@ namespace RollCall.Mvc.Controllers
 		{
 			try
 			{
-				assistanceDto.RegistrationDate = DateTime.Now;
+				//assistanceDto.RegistrationDate = DateTime.Now;
 				await AssistanceBl.AddAsync(assistanceDto);
 
 				ViewBag.Check = "Datos registrados";

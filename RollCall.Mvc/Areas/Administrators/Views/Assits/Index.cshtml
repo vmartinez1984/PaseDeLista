@@ -13,130 +13,81 @@
 
 <h1>Lista</h1>
 @await Html.PartialAsync("_FormSearch", new RollCall.Dto.SearchAssistenceDto())
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>
-                Nombre
-            </th>
-            <th>
-                Apellido
-            </th>
-            <th>
-                Fecha de registro
-            </th>
-            <th>
-                Entrada
-            </th>
-            <th>
-                Salida al lonche
-            </th>
-            <th>
-                Regreso del lonche
-            </th>
-            <th>
-                Minutos en el lonche
-            </th>
-            <th>
-                Salida
-            </th>
-            <th>
-                Asistencia
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.ListAssistances)
-        {
+<div class="container scroll-horizontal">
+    <table class="table table-hover">
+        <thead class="text-info">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @item.RegistrationDate.ToShortDateString()
-                </td>
-                <td>
-                    @if (item.Entry is not null)
-                    {
-                        if (item.Assitence == "Asistencia")
-                        {
-                            <span class="text-success">
-                                @{
-                                    var data = ((DateTime)item.Entry).ToString("HH:mm:ss");
-                                }
-                                @data
-                            </span>
-                        }
-                        else
-                        {
-                            <span class="text-danger">
-                                @{
-                                    var data = ((DateTime)item.Entry).ToString("HH:mm:ss");
-                                }
-                                @data
-                            </span>
-                        }
-                    }
-                </td>
-                <td>
-                    @if (item.LunchTimeDeparture is not null)
-                    {
-                        <span>
-                            @{
-                                var data = ((DateTime)item.LunchTimeDeparture).ToString("HH:mm:ss");
-                            }
-                            @data
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Apellido
+                </th>
+                <th>
+                    <span class="verticaltext text-success">
+                        Asistencia
+                    </span>
+                </th>
+                <th>
+                    <span class="verticaltext text-danger">
+                        Retardo
+                    </span>
+                </th>
+                @foreach (var date in Model.ListDates)
+                {
+                    <th>
+                        <span class="verticaltext">
+                            @date.ToShortDateString()
                         </span>
-                    }
-                </td>
-                <td>
-                    @if (item.LunchTimeReturn is not null)
-                    {
-                        <span>
-                            @{
-                                var data = ((DateTime)item.LunchTimeReturn).ToString("HH:mm:ss");
-                            }
-                            @data
-                        </span>
-                    }
-                </td>
-                <td>
-                    @item.LunchMinutes
-                </td>
-                <td>
-                    @if (item.Exit is not null)
-                    {
-                        <span>
-                            @{
-                                var data = ((DateTime)item.Exit).ToString("HH:mm:ss");
-                            }
-                            @data
-                        </span>
-                    }
-                </td>
-                <td>
-                    @if (item.Assitence == "Asistencia")
-                    {
-                        <span class="text-success">
-                            @item.Assitence
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="text-danger">
-                            @item.Assitence
-                        </span>
-                    }
-                </td>
+                    </th>
+                }
             </tr>
-        }
-    </tbody>
-</table>
-<div class="">
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ListAssistances)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        <span class="text-success">
+                            @item.ListAssistanceDay.Count(x=> x.AssitanceStatus == "Asistencia")
+                        </span>
+                    </td>
+                    <td>
+                        <span class="text-danger">
+                            @item.ListAssistanceDay.Count(x=> x.AssitanceStatus == "Retardo")
+                        </span>
+                    </td>
+                    @foreach (var asistanceStatus in item.ListAssistanceDay)
+                    {
+                        <td>
+                            @if (asistanceStatus.AssitanceStatus == "Asistencia")
+                            {
+                                <span class="text-success" data-toggle="tooltip" data-placement="top" title="@asistanceStatus.Entry">
+                                    A
+                                </span>
+                            }
+                            else if (asistanceStatus.AssitanceStatus == "Retardo")
+                            {
+                                <span class="text-danger" data-toggle="tooltip" data-placement="top" title="@asistanceStatus.Entry">
+                                    R
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-dark">
+                                    @asistanceStatus.AssitanceStatus
+                                </span>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
-@{
-    await Html.RenderPartialAsync("_Pager", Model);
-}

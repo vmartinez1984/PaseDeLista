@@ -81,10 +81,11 @@ namespace RollCall.BusinessLayer
 				await assitenceSearchDao.GetAllAsync();
 				listAssitenceDto = new ListAssitenceDto
 				{
-					ListAssistances = GetAssitences(assitenceSearchDao.GetListEmployees(), assitenceSearchDao.GetLisAssistences()),
+					ListAssistances = GetAssitences(assitenceSearchDao.GetListEmployees(), assitenceSearchDao.GetLisAssistences(), searchAssistenceDto.DateStart, searchAssistenceDto.DateStop),
 					CurrentPage = searchAssistenceDto.Page,
 					NumberOfRecordsPerPage = searchAssistenceDto.NumberOfRecordsPerPage,
-					TotalOfRecords = assitenceSearchDao.Count()
+					TotalOfRecords = assitenceSearchDao.Count(),
+					ListDates = GetListDates(searchAssistenceDto.DateStart, searchAssistenceDto.DateStop)
 				};
 
 				return listAssitenceDto;
@@ -96,40 +97,31 @@ namespace RollCall.BusinessLayer
 			}
 		}
 
-		private static List<AssistanceDto> GetAssitences(List<EmployeeEntity> entities, List<AssistanceLog> assistances)
+		private static List<DateTime> GetListDates(DateTime dateStart, DateTime dateStop)
 		{
-			try
+			List<DateTime> dateTimes;
+
+			dateTimes = new List<DateTime>();
+			while (dateStart != dateStop.AddDays(1))
 			{
-				List<AssistanceDto> list;
-				List<int> days;
-
-				days = assistances.Select(x => x.RegistrationDate.Day).Distinct().ToList();
-				list = new List<AssistanceDto>();
-				entities.ForEach(entity =>
-				{
-					list.AddRange(GetAssitence(entity, assistances.Where(x => x.EmployeeId == entity.Id).ToList(), days));
-				});
-
-				return list.OrderBy(x=>x.RegistrationDate).ToList();
+				dateTimes.Add(dateStart);
+				dateStart = dateStart.AddDays(1);
 			}
-			catch (Exception)
-			{
 
-				throw;
-			}
+			return dateTimes;
 		}
 
-		private static List<AssistanceDto> GetAssitence(EmployeeEntity employee, List<AssistanceLog> assistances, List<int> days)
+		private static List<AssistanceDto> GetAssitences(List<EmployeeEntity> employees, List<AssistanceLog> assistances, DateTime dateStart, DateTime dateStop)
 		{
 			try
 			{
 				List<AssistanceDto> list;
 
 				list = new List<AssistanceDto>();
-				days.ForEach(day =>
+				employees.ForEach(employee =>
 				{
 					list.Add(
-						GetAssistenceDto(employee, assistances.Where(x => x.RegistrationDate.Day == day).ToList())
+						GetAssistenceDto(employee, assistances, dateStart, dateStop)
 					);
 				});
 
@@ -142,37 +134,92 @@ namespace RollCall.BusinessLayer
 			}
 		}
 
-		private static AssistanceDto GetAssistenceDto(EmployeeEntity employee, List<AssistanceLog> assistances)
+		private static AssistanceDto GetAssistenceDto(EmployeeEntity employee, List<AssistanceLog> assistances, DateTime dateStart, DateTime dateStop)
 		{
 			AssistanceDto assistanceDto;
-			AssistanceLog entry;
-			AssistanceLog exit;
-			AssistanceLog lunchTimeDeparture;
-			AssistanceLog lunchTimeReturn;
-			AssistanceLog assistance;
 
-			assistance = assistances.FirstOrDefault();
-			entry = assistances.Where(x => x.AssistenceStatusId == AssistanceStatusDto.Entry).FirstOrDefault();
-			exit = assistances.Where(x => x.AssistenceStatusId == AssistanceStatusDto.Exit).LastOrDefault();
-			lunchTimeDeparture = assistances.Where(x => x.AssistenceStatusId == AssistanceStatusDto.LunchTimeDeparture).FirstOrDefault();
-			lunchTimeReturn = assistances.Where(x => x.AssistenceStatusId == AssistanceStatusDto.LunchTimeReturn).FirstOrDefault();
 			assistanceDto = new AssistanceDto
 			{
+				EmployeeId = employee.Id,
 				EmployeeNumber = employee.EmployeeNumber,
 				Name = employee.Name,
 				LastName = employee.LastName,
-				RegistrationDate = assistance.RegistrationDate.Date,
-				Entry = entry is null ? null : entry.RegistrationDate,
-				LunchTimeDeparture = lunchTimeDeparture is null ? null : lunchTimeDeparture.RegistrationDate,
-				LunchTimeReturn = lunchTimeReturn is null ? null : lunchTimeReturn.RegistrationDate,
-				Exit = exit is null ? null : exit.RegistrationDate,
-				LunchMinutes = lunchTimeReturn is null && lunchTimeDeparture is null ? 0 :
-				(lunchTimeReturn.RegistrationDate - lunchTimeDeparture.RegistrationDate).Minutes
-				+ (lunchTimeReturn.RegistrationDate - lunchTimeDeparture.RegistrationDate).Hours * 60,
-				Assitence = GetStatusAssitence(entry, employee.Schedule.StartTime)
+				ListAssistanceDay = GetListAssistanceDay(assistances.Where(x => x.EmployeeId == employee.Id).ToList(), dateStart, dateStop, employee.Schedule.StartTime)
 			};
 
 			return assistanceDto;
+		}
+
+		private static List<AssistanceDayDto> GetListAssistanceDay(List<AssistanceLog> assistances, DateTime dateStart, DateTime dateStop, DateTime startTime)
+		{
+			try
+			{
+				List<AssistanceDayDto> assistanceDays;
+				List<DateTime> dateTimes;
+
+				assistances = assistances.OrderBy(x => x.RegistrationDate).ToList();
+				//Creamos una lista de dias
+				dateTimes = new List<DateTime>();
+				while (dateStart != dateStop.AddDays(1))
+				{
+					dateTimes.Add(dateStart);
+					dateStart = dateStart.AddDays(1);
+				}
+				assistanceDays = new List<AssistanceDayDto>();
+				dateTimes.ForEach(date =>
+				{
+					assistanceDays.Add(new AssistanceDayDto
+					{
+						Date = date,
+						AssitanceStatus = VerifyAssitance(assistances.Where(x => x.RegistrationDate.Date == date).ToList(), startTime),
+						Entry = assistances.Where(x => x.AssistenceStatusId == AssistanceStatusDto.Entry && x.RegistrationDate.Date == date).FirstOrDefault() == null? null:
+							assistances.Where(x => x.AssistenceStatusId == AssistanceStatusDto.Entry && x.RegistrationDate.Date == date).FirstOrDefault().RegistrationDate
+					});
+				});
+
+				return assistanceDays;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
+		private static string VerifyAssitance(List<AssistanceLog> assistances, DateTime startTime)
+		{
+			try
+			{
+				string assistanceStatus;
+
+				if (assistances.Count > 0)
+				{
+					AssistanceLog entry;
+					AssistanceLog exit;
+					AssistanceLog lunchTimeDeparture;
+					AssistanceLog lunchTimeReturn;
+					AssistanceLog assistance;
+
+					assistance = assistances.FirstOrDefault();
+					entry = assistances.Where(x => x.AssistenceStatusId == AssistanceStatusDto.Entry).FirstOrDefault();
+					exit = assistances.Where(x => x.AssistenceStatusId == AssistanceStatusDto.Exit).LastOrDefault();
+					lunchTimeDeparture = assistances.Where(x => x.AssistenceStatusId == AssistanceStatusDto.LunchTimeDeparture).FirstOrDefault();
+					lunchTimeReturn = assistances.Where(x => x.AssistenceStatusId == AssistanceStatusDto.LunchTimeReturn).FirstOrDefault();
+
+					assistanceStatus = GetStatusAssitence(entry, startTime);
+				}
+				else
+				{
+					assistanceStatus = "Sin registro";
+				}
+
+				return assistanceStatus;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
 		}
 
 		private static string GetStatusAssitence(AssistanceLog entry, DateTime startTime)
@@ -182,7 +229,7 @@ namespace RollCall.BusinessLayer
 
 			toleranceInMinutes = 10;
 			minutes = (entry.RegistrationDate.TimeOfDay - startTime.TimeOfDay).Minutes;
-			if( 0 > minutes)
+			if (0 > minutes)
 				return "Asistencia";
 			if (minutes <= toleranceInMinutes)
 				return "Asistencia";

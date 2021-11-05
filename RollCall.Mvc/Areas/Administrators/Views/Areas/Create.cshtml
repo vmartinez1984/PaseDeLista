@@ -1,12 +1,12 @@
 ﻿@model RollCall.Dto.AreaDto
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Agregar área";
 }
 
-<h1>Create</h1>
+<h1>Agregar nuevo</h1>
 
-<h4>AreaDto</h4>
+<h4>Área</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -23,16 +23,20 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary">
+                    Guardar
+                </button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Regresar a la lista</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

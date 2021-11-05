@@ -98,10 +98,13 @@ namespace RollCall.Persistence.Dao
 				using (var db = new AppDbContext())
 				{
 					entities = await db.AssistanceLog
-						.Skip((this.SearchAssistence.Page - 1) * this.SearchAssistence.NumberOfRecordsPerPage)
-						.Take(this.SearchAssistence.NumberOfRecordsPerPage)
+						.Where(x => x.RegistrationDate >= this.SearchAssistence.DateStart && x.RegistrationDate < ((DateTime)this.SearchAssistence.DateStop).AddDays(1))
+						.Where(x => ListEmployeesId.Contains(x.EmployeeId))
 						.ToListAsync();
-					this.CountRegister = await db.AssistanceLog.Where(x => ListEmployeesId.Contains(x.Id)).CountAsync();
+					var query = db.AssistanceLog
+						.Where(x => x.RegistrationDate >= this.SearchAssistence.DateStart && x.RegistrationDate < ((DateTime)this.SearchAssistence.DateStop).AddDays(1))
+						.Where(x => ListEmployeesId.Contains(x.Id)).ToQueryString();
+					this.CountRegister = await db.AssistanceLog.Where(x => ListEmployeesId.Contains(x.EmployeeId)).CountAsync();
 				}
 
 				return entities;
@@ -125,9 +128,9 @@ namespace RollCall.Persistence.Dao
 			using (var db = new AppDbContext())
 			{
 				list = await db.Employee
-					.Include(x=> x.Schedule)
-					.Where(x => ListEmployeesId.Contains(x.Id))					
-					.ToListAsync();				
+					.Include(x => x.Schedule)
+					.Where(x => ListEmployeesId.Contains(x.Id))
+					.ToListAsync();
 			}
 
 			return list;
