@@ -44,5 +44,7 @@ namespace RollCall.Dto
 		public DateTime? DischargeDate { get; set; }
 
 		public List<SecurityQuestionDto> ListSecurityQuestions {  get; set; }
+
+		public int AssistanceStatusId { get; set; }
 	}
 }

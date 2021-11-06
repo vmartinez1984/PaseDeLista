@@ -6,21 +6,36 @@
     <h1 class="display-4">Bienvenido</h1>
     <h2 id="clock"></h2>
     <p>Ingrese su codigo de empleado</p>
-    <input id="employeeNumber" type="text" class="form-control" autofocus />
-    <br />
-    <button type="button" onclick="searchEmployee();" class="btn btn-primary">
-        Buscar
-    </button>
+    <div class="form-group">
+        <input id="employeeNumber" type="text" class="form-control" autofocus />
+        <br />
+        <button type="button" onclick="searchEmployee();" class="btn btn-primary">
+            Buscar
+        </button>
+    </div>
 </div>
 <div class="card" id="divEmployee">
     <div class="card-body">
         <div class="row">
-            <div class="col-5"></div>
             <div class="col-7">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary active">
+                        <input type="radio" name="options" id="entry" checked> Entrada
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" id="lunchTimeDeparture"> Salida al lonche
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" id="lunchTimeReturn"> Regreso del lonche
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" id="exit"> Salida
+                    </label>
+                </div>
+            </div>
+            <div class="col-5">
                 <input type="hidden" id="employeeId" />
-                <p id="pName" class="text-info">
-
-                </p>
+                <p id="pName" class="text-info"></p>
             </div>
         </div>
         <div class="row">
@@ -60,7 +75,7 @@
                 //console.log(response);
                 if(response.ok){
                     return response.json();
-                }else{                                    
+                }else{
                    return response.json();
                 }
             })

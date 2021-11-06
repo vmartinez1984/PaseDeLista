@@ -10,5 +10,8 @@ namespace RollCall.Dto
 		[Required]
 		[MaxLength(150)]
 		public string Answer { get; set; }
+
+		[Required]
+		public int AsistanceStatusId { get; set; }
 	}
 }
