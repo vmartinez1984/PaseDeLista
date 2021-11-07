@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.AngularV2", "RollC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.Test", "RollCall.Test\RollCall.Test.csproj", "{3AECFD98-4730-4B09-89EF-9687BD06F41E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{62750EEB-34FC-4EB3-928D-A12A94EABB93}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B2BC5A3-9863-469A-AEDE-1B83AE9F147A}"
 	ProjectSection(SolutionItems) = preProject
-		index.html = index.html
+		docs\index.html = docs\index.html
 	EndProjectSection
 EndProject
 Global
