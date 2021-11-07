@@ -4,88 +4,188 @@
     ViewData["Title"] = "Agregar empleado";
 }
 
-<h1>Agregar empleado</h1>
-<hr />
-<div class="row">
-    <div class="col-md-12">
+<div class="card border-left-success shadow h-100 py-2">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <h6 class="m-0 font-weight-bold text-success">
+                    <i class="fa fa-plus-circle"></i>
+                    Agregar nuevo empleado
+                </h6>
+            </div>
+        </div>
+        <hr />
+
         <form asp-action="Create">
             <input type="hidden" name="ListSecurityQuestions[]" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-12">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+
+            @*<div class="form-group">
                 <label asp-for="PhotoInBase64" class="control-label"></label>
                 <input asp-for="PhotoInBase64" class="form-control" />
                 <span asp-validation-for="PhotoInBase64" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AreaId" class="control-label"></label>
-                <select asp-for="AreaId" class="form-control" asp-items="@(new SelectList(ViewBag.AreaList,"Id","Name"))">
-                    <option>Seleccione</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ScheduleId" class="control-label"></label>
-                <select asp-for="ScheduleId" class="form-control" asp-items="@(new SelectList(ViewBag.ScheduleList,"Id","Schedule"))">
-                    <option>Seleccione</option>
-                </select>
-                <span asp-validation-for="ScheduleId" class="text-danger"></span>
-            </div>    
-            
-            <h3>Preguntas de seguridad</h3>
-            <h5>Agregue las preguntas con su respuesta, estas serán utilizadas para confirmar su asistencia</h5>
-             <div class="form-group">
-                <label asp-for="ListSecurityQuestions[0].Question" class="control-label"></label>
-                <input asp-for="ListSecurityQuestions[0].Question" id="ListSecurityQuestions[].Question" class="form-control" />
-                <span asp-validation-for="ListSecurityQuestions[0].Question" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ListSecurityQuestions[0].Answer" class="control-label"></label>
-                <input asp-for="ListSecurityQuestions[0].Answer" class="form-control" />
-                <span asp-validation-for="ListSecurityQuestions[0].Answer" class="text-danger"></span>
+                </div>*@
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="AreaId" class="control-label"></label>
+                    <select asp-for="AreaId" class="form-control" asp-items="@(new SelectList(ViewBag.AreaList,"Id","Name"))">
+                        <option value="">Seleccione</option>
+                    </select>
+                    <span asp-validation-for="AreaId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="ScheduleId" class="control-label"></label>
+                    <select asp-for="ScheduleId" class="form-control" asp-items="@(new SelectList(ViewBag.ScheduleList,"Id","Schedule"))">
+                        <option value="">Seleccione</option>
+                    </select>
+                    <span asp-validation-for="ScheduleId" class="text-danger"></span>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="ListSecurityQuestions[1].Question" class="control-label"></label>
-                <input asp-for="ListSecurityQuestions[1].Question" id="ListSecurityQuestions[].Question" class="form-control" />
-                <span asp-validation-for="ListSecurityQuestions[1].Question" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ListSecurityQuestions[1].Answer" class="control-label"></label>
-                <input asp-for="ListSecurityQuestions[1].Answer" class="form-control" />
-                <span asp-validation-for="ListSecurityQuestions[1].Answer" class="text-danger"></span>
+            <h6 class="text-info">Preguntas de seguridad</h6>
+            <h6 class="text-info">Agregue al menos <span id="numberOfQuestions">5</span> preguntas con su respuesta, estas serán utilizadas para confirmar su asistencia</h6>
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label asp-for="ListSecurityQuestions[0].Question" class="control-label"></label>
+                    <input asp-for="ListSecurityQuestions[0].Question" id="question" class="form-control" />
+                    <span asp-validation-for="ListSecurityQuestions[0].Question" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-7">
+                    <label asp-for="ListSecurityQuestions[0].Answer" class="control-label"></label>
+                    <input asp-for="ListSecurityQuestions[0].Answer" id="answer" class="form-control" />
+                    <span asp-validation-for="ListSecurityQuestions[0].Answer" class="text-danger" id="answerValidation"></span>
+                </div>
+                <div class="form-group col-md-1">
+                    <label class="control-label">&nbsp;</label>
+                    <button type="button" class="btn btn-success form-control" onclick="addSecurityQuestion();">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="ListSecurityQuestions[2].Question" class="control-label"></label>
-                <input asp-for="ListSecurityQuestions[2].Question" id="ListSecurityQuestions[].Question" class="form-control" />
-                <span asp-validation-for="ListSecurityQuestions[2].Question" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ListSecurityQuestions[2].Answer" class="control-label"></label>
-                <input asp-for="ListSecurityQuestions[2].Answer" class="form-control" />
-                <span asp-validation-for="ListSecurityQuestions[2].Answer" class="text-danger"></span>
-            </div>
+            <div id="divListSecurityQuestions"></div>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Pregunta</th>
+                        <th>Respuesta</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+            </table>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary ">Guardar</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-save"></i>
+                    Guardar
+                </button>
             </div>
         </form>
     </div>
+
 </div>
 
+<br />
 <div>
-    <a asp-action="Index">Regresar a la lista</a>
+    <a asp-action="Index">
+        <i class="fa fa-list"></i>
+        Regresar a la lista
+    </a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+<script>
+    var ListSecurityQuestions = new Array();
+
+    function addSecurityQuestion(){
+        var textAnswer;
+        var textQuestion;
+
+        textAnswer = document.getElementById("answer");
+        textQuestion = document.getElementById("question");
+        if(textAnswer.value === null){
+            return;
+        }
+        if(textQuestion.value === null){
+            return;
+        }
+        securityQuestion = new Object();
+        securityQuestion.answer = textAnswer.value;
+        securityQuestion.question = textQuestion.value;
+        ListSecurityQuestions.push(securityQuestion);
+        textAnswer.value = "";
+        textQuestion.value = "";
+        setInputSecurityQuestion();
+        setListSecurityQuestion();
+
+        //console.log(ListSecurityQuestions);
+    }
+
+    function setInputSecurityQuestion(){
+        document.getElementById("divListSecurityQuestions").innerHTML = "";
+        for(i=0; i< ListSecurityQuestions.length; i++){
+            var inputHiddenQuestion;
+            var inputHiddenAnswer;
+
+            inputHiddenQuestion = document.createElement("input");
+            inputHiddenQuestion.setAttribute("type","hidden");
+            inputHiddenQuestion.setAttribute("name","ListSecurityQuestions["+i+"].Question");
+            inputHiddenQuestion.value = ListSecurityQuestions[i].question;
+            document.getElementById("divListSecurityQuestions").appendChild(inputHiddenQuestion);
+
+            inputHiddenAnswer = document.createElement("input");
+            inputHiddenAnswer.setAttribute("type","hidden");
+            inputHiddenAnswer.setAttribute("name","ListSecurityQuestions["+i+"].Answer");
+            inputHiddenAnswer.value = ListSecurityQuestions[i].question;
+            document.getElementById("divListSecurityQuestions").appendChild(inputHiddenAnswer);
+        }
+    }
+
+    function setListSecurityQuestion(){
+        document.getElementById("tbody").innerHTML = "";
+        for(i=0; i< ListSecurityQuestions.length; i++){
+            //console.log(ListSecurityQuestions[i].answer);
+            var code;
+
+            code = "<tr>";
+            code += "<td>" + ListSecurityQuestions[i].question + "</td>";
+            code += "<td>" + ListSecurityQuestions[i].answer + "</td>";
+            code += "<td><button type='button' class='btn btn-danger' onclick='deleteSecurityQuestion(" + i + ")'><i class='fa fa-times'></i></button></td>"
+            code += "</tr>";
+
+            document.getElementById("tbody").innerHTML += code;
+        }
+    }
+
+    function deleteSecurityQuestion(index){
+        //console.log(index);
+        ListSecurityQuestions.splice(index,1);
+        setInputSecurityQuestion();
+        setListSecurityQuestion();
+    }
+
+    function setNumberOfSecurityQuestions(){
+        
+    }
+</script>
 }

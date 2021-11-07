@@ -1,18 +1,26 @@
 ﻿@model RollCall.Dto.ListEmployeeDto
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Empleados";
 }
 
-<h1>Lista de empleados</h1>
+<h1 class="text-info">Lista de empleados</h1>
 @{await Html.RenderPartialAsync("_FormSearchEmployee",new RollCall.Dto.SearchEmployeeDto());}
+
+<br/>
 <p>
-    <a asp-action="Create">Agregar nuevo</a>
+    <a asp-action="Create" class="text-success">
+        <i class="fa fa-plus-circle"></i>
+        Agregar nuevo</a>
 </p>
+<br/>
+
 <div class="row">
     @foreach(var item in Model.ListEmployee)
     {
        await Html.RenderPartialAsync("_Card", item);
     }
 </div>
+
+<br/>
 @{await Html.RenderPartialAsync("_Pager",Model);}

@@ -1,61 +1,74 @@
 ﻿@model RollCall.Dto.SearchEmployeeDto
 
-<h4>Buscar empleado</h4>
-<hr />
-<div class="card">
+<div class="card border-left-info shadow h-100 py-2">
     <div class="card-body">
-        <form asp-action="Index">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" class="form-control" />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-12">
+                <h6 class="m-0 font-weight-bold text-success">
+                    <i class="fa fa-search"></i>
+                    Buscar empleados
+                </h6>
             </div>
+            <hr />
 
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="DateBegin" class="control-label"></label>
-                        <input asp-for="DateBegin" class="form-control" />
-                        <span asp-validation-for="DateBegin" class="text-danger"></span>
+            <div class="col-12">
+            <form asp-action="Index">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="LastName" class="control-label"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="DateEnd" class="control-label"></label>
-                        <input asp-for="DateEnd" class="form-control" />
-                        <span asp-validation-for="DateEnd" class="text-danger"></span>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="DateBegin" class="control-label"></label>
+                            <input asp-for="DateBegin" class="form-control" />
+                            <span asp-validation-for="DateBegin" class="text-danger"></span>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="DateEnd" class="control-label"></label>
+                            <input asp-for="DateEnd" class="form-control" />
+                            <span asp-validation-for="DateEnd" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">
-                            Buscar
-                        </button>
-                        <button type="reset" class="btn btn-secondary">
-                            Limpiar
-                        </button>
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-search"></i>
+                                Buscar
+                            </button>
+                            <button type="reset" class="btn btn-secondary">
+                                <i class="fa fa-eraser"></i>
+                                Limpiar
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        </div>
     </div>
 </div>

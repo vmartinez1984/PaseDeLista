@@ -1,41 +1,54 @@
 ﻿@model RollCall.Dto.EmployeeDto
 
-<div class="col-md-6">
-<div class="card">
-    <div class="card-header"></div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-3">
-                <img src=""/>
-                <div class="text-center">
-                    @Model.EmployeeNumber
+<div class="col-md-4">
+    <div class="card">
+        <div class="card-header"></div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-3">
+                    <div>
+                        <i class="fa fa-6x fa-user"></i>
+                    </div>
+                    <br />
+                    <div class="text-center">
+                        @Model.EmployeeNumber
+                    </div>
+                    <div class="text-center">
+                        @Model.RegistrationDate.ToShortDateString() - @Model.DischargeDate
+                    </div>
                 </div>
-                <div class="text-center">
-                    @Model.RegistrationDate.ToShortDateString() - @Model.DischargeDate
+                <div class="col-md-2"></div>
+                <div class="col-md-5">
+                    <img />
+                    <div class="text-info">
+                        @Model.Name
+                    </div>
+                    <div class="text-info">
+                        @Model.LastName
+                    </div>
+                    <div class="text-info">
+                        @Model.Schedule.StartTime.ToShortTimeString() - @Model.Schedule.StopTime.ToShortTimeString()
+                    </div>
+                    <div class="text-info">
+                        @Model.Area.Name
+                    </div>
                 </div>
+                <div class="col-md-1"></div>
             </div>
-            <div class="col-md-2"></div>
-            <div class="col-md-5">
-                <img />
-                <div class="text-info">
-                    @Model.Name
-                </div>
-                <div class="text-info">
-                    @Model.LastName
-                </div>
-                <div class="text-info">
-                    @Model.Schedule.StartTime.ToShortTimeString() - @Model.Schedule.StopTime.ToShortTimeString()
-                </div>
-                <div class="text-info">
-                    @Model.Area.Name
-                </div>
+        </div>
+        <div class="card-footer">
+            <div class="text-right">
+                <a href="Employees/Edit/@Model.Id" class="text-warning">
+                    <i class="fa fa-edit"></i>
+                    Editar
+                </a>
+                |
+                <a href="Employees/Delete/@Model.Id" class="text-danger">
+                    <i class="fa fa-eraser"></i>
+                    Borrar
+                </a>
             </div>
-            <div class="col-md-1"></div>
         </div>
     </div>
-    <div class="card-footer">
-
-    </div>
-</div>
 </div>
