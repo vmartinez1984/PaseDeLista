@@ -2,7 +2,11 @@
 
 <div class="col-md-4">
     <div class="card">
-        <div class="card-header"></div>
+        <div class="card-header">
+            <div class="">
+                @Model.RegistrationDate.ToShortDateString() - @Model.DischargeDate
+            </div>
+        </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-1"></div>
@@ -13,10 +17,7 @@
                     <br />
                     <div class="text-center">
                         @Model.EmployeeNumber
-                    </div>
-                    <div class="text-center">
-                        @Model.RegistrationDate.ToShortDateString() - @Model.DischargeDate
-                    </div>
+                    </div>                    
                 </div>
                 <div class="col-md-2"></div>
                 <div class="col-md-5">
@@ -44,7 +45,7 @@
                     Editar
                 </a>
                 |
-                <a href="Employeeso/Delete/@Model.Id" class="text-danger">
+                <a href="Employees/Delete/@Model.Id" class="text-danger">
                     <i class="fa fa-eraser"></i>
                     Borrar
                 </a>

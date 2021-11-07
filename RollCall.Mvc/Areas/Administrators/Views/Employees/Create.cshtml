@@ -16,14 +16,14 @@
         </div>
         <hr />
 
-        <form asp-action="Create">
+        <form asp-action="Create" id="formEmployee">
             <input type="hidden" name="ListSecurityQuestions[]" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="row">
                 <div class="form-group col-md-12">
                     <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
+                    <input asp-for="Name" class="form-control" autofocus />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-12">
@@ -60,14 +60,14 @@
 
             <div class="row">
                 <div class="form-group col-md-4">
-                    <label asp-for="ListSecurityQuestions[0].Question" class="control-label"></label>
-                    <input asp-for="ListSecurityQuestions[0].Question" id="question" class="form-control" />
-                    <span asp-validation-for="ListSecurityQuestions[0].Question" class="text-danger"></span>
+                    <label class="control-label">Pregunta</label>
+                    <input id="question" class="form-control"  maxlength="150" onkeypress="verifyEmptyQuestion()"/>
+                    <span class="text-danger" id="questionValidation"></span>
                 </div>
                 <div class="form-group col-md-7">
-                    <label asp-for="ListSecurityQuestions[0].Answer" class="control-label"></label>
-                    <input asp-for="ListSecurityQuestions[0].Answer" id="answer" class="form-control" />
-                    <span asp-validation-for="ListSecurityQuestions[0].Answer" class="text-danger" id="answerValidation"></span>
+                    <label class="control-label">Respuesta</label>
+                    <input id="answer" class="form-control" maxlength="150" onkeypress="verifyEmptyAnswer(event)"/>
+                    <span class="text-danger" id="answerValidation"></span>
                 </div>
                 <div class="form-group col-md-1">
                     <label class="control-label">&nbsp;</label>
@@ -90,6 +90,10 @@
                 <tbody id="tbody">
                 </tbody>
             </table>
+
+            <span id="spanValidationOfList" class="text-danger">Agregue 5 preguntas de seguridad</span>
+            <br/>
+            <br/>
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">
@@ -117,18 +121,15 @@
 <script>
     var ListSecurityQuestions = new Array();
 
+    $("#spanValidationOfList").hide();
     function addSecurityQuestion(){
         var textAnswer;
         var textQuestion;
 
         textAnswer = document.getElementById("answer");
         textQuestion = document.getElementById("question");
-        if(textAnswer.value === null){
+        if(validateSecurityQuestion(textAnswer,textQuestion))
             return;
-        }
-        if(textQuestion.value === null){
-            return;
-        }
         securityQuestion = new Object();
         securityQuestion.answer = textAnswer.value;
         securityQuestion.question = textQuestion.value;
@@ -137,8 +138,27 @@
         textQuestion.value = "";
         setInputSecurityQuestion();
         setListSecurityQuestion();
-
+        $("#spanValidationOfList").hide();
+        textQuestion.focus();
         //console.log(ListSecurityQuestions);
+    }
+
+    function validateSecurityQuestion(textAnswer,textQuestion){
+        $("#answerValidation").hide();
+        $("#questionValidation").hide();
+        if(textAnswer.value == ""){
+            $("#answerValidation").show();
+            document.getElementById("answerValidation").innerText = "El campo no puede ir vacio";
+        }
+        if(textQuestion.value == ""){
+            $("#questionValidation").show();
+            document.getElementById("questionValidation").innerText = "El campo no puede ir vacio";
+        }
+        if(textAnswer.value == "" || textQuestion.value == ""){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     function setInputSecurityQuestion(){
@@ -149,13 +169,13 @@
 
             inputHiddenQuestion = document.createElement("input");
             inputHiddenQuestion.setAttribute("type","hidden");
-            inputHiddenQuestion.setAttribute("name","ListSecurityQuestions["+i+"].Question");
+            inputHiddenQuestion.setAttribute("name","securityQuestions["+i+"].Question");
             inputHiddenQuestion.value = ListSecurityQuestions[i].question;
             document.getElementById("divListSecurityQuestions").appendChild(inputHiddenQuestion);
 
             inputHiddenAnswer = document.createElement("input");
             inputHiddenAnswer.setAttribute("type","hidden");
-            inputHiddenAnswer.setAttribute("name","ListSecurityQuestions["+i+"].Answer");
+            inputHiddenAnswer.setAttribute("name","securityQuestions["+i+"].Answer");
             inputHiddenAnswer.value = ListSecurityQuestions[i].question;
             document.getElementById("divListSecurityQuestions").appendChild(inputHiddenAnswer);
         }
@@ -184,8 +204,30 @@
         setListSecurityQuestion();
     }
 
-    function setNumberOfSecurityQuestions(){
-        
+    document.getElementById("formEmployee").addEventListener("submit", verifyListSecurityQuestions);
+
+    function verifyListSecurityQuestions(event){
+        debugger;
+        if(ListSecurityQuestions.length < 5){            
+            $("#spanValidationOfList").show();
+            document.getElementById("spanValidationOfList").innerText = "Agregue " + (5 - ListSecurityQuestions.length) + " Preguntas de seguridad"
+            event.preventDefault();
+        }
+    }
+
+    function verifyEmptyQuestion(){
+        if(document.getElementById("question").value.length > 0){
+             $("#questionValidation").hide();
+        }
+    }
+
+    function verifyEmptyAnswer(e){
+        if(document.getElementById("answer").value.length > 0){
+             $("#answerValidation").hide();
+        }
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            addSecurityQuestion();
+        }
     }
 </script>
 }
