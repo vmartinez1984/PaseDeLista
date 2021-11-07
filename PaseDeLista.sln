@@ -19,7 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.Angular", "RollCal
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.AngularV2", "RollCall.AngularV2\RollCall.AngularV2.csproj", "{AFFAA6C9-75E6-4EC2-8EF2-B2DB26A515FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RollCall.Test", "RollCall.Test\RollCall.Test.csproj", "{3AECFD98-4730-4B09-89EF-9687BD06F41E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RollCall.Test", "RollCall.Test\RollCall.Test.csproj", "{3AECFD98-4730-4B09-89EF-9687BD06F41E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{62750EEB-34FC-4EB3-928D-A12A94EABB93}"
+	ProjectSection(SolutionItems) = preProject
+		index.html = index.html
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
