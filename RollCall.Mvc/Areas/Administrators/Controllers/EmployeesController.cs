@@ -98,6 +98,8 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 			{
 				EmployeeDto dto;
 
+				ViewBag.AreaList = await AreaBl.GetAllAsync();
+				ViewBag.ScheduleList = await ScheduleBl.GetAllAsync();
 				dto = await EmployeeBl.GetAsync(id);
 
 				return View(dto);

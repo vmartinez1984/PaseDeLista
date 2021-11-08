@@ -4,82 +4,101 @@
     ViewData["Title"] = "Editar empleado";
 }
 
-<h4>Editar usuario</h4>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div class="card border-left-warning shadow h-100 py-2">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <h6 class="m-0 font-weight-bold text-warning">
+                    <i class="fa fa-edit"></i>
+                    Editar usuario
+                </h6>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhotoInBase64" class="control-label"></label>
-                <input asp-for="PhotoInBase64" class="form-control" />
-                <span asp-validation-for="PhotoInBase64" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AreaId" class="control-label"></label>
-                <input asp-for="AreaId" class="form-control" />
-                <span asp-validation-for="AreaId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ScheduleId" class="control-label"></label>
-                <input asp-for="ScheduleId" class="form-control" />
-                <span asp-validation-for="ScheduleId" class="text-danger"></span>
-            </div>
+            <hr />
+            <div class="col-md-12">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhotoInBase64" class="control-label"></label>
+                        <input asp-for="PhotoInBase64" class="form-control" />
+                        <span asp-validation-for="PhotoInBase64" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AreaId" class="control-label"></label>
+                        <select asp-for="AreaId" class="form-control" asp-items="@(new SelectList(ViewBag.AreaList,"Id","Name"))">
+                            <option value="">Seleccione</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ScheduleId" class="control-label"></label>
+                        <select asp-for="ScheduleId" class="form-control" asp-items="@(new SelectList(ViewBag.ScheduleList,"Id","Schedule"))">
+                            <option value="">Seleccione</option>
+                        </select>
+                        <span asp-validation-for="ScheduleId" class="text-danger"></span>
+                    </div>
 
 
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">
-                    Guardar
-                </button>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </form>
+                <div id="divSecurityQuestions">
+                    @await Html.PartialAsync("_CreateSecurityQuestion",new RollCall.Dto.SecurityQuestionDto{EmployeeId= Model.Id})
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Pregunta</th>
+                            <th>Respuesta</th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        @foreach (var item in Model.ListSecurityQuestions)
+                        {
+                            <tr id="tr_@item.Id">
+                                <td id="question_@item.Id">@item.Question</td>
+                                <td id="answer_@item.Id">@item.Answer</td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-warning" id="btnEdit_@item.Id" onclick="edit(@item.Id,'@item.Question','@item.Answer')">
+                                        <i class="fa fa-edit"></i>
+                                        Editar
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger" id="btnDelete_@item.Id" onclick="deleteSecurityQuestion(@item.Id,'@item.Question','@item.Answer')">
+                                        <i class="fa fa-eraser"></i>
+                                        Borrar
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
-        </form>
-        <div id="divSecurityQuestions">
-            @await Html.PartialAsync("_CreateSecurityQuestion",new RollCall.Dto.SecurityQuestionDto{EmployeeId= Model.Id})
         </div>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Pregunta</th>
-                    <th>Respuesta</th>
-                    <th>
-
-                    </th>
-                </tr>
-            </thead>
-            <tbody id="tbody">
-                @foreach (var item in Model.ListSecurityQuestions)
-                {
-                    <tr id="tr_@item.Id">
-                        <td id="question_@item.Id">@item.Question</td>
-                        <td id="answer_@item.Id">@item.Answer</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-warning" id="btnEdit_@item.Id" onclick="edit(@item.Id,'@item.Question','@item.Answer')">
-                                Editar
-                            </button>
-                            <button type="button" class="btn btn-outline-danger" id="btnDelete_@item.Id" onclick="deleteSecurityQuestion(@item.Id,'@item.Question','@item.Answer')">
-                                Borrar
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
     </div>
 </div>
 
+<br />
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">
+        <i class="fa fa-list"></i>
+        Regresar a la lista
+    </a>
 </div>
 
 @section Scripts {

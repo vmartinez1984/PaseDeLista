@@ -5,10 +5,7 @@
     @using RollCall.Dto
     @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
-    ViewData["Title"] = "Index";
-    int rolId;
-
-    rolId = (int)HttpContextAccessor.HttpContext.Session.GetInt32("userRolId");
+    ViewData["Title"] = "Asistencia";
 }
 
 <h1>Lista</h1>
