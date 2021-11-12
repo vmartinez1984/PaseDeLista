@@ -5,21 +5,33 @@
 }
 
 <h1 class="text-info">Lista de empleados</h1>
-@{await Html.RenderPartialAsync("_FormSearchEmployee",new RollCall.Dto.SearchEmployeeDto());}
+@{
+    await Html.RenderPartialAsync("_FormSearchEmployee", new RollCall.Dto.SearchEmployeeDto());
+}
 
-<br/>
-<p>
-    <a asp-action="Create" class="text-success">
-        <i class="fa fa-plus-circle"></i>
-        Agregar nuevo</a>
-</p>
-
+@if (ViewBag.IsMaximun)
+{
+    <p class="mt-2">
+        @RollCall.Dto.ErrorMessageDto.Maximum
+    </p>
+}
+else
+{
+    <p class="mt-2">
+        <a asp-action="Create" class="text-success">
+            <i class="fa fa-plus-circle"></i>
+            Agregar nuevo
+        </a>
+    </p>
+}
 <div class="row">
-    @foreach(var item in Model.ListEmployee)
+    @foreach (var item in Model.ListEmployee)
     {
-       await Html.RenderPartialAsync("_Card", item);
+        await Html.RenderPartialAsync("_Card", item);
     }
 </div>
 
-<br/>
-@{await Html.RenderPartialAsync("_Pager",Model);}
+<br />
+@{
+    await Html.RenderPartialAsync("_Pager", Model);
+}

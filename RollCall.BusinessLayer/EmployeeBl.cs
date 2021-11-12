@@ -10,214 +10,267 @@ using System.Threading.Tasks;
 
 namespace RollCall.BusinessLayer
 {
-	public class EmployeeBl
-	{
-		public static async Task<EmployeeDto> GetAsync(string employeeNumber)
-		{
-			EmployeeDto dto;
-			EmployeeEntity entity;
+  public class EmployeeBl
+  {
+    public static async Task<EmployeeDto> GetAsync(string employeeNumber)
+    {
+      EmployeeDto dto;
+      EmployeeEntity entity;
 
-			entity = await EmployeeDao.GetAsync(employeeNumber);
-			dto = EmployeeMapper.Get(entity);
+      entity = await EmployeeDao.GetAsync(employeeNumber);
+      dto = EmployeeMapper.Get(entity);
 
-			return dto;
-		}
+      return dto;
+    }
 
-		public static async Task<ListEmployeeDto> GetAllAsync(SearchEmployeeDto searchEmployeeDto)
-		{
-			try
-			{
-				ListEmployeeDto dto;
-				List<EmployeeEntity> entities;
-				SearchEmployee searchEmployee;
-				EmployeeSearchDao employeeSearchDao;
+    public static async Task<bool> IsMaximum()
+    {
+      try
+      {
+        bool isMaximum;
 
-				searchEmployee = new SearchEmployee
-				{
-					Page = searchEmployeeDto.Page,
-					IsActive = searchEmployeeDto.IsActive,
-					NumberOfRecordsPerPage = searchEmployeeDto.NumberOfRecordsPerPage,
-					Name = searchEmployeeDto.Name,
-					LastName = searchEmployeeDto.LastName,
-					DateStart = searchEmployeeDto.DateBegin,
-					DateStop = searchEmployeeDto.DateEnd
-				};
-				employeeSearchDao = new EmployeeSearchDao(searchEmployee);
-				entities = await employeeSearchDao.GetAllAsync();
-				dto = new ListEmployeeDto
-				{
-					ListEmployee = EmployeeMapper.GetAll(entities),
-					NumberOfRecordsPerPage = searchEmployeeDto.NumberOfRecordsPerPage,
-					TotalOfRecords =  employeeSearchDao.Count(),
-					CurrentPage = searchEmployeeDto.Page
-				};
+        isMaximum = false;
+        await Task.Run(() =>
+        {
+          int employees;
+          int maxEmployees;
 
-				return dto;
-			}
-			catch (Exception)
-			{
+          employees = EmployeeDao.Count();
+          maxEmployees = ConfigBl.GetMaxEmployees();
+          if (employees == maxEmployees)
+            isMaximum = true;
+          else if (employees < maxEmployees)
+            isMaximum = false;
+          else
+            isMaximum = true;
+        });
 
-				throw;
-			}
-		}
+        return isMaximum;
+      }
+      catch (Exception)
+      {
 
-		public static async Task<int> CountAsync(bool isActive = true)
-		{
-			try
-			{
-				int totalOfRecords;
+        throw;
+      }
+    }
 
-				using (var db = new AppDbContext())
-				{
-					totalOfRecords = await db.Employee
-						.Where(x=>x.IsActive == isActive)
-						.CountAsync();
-				}
+    public static async Task<ListEmployeeDto> GetAllAsync(SearchEmployeeDto searchEmployeeDto)
+    {
+      try
+      {
+        ListEmployeeDto dto;
+        List<EmployeeEntity> entities;
+        SearchEmployee searchEmployee;
+        EmployeeSearchDao employeeSearchDao;
 
-				return totalOfRecords;
-			}
-			catch (Exception)
-			{
+        searchEmployee = new SearchEmployee
+        {
+          Page = searchEmployeeDto.Page,
+          IsActive = searchEmployeeDto.IsActive,
+          NumberOfRecordsPerPage = searchEmployeeDto.NumberOfRecordsPerPage,
+          Name = searchEmployeeDto.Name,
+          LastName = searchEmployeeDto.LastName,
+          DateStart = searchEmployeeDto.DateBegin,
+          DateStop = searchEmployeeDto.DateEnd
+        };
+        employeeSearchDao = new EmployeeSearchDao(searchEmployee);
+        entities = await employeeSearchDao.GetAllAsync();
+        dto = new ListEmployeeDto
+        {
+          ListEmployee = EmployeeMapper.GetAll(entities),
+          NumberOfRecordsPerPage = searchEmployeeDto.NumberOfRecordsPerPage,
+          TotalOfRecords = employeeSearchDao.Count(),
+          CurrentPage = searchEmployeeDto.Page
+        };
 
-				throw;
-			}
-		}
+        return dto;
+      }
+      catch (Exception)
+      {
 
-		public static async Task<List<EmployeeDto>> GetAllAsync(bool isActive = true)
-		{
-			try
-			{
-				List<EmployeeDto> dtos;
-				List<EmployeeEntity> entities;
+        throw;
+      }
+    }
 
-				entities = await EmployeeDao.GetAllAsync(isActive);
-				dtos = EmployeeMapper.GetAll(entities);
+    public static async Task<int> CountAsync(bool isActive = true)
+    {
+      try
+      {
+        int totalOfRecords;
 
-				return dtos;
-			}
-			catch (Exception)
-			{
+        using (var db = new AppDbContext())
+        {
+          totalOfRecords = await db.Employee
+            .Where(x => x.IsActive == isActive)
+            .CountAsync();
+        }
 
-				throw;
-			}
-		}
+        return totalOfRecords;
+      }
+      catch (Exception)
+      {
 
-		public static async Task<EmployeeDto> GetAsync(int id)
-		{
-			try
-			{
-				EmployeeDto dto;
-				EmployeeEntity entity;
+        throw;
+      }
+    }
 
-				entity = await EmployeeDao.GetAsync(id);
-				dto = EmployeeMapper.Get(entity);
+    public static async Task<List<EmployeeDto>> GetAllAsync(bool isActive = true)
+    {
+      try
+      {
+        List<EmployeeDto> dtos;
+        List<EmployeeEntity> entities;
 
-				return dto;
-			}
-			catch (Exception)
-			{
+        entities = await EmployeeDao.GetAllAsync(isActive);
+        dtos = EmployeeMapper.GetAll(entities);
 
-				throw;
-			}
-		}
+        return dtos;
+      }
+      catch (Exception)
+      {
 
-		public static async Task<int> AddAsync(EmployeeDto dto)
-		{
-			try
-			{
-				EmployeeEntity entity;
-				DateTime now;
+        throw;
+      }
+    }
 
-				entity = EmployeeMapper.Get(dto);
-				entity.IsActive = true;
-				entity.RegistrationDate = DateTime.Now;
-				entity.DischargeDate = null;
-				using (var db = new AppDbContext())
-				{
-					db.Employee.Add(entity);
-					await db.SaveChangesAsync();
-					now = DateTime.Now;
-					entity.EmployeeNumber = $"{now.Year}" + entity.Id.ToString().PadLeft(4, '0');
-					await db.SaveChangesAsync();
-				}
-				dto.ListSecurityQuestions.ForEach(item =>
-				{
-					SecurityQuestion securityQuestion;
+    public static async Task<EmployeeDto> GetAsync(int id)
+    {
+      try
+      {
+        EmployeeDto dto;
+        EmployeeEntity entity;
 
-					securityQuestion = new SecurityQuestion
-					{
-						Answer = item.Answer,
-						EmployeeId = entity.Id,
-						IsActive = true,
-						Question = item.Question,
-						RegistrationDate = now,
-					};
-					SecurityQuestionDao.Add(securityQuestion);
-				});
+        entity = await EmployeeDao.GetAsync(id);
+        dto = EmployeeMapper.Get(entity);
 
-				return entity.Id;
-			}
-			catch (Exception)
-			{
+        return dto;
+      }
+      catch (Exception)
+      {
 
-				throw;
-			}
-		}
+        throw;
+      }
+    }
 
-		public static async Task DeleteAsync(EmployeeDto dto)
-		{
-			try
-			{
-				EmployeeEntity entity;
+    public static async Task<int> AddAsync(EmployeeDto dto)
+    {
+      try
+      {
+        if (IsMaximum().Result)
+        {
+          throw new Exception("Ha alcanzado su limite máximo de usuarios, contacte a su ejecutivo de cuenta.");
+        }
 
-				entity = await EmployeeDao.GetAsync(dto.Id);
-				entity.IsActive = false;
-				await EmployeeDao.UpdateAsync(entity);
-			}
-			catch (Exception)
-			{
+        EmployeeEntity entity;
+        DateTime now;
 
-				throw;
-			}
-		}
+        entity = EmployeeMapper.Get(dto);
+        entity.IsActive = true;
+        entity.RegistrationDate = DateTime.Now;
+        entity.DischargeDate = null;
+        using (var db = new AppDbContext())
+        {
+          db.Employee.Add(entity);
+          await db.SaveChangesAsync();
+          now = DateTime.Now;
+          entity.EmployeeNumber = $"{now.Year}" + entity.Id.ToString().PadLeft(4, '0');
+          await db.SaveChangesAsync();
+        }
+        dto.ListSecurityQuestions.ForEach(item =>
+        {
+          SecurityQuestion securityQuestion;
 
-		public static async Task UpdateAsync(EmployeeDto employeeDto)
-		{
-			try
-			{
-				EmployeeEntity entity;
+          securityQuestion = new SecurityQuestion
+          {
+            Answer = item.Answer,
+            EmployeeId = entity.Id,
+            IsActive = true,
+            Question = item.Question,
+            RegistrationDate = now,
+          };
+          SecurityQuestionDao.Add(securityQuestion);
+        });
 
-				entity = await EmployeeDao.GetAsync(employeeDto.Id);
-				entity.Name = employeeDto.Name;
-				entity.LastName = employeeDto.LastName;
-				entity.ScheduleId = employeeDto.ScheduleId;
-				entity.AreaId = employeeDto.AreaId;
-				entity.PhotoInBase64 = employeeDto.PhotoInBase64;
-				await EmployeeDao.UpdateAsync(entity);
-			}
-			catch (Exception)
-			{
+        return entity.Id;
+      }
+      catch (Exception)
+      {
 
-				throw;
-			}
-		}
+        throw;
+      }
+    }
 
-		public static async Task DeleteAsync(int employeeId)
-		{
-			try
-			{
-				EmployeeEntity entity;
+    private static int Count()
+    {
+      try
+      {
+        int total;
 
-				entity = await EmployeeDao.GetAsync(employeeId);
-				entity.IsActive = false;
-				entity.DischargeDate = DateTime.Now;
-				await EmployeeDao.UpdateAsync(entity);
-			}
-			catch (Exception)
-			{
+        total = EmployeeDao.Count();
 
-				throw;
-			}
-		}
-	}
+        return total;
+      }
+      catch (Exception)
+      {
+
+        throw;
+      }
+    }
+
+    public static async Task DeleteAsync(EmployeeDto dto)
+    {
+      try
+      {
+        EmployeeEntity entity;
+
+        entity = await EmployeeDao.GetAsync(dto.Id);
+        entity.IsActive = false;
+        await EmployeeDao.UpdateAsync(entity);
+      }
+      catch (Exception)
+      {
+
+        throw;
+      }
+    }
+
+    public static async Task UpdateAsync(EmployeeDto employeeDto)
+    {
+      try
+      {
+        EmployeeEntity entity;
+
+        entity = await EmployeeDao.GetAsync(employeeDto.Id);
+        entity.Name = employeeDto.Name;
+        entity.LastName = employeeDto.LastName;
+        entity.ScheduleId = employeeDto.ScheduleId;
+        entity.AreaId = employeeDto.AreaId;
+        entity.PhotoInBase64 = employeeDto.PhotoInBase64;
+        await EmployeeDao.UpdateAsync(entity);
+      }
+      catch (Exception)
+      {
+
+        throw;
+      }
+    }
+
+    public static async Task DeleteAsync(int employeeId)
+    {
+      try
+      {
+        EmployeeEntity entity;
+
+        entity = await EmployeeDao.GetAsync(employeeId);
+        entity.IsActive = false;
+        entity.DischargeDate = DateTime.Now;
+        await EmployeeDao.UpdateAsync(entity);
+      }
+      catch (Exception)
+      {
+
+        throw;
+      }
+    }
+  }
 }

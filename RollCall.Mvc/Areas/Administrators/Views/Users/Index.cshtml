@@ -4,12 +4,21 @@
     ViewData["Title"] = "Usuarios";
 }
 
-<p>
-    <a asp-action="Create" class="text-success">
-        <i class="fa fa-plus-circle"></i>
-        Agregar nuevo
-    </a>
-</p>
+@if (ViewBag.IsMaximum)
+{
+    <p class="text-warning">
+        Ha alcanzado su limite máximo de usuarios, contacte a su ejecutivo de cuenta.
+    </p>
+}
+else
+{
+    <p>
+        <a asp-action="Create" class="text-success">
+            <i class="fa fa-plus-circle"></i>
+            Agregar nuevo
+        </a>
+    </p>
+}
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -63,11 +72,14 @@
                                     <i class="fa fa-edit"></i>
                                     Editar
                                 </a>
-                                |
-                                <a href="Users/Delete/@item.Id" class="text-danger">
-                                    <i class="fa fa-eraser"></i>
-                                    Borrar
-                                </a>
+                                @if (Model.Count() != 1)
+                                {
+                                    <span>|</span>
+                                    <a href="Users/Delete/@item.Id" class="text-danger">
+                                        <i class="fa fa-eraser"></i>
+                                        Borrar
+                                    </a>
+                                }
                             </td>
                         </tr>
                     }

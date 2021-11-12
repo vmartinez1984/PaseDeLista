@@ -8,6 +8,7 @@ namespace RollCall.Persistence.Entities
 		public DbSet<Area> Area { get; set; }
 		public DbSet<AssistanceEntity> Assistance { get; set; }
 		public DbSet<AssistanceLog> AssistanceLog { get; set; }
+		public DbSet<Config> Config { get; set; }
 		public DbSet<EmployeeEntity> Employee { get; set; }
 		public DbSet<HolidayDay> HolidayDay { get; set; }
 		public DbSet<RolEntity> Rol { get; set; }
@@ -37,6 +38,11 @@ namespace RollCall.Persistence.Entities
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.Entity<Config>().HasData(
+				new Config { Id = 1, Name = "Users", Value ="2", DateRegistration = DateTime.Now},
+				new Config { Id = 2, Name = "Employees", Value ="50", DateRegistration = DateTime.Now}
+			);
+
 			modelBuilder.Entity<Area>().HasData(
 				new Area { Id = 1, Name = "Operación", IsActive = true }
 			);

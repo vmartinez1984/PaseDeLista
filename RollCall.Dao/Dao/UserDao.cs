@@ -7,128 +7,148 @@ using System.Threading.Tasks;
 
 namespace RollCall.Persistence.Dao
 {
-	public class UserDao
-	{
-		public static List<User> GetAll()
-		{
-			try
-			{
-				List<User> list;
+  public class UserDao
+  {
+    public static List<User> GetAll()
+    {
+      try
+      {
+        List<User> list;
 
-				using (var db = new AppDbContext())
-				{
-					list = db.User.Where(x => x.IsActive == true).ToList();
-				}
+        using (var db = new AppDbContext())
+        {
+          list = db.User.Where(x => x.IsActive == true).ToList();
+        }
 
-				return list;
-			}
-			catch (Exception)
-			{
+        return list;
+      }
+      catch (Exception)
+      {
 
-				throw;
-			}
-		}
+        throw;
+      }
+    }
 
-		public static async Task<List<User>> GetAllAsync(bool isActive)
-		{
-			try
-			{
-				List<User> list;
+    public static async Task<List<User>> GetAllAsync(bool isActive)
+    {
+      try
+      {
+        List<User> list;
 
-				using (var db = new AppDbContext())
-				{
-					list = await db.User.Where(x => x.IsActive == true).ToListAsync();
-				}
+        using (var db = new AppDbContext())
+        {
+          list = await db.User.Where(x => x.IsActive == true).ToListAsync();
+        }
 
-				return list;
-			}
-			catch (Exception)
-			{
+        return list;
+      }
+      catch (Exception)
+      {
 
-				throw;
-			}
-		}
+        throw;
+      }
+    }
 
-		public static async Task<User> GetAsync(int id)
-		{
-			try
-			{
-				User item;
+    public static async Task<User> GetAsync(int id)
+    {
+      try
+      {
+        User item;
 
-				using (var db = new AppDbContext())
-				{
-					item = await db.User.Where(x => x.Id == id)
-						.Include(x=> x.Rol)
-						.FirstOrDefaultAsync();
-				}
+        using (var db = new AppDbContext())
+        {
+          item = await db.User.Where(x => x.Id == id)
+            .Include(x => x.Rol)
+            .FirstOrDefaultAsync();
+        }
 
-				return item;
-			}
-			catch (Exception)
-			{
+        return item;
+      }
+      catch (Exception)
+      {
 
-				throw;
-			}
-		}
+        throw;
+      }
+    }
 
-		public static async Task<int> AddAsync(User user)
-		{
-			try
-			{
-				using (var db = new AppDbContext())
-				{
-					user.IsActive = true;
-					user.RegistrationDate = DateTime.Now;
-					db.User.Add(user);
-					await db.SaveChangesAsync();
-				}
+    public static async Task<int> AddAsync(User user)
+    {
+      try
+      {
+        using (var db = new AppDbContext())
+        {
+          user.IsActive = true;
+          user.RegistrationDate = DateTime.Now;
+          db.User.Add(user);
+          await db.SaveChangesAsync();
+        }
 
-				return user.Id;
-			}
-			catch (Exception)
-			{
+        return user.Id;
+      }
+      catch (Exception)
+      {
 
-				throw;
-			}
-		}
+        throw;
+      }
+    }
 
-		public static async Task UpdateAsync(User user)
-		{
-			try
-			{
-				using (var db = new AppDbContext())
-				{
-					db.Entry<User>(user).State = EntityState.Modified;
-					await db.SaveChangesAsync();
-				}
-			}
-			catch (Exception)
-			{
+    public static async Task UpdateAsync(User user)
+    {
+      try
+      {
+        using (var db = new AppDbContext())
+        {
+          db.Entry<User>(user).State = EntityState.Modified;
+          await db.SaveChangesAsync();
+        }
+      }
+      catch (Exception)
+      {
 
-				throw;
-			}
-		}
+        throw;
+      }
+    }
 
-		public static async Task<User> Login(string email, string password)
-		{
-			try
-			{
-				User item;
+    public static int Count()
+    {
+      try
+      {
+        int total;
 
-				using (var db = new AppDbContext())
-				{
-					item = await db.User						
-						.Where(x => x.Email == email && x.Password == password && x.IsActive == true)
-						.FirstOrDefaultAsync();
-				}
+        using (var db = new AppDbContext())
+        {
+          total = db.User.Count(x => x.IsActive == true);
+        }
 
-				return item;
-			}
-			catch (Exception)
-			{
+        return total;
+      }
+      catch (Exception)
+      {
 
-				throw;
-			}
-		}
-	}//end class
+        throw;
+      }
+    }
+
+    public static async Task<User> Login(string email, string password)
+    {
+      try
+      {
+        User item;
+
+        using (var db = new AppDbContext())
+        {
+          item = await db.User
+            .Where(x => x.Email == email && x.Password == password && x.IsActive == true)
+            .FirstOrDefaultAsync();
+        }
+
+        return item;
+      }
+      catch (Exception)
+      {
+
+        throw;
+      }
+    }
+  }//end class
 }

@@ -18,6 +18,7 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 
 				list = await EmployeeBl.GetAllAsync(searchEmployee);
 				list.SearchEmployee = searchEmployee;
+				ViewBag.IsMaximun = await EmployeeBl.IsMaximum();
 
 				return View(list);
 			}
@@ -80,7 +81,7 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 					ViewBag.AreaList = await AreaBl.GetAllAsync();
 					ViewBag.ScheduleList = await ScheduleBl.GetAllAsync();
 					ViewBag.RolList = await RolBl.GetAllAsync();
-
+					
 					return View();
 				}
 			}

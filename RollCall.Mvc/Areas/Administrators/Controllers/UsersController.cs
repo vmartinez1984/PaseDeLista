@@ -21,6 +21,7 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 				List<UserDto> list;
 
 				list = await UserBl.GetAllAsync();
+				ViewBag.IsMaximum = await UserBl.IsMaximum();
 
 				return View(list);
 			}
@@ -71,7 +72,7 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 		public async Task<ActionResult> Create(UserDto user)
 		{
 			try
-			{
+			{				
 				if (ModelState.IsValid)
 				{
 					await UserBl.AddAsync(user);
