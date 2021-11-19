@@ -4,9 +4,8 @@ using RollCall.Dto;
 using System;
 using System.Threading.Tasks;
 
-namespace RollCall.Mvc.Areas.Administrators.Controllers
+namespace RollCall.Mvc.Controllers
 {
-	[Area("Administrators")]
 	public class AssitsController : Controller
 	{
 		public async Task<ActionResult> Index(SearchAssistenceDto searchAssistenceDto)

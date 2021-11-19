@@ -7,9 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RollCall.Mvc.Areas.Administrators.Controllers
+namespace RollCall.Mvc.Controllers
 {
-	[Area("Administrators")]
 	public class UsersController : Controller
 	{
 		// GET: UsersController

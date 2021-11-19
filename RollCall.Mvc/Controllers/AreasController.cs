@@ -6,9 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RollCall.Mvc.Areas.Administrators.Controllers
+namespace RollCall.Mvc.Controllers
 {
-	[Area("Administrators")]
 	public class AreasController : Controller
 	{
 		public async Task<IActionResult> Index(bool isActive = true)

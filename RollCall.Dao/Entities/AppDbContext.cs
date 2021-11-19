@@ -30,8 +30,8 @@ namespace RollCall.Persistence.Entities
 		{
 			if (!optionsBuilder.IsConfigured)
 			{
-				optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS2016;Database=RollCall;User Id=sa;Password=root;");
-				//optionsBuilder.UseSqlServer("Server=DESKTOP-9CVRRTC\\SQLEXPRESS;Database=ProyectoDeIntegracion;User Id=sa;Password=123456;");
+				//optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS2016;Database=RollCall;User Id=sa;Password=root;");
+				optionsBuilder.UseSqlServer("Server=DESKTOP-9CVRRTC\\SQLEXPRESS;Database=RollCall;User Id=sa;Password=123456;");
 				//optionsBuilder.UseSqlServer("workstation id=ProyectoDeIntegracion.mssql.somee.com;packet size=4096;user id=vmartinez84_SQLLogin_2;pwd=3ciwfqn2az;data source=ProyectoDeIntegracion.mssql.somee.com;persist security info=False;initial catalog=ProyectoDeIntegracion");
 			}
 		}

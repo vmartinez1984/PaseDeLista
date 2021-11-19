@@ -272,7 +272,8 @@ namespace RollCall.BusinessLayer
 					assistance = new AssistanceLog
 					{
 						RegistrationDate = DateTime.Now,
-						EmployeeId = securityQuestion.EmployeeId
+						EmployeeId = securityQuestion.EmployeeId,
+						AssistenceStatusId = answer.AsistanceStatusId
 					};
 					await AssistanceDao.AddAsync(assistance);
 					isRegister = true;

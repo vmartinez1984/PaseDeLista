@@ -38,7 +38,7 @@ namespace RollCall.Mvc.Controllers
 						switch (userDto.RolId)
 						{
 							case Rol.Administrador:
-								return RedirectToAction("Index", "Administrators", new { area = "Administrators" });
+								return RedirectToAction("Index", "Administration");
 								//break;
 							case Rol.Empleado:
 								return RedirectToAction("Index", "EmployeeAssistance", new { area = "Employees" });
@@ -61,6 +61,7 @@ namespace RollCall.Mvc.Controllers
 			}
 		}
 
+		[HttpGet]
 		public IActionResult LogOut()
 		{
 			HttpContext.Session.Clear();

@@ -5,9 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RollCall.Mvc.Areas.Administrators.Controllers
+namespace RollCall.Mvc.Controllers
 {
-	[Area("Administrators")]
 	public class EmployeesController : Controller
 	{
 		public async Task<IActionResult> Index(SearchEmployeeDto searchEmployee)
@@ -119,7 +118,7 @@ namespace RollCall.Mvc.Areas.Administrators.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					await EmployeeBl.AddAsync(dto);
+					await EmployeeBl.UpdateAsync(dto);
 
 					return RedirectToAction(nameof(Index));
 				}

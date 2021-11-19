@@ -1,18 +1,27 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using RollCall.Dto
+@{
+    ViewData["Title"] = "Checador";
+    Layout = "_LayoutCheckIn";
 }
 
 <div class="text-center">
     <h1 class="display-4">Bienvenido</h1>
     <h2 id="clock"></h2>
-    <p>Ingrese su codigo de empleado</p>
-    <div class="form-group">
-        <input id="employeeNumber" type="text" class="form-control" autofocus />
-        <br />
-        <button type="button" onclick="searchEmployee();" class="btn btn-primary">
-            Buscar
-        </button>
+    <div class="form-group row">
+        <div class="col-4">
+            <p>Ingrese su codigo de empleado</p>
+        </div>
+        <div class="col-4">
+            <input id="employeeNumber" type="number" class="form-control" autofocus onkeyup="onKeyUp(event)" />
+        </div>
+        <div class="col-4">
+            <button type="button" onclick="searchEmployee();" class="btn btn-primary btn-block">
+                <i class="fa fa-search"></i>
+                Buscar
+            </button>
+        </div>
     </div>
+    <div class="text-danger"></div>
 </div>
 <div class="card" id="divEmployee">
     <div class="card-body">
@@ -20,16 +29,16 @@
             <div class="col-7">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-secondary active">
-                        <input type="radio" name="options" id="entry" checked> Entrada
+                        <input type="radio" name="AssistanceStatus" id="entry" checked value="@AssistanceStatusDto.Entry"> Entrada
                     </label>
                     <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="lunchTimeDeparture"> Salida al lonche
+                        <input type="radio" name="AssistanceStatus" id="lunchTimeDeparture" value="@AssistanceStatusDto.LunchTimeDeparture"> Salida al lonche
                     </label>
                     <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="lunchTimeReturn"> Regreso del lonche
+                        <input type="radio" name="AssistanceStatus" id="lunchTimeReturn" value="@AssistanceStatusDto.LunchTimeReturn"> Regreso del lonche
                     </label>
                     <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="exit"> Salida
+                        <input type="radio" name="AssistanceStatus" id="exit" value="@AssistanceStatusDto.Exit"> Salida
                     </label>
                 </div>
             </div>
@@ -54,6 +63,13 @@
     var securityQuestionId;
     $("#divEmployee").hide();
 
+    function onKeyUp(event) {
+      var keycode = event.keyCode;
+      if(keycode == '13'){
+          searchEmployee();
+      }
+    }
+
     setInterval(function(){
         var time;
         var now;
@@ -72,21 +88,31 @@
             url = "api/Employees/"+document.getElementById("employeeNumber").value;
             fetch(url)
             .then(response=>{
-                //console.log(response);
-                if(response.ok){
-                    return response.json();
-                }else{
-                   return response.json();
-                }
-            })
-            .then(data=>{
-                //console.log(data);
-                Swal.close();
-                $("#divEmployee").show();
-                document.getElementById("employeeNumber").innerHTML = "";
-                document.getElementById("employeeId").innerHTML = data.id;
-                document.getElementById("pName").innerHTML = data.name + " " + data.lastName;
-                getSecurityQuestion(data.id);
+                console.log(response);
+                 if (response.ok){
+                     response.json().then(data=>{
+                        console.log(data);
+                        Swal.close();
+                        $("#divEmployee").show();
+                        document.getElementById("employeeNumber").innerHTML = "";
+                        document.getElementById("employeeId").innerHTML = data.id;
+                        document.getElementById("pName").innerHTML = data.name + " " + data.lastName;
+                        getSecurityQuestion(data.id);
+                    });
+                 } else if(response.status == 404){
+                     response.json().then(data=>{
+                        //console.log(data);
+                        Swal.close();
+                        Swal.fire({
+                          position: 'center',
+                          icon: 'warning',
+                          title: data.response,
+                          showConfirmButton: false,
+                          timer: 1500
+                        });
+                        document.getElementById("employeeNumber").value = '';
+                    });
+                 }
             })
             .catch(error=>{
                 console.log(error);
@@ -126,7 +152,8 @@
         awaitMoment();
         data = {
             SecurityQuestionId : securityQuestionId,
-            Answer : document.getElementById("answer").value
+            Answer : document.getElementById("answer").value,
+            AsistanceStatusId : getAsistanceStatusId()
         }
         url = "api/Asistances/Register";
         fetch(url, {
@@ -147,7 +174,7 @@
             //console.log(register);
             if(register.isRegister){
                 $("#divEmployee").hide();
-                document.getElementById("employeeNumber").innerHTML = "";
+                document.getElementById("employeeNumber").value = "";
                 document.getElementById("pSecurityQuestion").innerHTML = "";
                 document.getElementById("pName").innerHTML = " ";
                 loggedData();
@@ -165,6 +192,20 @@
             console.log(error);
             anErrorOcurred();
         });
+    }
+
+    function getAsistanceStatusId(){
+        var assistanceStatus;
+        var asistanceStatusId;
+
+        assistanceStatus = document.getElementsByName("AssistanceStatus");
+        for(i=0; i< assistanceStatus.length; i++){
+            if(assistanceStatus[i].checked){
+                asistanceStatusId = assistanceStatus[i].value;
+            }
+        }
+
+        return asistanceStatusId;
     }
 
     function anErrorOcurred(){
