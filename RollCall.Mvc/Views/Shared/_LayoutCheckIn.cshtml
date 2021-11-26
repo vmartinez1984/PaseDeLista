@@ -16,11 +16,11 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="~/css/sb-admin-2.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 
-<body id="page-top">
+<body id="page-top" style="background-image: url(/images/Reloj.jpg); background-size: cover; height: 100%;">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -35,7 +35,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                          <li class="nav-item">
-                            <a class="nav-link text-dark"  asp-controller="Login" asp-action="Index">Login</a>
+                            <a class="nav-link text-dark"  asp-controller="Login" asp-action="Index">Iniciar sesión</a>
                         </li>
                     </ul>
                 </div>
@@ -48,7 +48,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted bg-white">
         <div class="container">
             &copy; 2021 - Pase de lista - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
@@ -63,12 +63,7 @@
     <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="~/vendor/chart.js/Chart.min.js"></script>
-
     <!-- Page level custom scripts -->
-    <script src="~/js/demo/chart-area-demo.js"></script>
-    <script src="~/js/demo/chart-pie-demo.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
      @await RenderSectionAsync("Scripts", required: false)
 </body>

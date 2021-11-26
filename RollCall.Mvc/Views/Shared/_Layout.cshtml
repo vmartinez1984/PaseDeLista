@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@{
+    @using Microsoft.AspNetCore.Http
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+    string userName;
+    userName= HttpContextAccessor.HttpContext.Session.GetString("userName");
+}
+<!DOCTYPE html>
 <html lang="es-mx">
 <head>
     <meta charset="utf-8">
@@ -29,7 +35,7 @@
         <ul class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="Administrators?area=Administrators">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="Administration">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-check"></i>
                 </div>
@@ -41,7 +47,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="administration">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -136,7 +142,9 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    @userName
+                                </span>
                                 @*<img class="img-profile rounded-circle" src="img/undraw_profile.svg">*@
                                 <i class="fas fa-2x fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                             </a>
@@ -203,7 +211,7 @@
                 <div class="modal-body">Seleccione cerrar sesión para salir.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" href="~/Home/Logout">
+                    <a class="btn btn-primary" href="~/Login/Logout">
                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                         Cerrar sesión
                     </a>

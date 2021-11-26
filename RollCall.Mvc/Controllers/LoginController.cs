@@ -27,6 +27,7 @@ namespace RollCall.Mvc.Controllers
 					userDto = await UserBl.LoginAsync(userLogin);
 					if (userDto is null)
 					{
+						ViewBag.Error = "Usuario y/o contraseña no validos";
 						return View();
 					}
 					else

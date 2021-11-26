@@ -41,7 +41,7 @@ namespace RollCall.BusinessLayer
           int users;
           int maxUsers;
 
-          users = -UserDao.Count();
+          users = UserDao.Count();
           maxUsers = ConfigBl.GetMaxUsers();
           if (users == maxUsers)
             isMaximum = true;
