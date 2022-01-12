@@ -1,6 +1,4 @@
 using NUnit.Framework;
-using RollCall.BusinessLayer;
-using RollCall.Dto;
 using RollCall.Persistence.Dao;
 using RollCall.Persistence.Entities;
 using System;
@@ -8,7 +6,7 @@ using System.Collections.Generic;
 
 namespace RollCall.Test
 {
-	public class Tests
+    public class Tests
 	{
 		[SetUp]
 		public void Setup()
@@ -39,8 +37,8 @@ namespace RollCall.Test
 				int month;
 				int year;
 
-				month = 10;
-				year = 2021;
+				month = 1;
+				year = 2022;
 				using (var db = new AppDbContext())
 				{
 					AssistanceLog assistance;
@@ -78,8 +76,8 @@ namespace RollCall.Test
 				int month;
 				int year;
 
-				month = 10;
-				year = 2021;
+				month = 1;
+				year = 2022;
 				using (var db = new AppDbContext())
 				{
 					for (int day = 1; day < 32; day++)
@@ -109,8 +107,8 @@ namespace RollCall.Test
 				int month;
 				int year;
 
-				month = 10;
-				year = 2021;
+				month = 1;
+				year = 2022;
 				using (var db = new AppDbContext())
 				{
 					for (int day = 1; day < 32; day++)
