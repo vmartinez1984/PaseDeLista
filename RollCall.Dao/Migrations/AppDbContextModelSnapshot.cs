@@ -19,7 +19,7 @@ namespace RollCall.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.Area", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.AreaEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +51,7 @@ namespace RollCall.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.AssistanceEntity", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.AssistanceEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,6 +60,9 @@ namespace RollCall.Persistence.Migrations
 
                     b.Property<int>("AssistenceStatusId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("DateRegistration")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -70,13 +73,13 @@ namespace RollCall.Persistence.Migrations
                     b.Property<DateTime?>("Exit")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LunchTimeDeparture")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("LunchTimeReturn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -88,7 +91,7 @@ namespace RollCall.Persistence.Migrations
                     b.ToTable("Assistance");
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.AssistanceLog", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.AssistanceLogEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,11 +101,14 @@ namespace RollCall.Persistence.Migrations
                     b.Property<int>("AssistenceStatusId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DateRegistration")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -113,7 +119,7 @@ namespace RollCall.Persistence.Migrations
                     b.ToTable("AssistanceLog");
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.AssistenceStatus", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.AssistenceStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,7 +158,7 @@ namespace RollCall.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.Config", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.Config", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -183,7 +189,7 @@ namespace RollCall.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            DateRegistration = new DateTime(2021, 11, 11, 20, 48, 13, 10, DateTimeKind.Local).AddTicks(7743),
+                            DateRegistration = new DateTime(2022, 6, 30, 16, 57, 9, 98, DateTimeKind.Local).AddTicks(7491),
                             IsActive = false,
                             Name = "Users",
                             Value = "2"
@@ -191,14 +197,14 @@ namespace RollCall.Persistence.Migrations
                         new
                         {
                             Id = 2,
-                            DateRegistration = new DateTime(2021, 11, 11, 20, 48, 13, 15, DateTimeKind.Local).AddTicks(7017),
+                            DateRegistration = new DateTime(2022, 6, 30, 16, 57, 9, 108, DateTimeKind.Local).AddTicks(5947),
                             IsActive = false,
                             Name = "Employees",
                             Value = "50"
                         });
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.EmployeeEntity", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.EmployeeEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -207,6 +213,9 @@ namespace RollCall.Persistence.Migrations
 
                     b.Property<int?>("AreaId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("DateRegistration")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DischargeDate")
                         .HasColumnType("datetime2");
@@ -237,9 +246,6 @@ namespace RollCall.Persistence.Migrations
                     b.Property<string>("PhotoInBase64")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("Saturday")
                         .HasColumnType("bit");
 
@@ -267,7 +273,7 @@ namespace RollCall.Persistence.Migrations
                     b.ToTable("Employee");
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.HolidayDay", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.HolidayDay", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -299,7 +305,7 @@ namespace RollCall.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.RolEntity", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.RolEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -337,18 +343,18 @@ namespace RollCall.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.Schedule", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.ScheduleEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("DateRegistration")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
@@ -364,14 +370,14 @@ namespace RollCall.Persistence.Migrations
                         new
                         {
                             Id = 1,
+                            DateRegistration = new DateTime(2022, 6, 30, 16, 57, 9, 110, DateTimeKind.Local).AddTicks(112),
                             IsActive = true,
-                            RegistrationDate = new DateTime(2021, 11, 11, 20, 48, 13, 19, DateTimeKind.Local).AddTicks(7922),
-                            StartTime = new DateTime(2021, 11, 11, 8, 0, 0, 0, DateTimeKind.Unspecified),
-                            StopTime = new DateTime(2021, 11, 11, 16, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartTime = new DateTime(2022, 6, 30, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            StopTime = new DateTime(2022, 6, 30, 16, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.SecurityQuestion", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.SecurityQuestionEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -381,6 +387,9 @@ namespace RollCall.Persistence.Migrations
                     b.Property<string>("Answer")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("DateRegistration")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -392,9 +401,6 @@ namespace RollCall.Persistence.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
@@ -402,12 +408,15 @@ namespace RollCall.Persistence.Migrations
                     b.ToTable("SecurityQuestions");
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.User", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.UserEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateRegistration")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DischargeDate")
                         .HasColumnType("datetime2");
@@ -435,9 +444,6 @@ namespace RollCall.Persistence.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("RolId")
                         .HasColumnType("int");
 
@@ -451,25 +457,25 @@ namespace RollCall.Persistence.Migrations
                         new
                         {
                             Id = 1,
+                            DateRegistration = new DateTime(2022, 6, 30, 16, 57, 9, 110, DateTimeKind.Local).AddTicks(6400),
                             Email = "administrador@administrador.com",
                             IsActive = true,
                             LastName = "Admin",
                             Name = "Admin",
                             Password = "123456",
-                            RegistrationDate = new DateTime(2021, 11, 11, 20, 48, 13, 21, DateTimeKind.Local).AddTicks(3397),
                             RolId = 1
                         });
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.AssistanceEntity", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.AssistanceEntity", b =>
                 {
-                    b.HasOne("RollCall.Persistence.Entities.AssistenceStatus", "AssistenceStatus")
+                    b.HasOne("RollCall.Core.Entities.AssistenceStatus", "AssistenceStatus")
                         .WithMany()
                         .HasForeignKey("AssistenceStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RollCall.Persistence.Entities.EmployeeEntity", "Employee")
+                    b.HasOne("RollCall.Core.Entities.EmployeeEntity", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -480,15 +486,15 @@ namespace RollCall.Persistence.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.AssistanceLog", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.AssistanceLogEntity", b =>
                 {
-                    b.HasOne("RollCall.Persistence.Entities.AssistenceStatus", "AssistenceStatus")
+                    b.HasOne("RollCall.Core.Entities.AssistenceStatus", "AssistenceStatus")
                         .WithMany()
                         .HasForeignKey("AssistenceStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RollCall.Persistence.Entities.EmployeeEntity", "Employee")
+                    b.HasOne("RollCall.Core.Entities.EmployeeEntity", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -499,13 +505,13 @@ namespace RollCall.Persistence.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.EmployeeEntity", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.EmployeeEntity", b =>
                 {
-                    b.HasOne("RollCall.Persistence.Entities.Area", "Area")
+                    b.HasOne("RollCall.Core.Entities.AreaEntity", "Area")
                         .WithMany()
                         .HasForeignKey("AreaId");
 
-                    b.HasOne("RollCall.Persistence.Entities.Schedule", "Schedule")
+                    b.HasOne("RollCall.Core.Entities.ScheduleEntity", "Schedule")
                         .WithMany()
                         .HasForeignKey("ScheduleId");
 
@@ -514,9 +520,9 @@ namespace RollCall.Persistence.Migrations
                     b.Navigation("Schedule");
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.SecurityQuestion", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.SecurityQuestionEntity", b =>
                 {
-                    b.HasOne("RollCall.Persistence.Entities.EmployeeEntity", "Employee")
+                    b.HasOne("RollCall.Core.Entities.EmployeeEntity", "Employee")
                         .WithMany("ListSecurityQuestions")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -525,9 +531,9 @@ namespace RollCall.Persistence.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.User", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.UserEntity", b =>
                 {
-                    b.HasOne("RollCall.Persistence.Entities.RolEntity", "Rol")
+                    b.HasOne("RollCall.Core.Entities.RolEntity", "Rol")
                         .WithMany()
                         .HasForeignKey("RolId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -536,7 +542,7 @@ namespace RollCall.Persistence.Migrations
                     b.Navigation("Rol");
                 });
 
-            modelBuilder.Entity("RollCall.Persistence.Entities.EmployeeEntity", b =>
+            modelBuilder.Entity("RollCall.Core.Entities.EmployeeEntity", b =>
                 {
                     b.Navigation("ListSecurityQuestions");
                 });

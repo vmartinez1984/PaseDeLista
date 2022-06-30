@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -16,7 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RollCall.BusinessLayer\RollCall.BusinessLayer.csproj" />
     <ProjectReference Include="..\RollCall.Dao\RollCall.Persistence.csproj" />
-    <ProjectReference Include="..\RollCall.Dto\RollCall.Dto.csproj" />
+    <ProjectReference Include="..\RollCall.Core\RollCall.Core.csproj" />
   </ItemGroup>
 
 </Project>

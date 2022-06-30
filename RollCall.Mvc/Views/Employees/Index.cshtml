@@ -1,4 +1,5 @@
-﻿@model RollCall.Dto.ListEmployeeDto
+﻿@using RollCall.Core.Dtos.Outputs;
+@model ListEmployeeDto
 
 @{
     ViewData["Title"] = "Empleados";
@@ -6,7 +7,7 @@
 
 <h1 class="text-info">Lista de empleados</h1>
 @{
-    await Html.RenderPartialAsync("_FormSearchEmployee", new RollCall.Dto.SearchEmployeeDto());
+    await Html.RenderPartialAsync("_FormSearchEmployee", new SearchEmployeeDto());
 }
 
 @if (ViewBag.IsMaximun)

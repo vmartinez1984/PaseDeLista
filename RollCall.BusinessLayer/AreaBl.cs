@@ -1,104 +1,115 @@
-﻿using RollCall.BusinessLayer.Mappers;
-using RollCall.Dto;
-using RollCall.Persistence.Dao;
-using RollCall.Persistence.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using RollCall.Core.Interfaces.IRepositories;
+using RollCall.Core.Entities;
+using AutoMapper;
+using RollCall.Core.Dtos.Inputs;
+using RollCall.Core.Dtos.Outputs;
+using RollCall.Core.Interfaces.InterfacesBl;
 
 namespace RollCall.BusinessLayer
 {
-	public class AreaBl
-	{
-		public static async Task<List<AreaDto>> GetAllAsync(bool isActive = true)
-		{
-			try
-			{
-				List<AreaDto> list;
-				List<Area> entities;
+    public class AreaBl : IAreaBl
+    {
+        private IRepository _repository;
+        private IMapper _mapper;
 
-				entities = await AreaDao.GetAllAsync(isActive);
-				list = AreaMapper.GetAll(entities);
+        public AreaBl(IRepository repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+        }
 
-				return list;
-			}
-			catch (Exception)
-			{
+        public async Task<List<AreaDtoOut>> GetAsync()
+        {
+            try
+            {
+                List<AreaDtoOut> list;
+                List<AreaEntity> entities;
 
-				throw;
-			}
-		}
+                entities = await _repository.Area.GetAsync();
+                list = _mapper.Map<List<AreaDtoOut>>(entities);
 
-		public static async Task<int> AddAsync(AreaDto dto)
-		{
-			try
-			{
-				Area entity;
+                return list;
+            }
+            catch (Exception)
+            {
 
-				entity = AreaMapper.Get(dto);
-				entity.IsActive = true;
-				dto.Id = await AreaDao.AddAsync(entity);
+                throw;
+            }
+        }
 
-				return dto.Id;
-			}
-			catch (Exception)
-			{
+        public async Task<int> AddAsync(AreaDtoIn dto)
+        {
+            try
+            {
+                AreaEntity entity;
 
-				throw;
-			}
-		}
+                entity = _mapper.Map<AreaEntity>(dto);
+                entity.Id = await _repository.Area.AddAsync(entity);
 
-		public static async Task<AreaDto> GetAsync(int id)
-		{
-			try
-			{
-				AreaDto dto;
-				Area entity;
+                return entity.Id;
+            }
+            catch (Exception)
+            {
 
-				entity = await AreaDao.GetAsync(id);
-				dto = AreaMapper.Get(entity);
+                throw;
+            }
+        }
 
-				return dto;
-			}
-			catch (Exception)
-			{
+        public async Task<AreaDtoIn> GetAsync(int id)
+        {
+            try
+            {
+                AreaDtoIn dto;
+                AreaEntity entity;
 
-				throw;
-			}
-		}
+                entity = await _repository.Area.GetAsync(id);
+                dto = _mapper.Map<AreaDtoIn>(entity);
 
-		public static async Task UpdateAsync(AreaDto dto)
-		{
-			try
-			{
-				Area entity;
+                return dto;
+            }
+            catch (Exception)
+            {
 
-				entity = AreaMapper.Get(dto);
-				entity.IsActive = true;
-				await AreaDao.Update(entity);
-			}
-			catch (Exception)
-			{
+                throw;
+            }
+        }
 
-				throw;
-			}
-		}
+        public async Task UpdateAsync(AreaDtoIn dto, int id)
+        {
+            try
+            {
+                AreaEntity entity;
 
-		public static async Task DeleteAsync(int id)
-		{
-			try
-			{
-				Area entity;
+                entity = await _repository.Area.GetAsync(id);
+                entity.Name = dto.Name;
+                await _repository.Area.UpdateAsync(entity);
+            }
+            catch (Exception)
+            {
 
-				entity = await AreaDao.GetAsync(id);
-				entity.IsActive = false;
-				await AreaDao.Update(entity);
-			}
-			catch (Exception)
-			{
+                throw;
+            }
+        }
 
-				throw;
-			}
-		}
-	}
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                await _repository.Area.DeleteAsync(id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        Task<AreaDtoOut> IBaseBl<AreaDtoIn, AreaDtoOut>.GetAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }//end class
 }

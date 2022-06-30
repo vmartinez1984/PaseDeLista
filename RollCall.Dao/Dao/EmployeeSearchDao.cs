@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RollCall.Core.Entities;
 using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
@@ -42,21 +43,21 @@ namespace RollCall.Persistence.Dao
 					{
 						entities = await db.Employee.Include(x => x.Schedule).Include(x => x.Area)
 							.Where(x => x.IsActive == this.SearchEmployee.IsActive)
-							.Where(x=> x.RegistrationDate >= this.SearchEmployee.DateStart && x.RegistrationDate <= ((DateTime)this.SearchEmployee.DateStop).AddDays(1))
+							.Where(x=> x.DateRegistration >= this.SearchEmployee.DateStart && x.DateRegistration <= ((DateTime)this.SearchEmployee.DateStop).AddDays(1))
 							.OrderBy(x => x.Id)
 							.Skip((this.SearchEmployee.Page - 1) * this.SearchEmployee.NumberOfRecordsPerPage)
 							.Take(this.SearchEmployee.NumberOfRecordsPerPage)
 							.ToListAsync();
 						this.CountRegister = await db.Employee
 							.Where(x => x.IsActive == this.SearchEmployee.IsActive)
-							.Where(x => x.RegistrationDate >= this.SearchEmployee.DateStart && x.RegistrationDate <= ((DateTime)this.SearchEmployee.DateStop).AddDays(1))
+							.Where(x => x.DateRegistration >= this.SearchEmployee.DateStart && x.DateRegistration <= ((DateTime)this.SearchEmployee.DateStop).AddDays(1))
 							.CountAsync();
 					}
 					else if ((!string.IsNullOrEmpty(this.SearchEmployee.Name) || !string.IsNullOrEmpty(this.SearchEmployee.LastName)) && (this.SearchEmployee.DateStart != null && this.SearchEmployee.DateStop != null))
 					{
 						entities = await db.Employee.Include(x => x.Schedule).Include(x => x.Area)
 							.Where(x => x.IsActive == this.SearchEmployee.IsActive)
-							.Where(x => x.RegistrationDate >= this.SearchEmployee.DateStart && x.RegistrationDate < ((DateTime)this.SearchEmployee.DateStop).AddDays(1))
+							.Where(x => x.DateRegistration >= this.SearchEmployee.DateStart && x.DateRegistration < ((DateTime)this.SearchEmployee.DateStop).AddDays(1))
 							.Where(x => x.Name.Contains(this.SearchEmployee.Name) || x.LastName.Contains(this.SearchEmployee.LastName))
 							.OrderBy(x => x.Id)
 							.Skip((this.SearchEmployee.Page - 1) * this.SearchEmployee.NumberOfRecordsPerPage)
@@ -64,7 +65,7 @@ namespace RollCall.Persistence.Dao
 							.ToListAsync();
 						this.CountRegister = await db.Employee
 							.Where(x => x.IsActive == this.SearchEmployee.IsActive)
-							.Where(x => x.RegistrationDate >= this.SearchEmployee.DateStart && x.RegistrationDate < ((DateTime)this.SearchEmployee.DateStop).AddDays(1))
+							.Where(x => x.DateRegistration >= this.SearchEmployee.DateStart && x.DateRegistration < ((DateTime)this.SearchEmployee.DateStop).AddDays(1))
 							.Where(x => x.Name.Contains(this.SearchEmployee.Name) || x.LastName.Contains(this.SearchEmployee.LastName))
 							.CountAsync();
 					}

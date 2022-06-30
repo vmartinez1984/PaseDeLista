@@ -1,104 +1,79 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RollCall.Core.Entities;
+using RollCall.Core.Interfaces.IRepositories;
 using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RollCall.Persistence.Dao
 {
-	public class SecurityQuestionDao
-	{
-		public static async Task AddAsync(SecurityQuestion entity)
-		{
-			try
-			{
-				using (var db = new AppDbContext())
-				{
-					db.SecurityQuestions.Add(entity);
-					await db.SaveChangesAsync();
-				}
-			}
-			catch (Exception)
-			{
+    public class SecurityQuestionDao: ISecurityQuestionRepository
+    {
+        private AppDbContext _appDbContext;
 
-				throw;
-			}
-		}
+        public SecurityQuestionDao(AppDbContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
 
-		public static async Task<SecurityQuestion> GetAsync(int id)
-		{
-			try
-			{
-				SecurityQuestion entity;
+        public async Task<SecurityQuestionEntity> GetAsync(int id)
+        {
+            try
+            {
+                SecurityQuestionEntity entity;
 
-				using (var db = new AppDbContext())
-				{
-					entity = await db.SecurityQuestions.FindAsync(id);
-				}
+                entity = await _appDbContext.SecurityQuestions.FindAsync(id);
 
-				return entity;
-			}
-			catch (Exception)
-			{
+                return entity;
+            }
+            catch (Exception)
+            {
 
-				throw;
-			}
-		}
+                throw;
+            }
+        }
 
-		public static async Task UpdateAsync(SecurityQuestion entity)
-		{
-			try
-			{
-				using (var db = new AppDbContext())
-				{
-					db.Entry(entity).State = EntityState.Modified;
-					await db.SaveChangesAsync();
-				}
-			}
-			catch (Exception)
-			{
+        public async Task UpdateAsync(SecurityQuestionEntity entity)
+        {
+            try
+            {
+                _appDbContext.Entry(entity).State = EntityState.Modified;
+                await _appDbContext.SaveChangesAsync();
 
-				throw;
-			}
-		}
+            }
+            catch (Exception)
+            {
 
-		public static async Task<List<SecurityQuestion>> GetAllAsync(int employeeId, bool isActive = true)
-		{
-			try
-			{
-				List<SecurityQuestion> list;
+                throw;
+            }
+        }
 
-				using (var db = new AppDbContext())
-				{
-					list = await db.SecurityQuestions.Where(x => x.IsActive == isActive && x.EmployeeId == employeeId).ToListAsync();
-				}
+        public async Task<int> AddAsync(SecurityQuestionEntity entity)
+        {
+            try
+            {
 
-				return list;
-			}
-			catch (Exception)
-			{
+                _appDbContext.SecurityQuestions.Add(entity);
+                await _appDbContext.SaveChangesAsync();
 
-				throw;
-			}
-		}
+                return entity.Id;
+            }
+            catch (Exception)
+            {
 
-		public static void Add(SecurityQuestion entity)
-		{
-			try
-			{
-				using (var db = new AppDbContext())
-				{
-					db.SecurityQuestions.Add(entity);
-					db.SaveChanges();
-				}
-			}
-			catch (Exception)
-			{
+                throw;
+            }
+        }
 
-				throw;
-			}
-		}
-	}
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SecurityQuestionEntity>> GetAllAsync(int employeeId)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

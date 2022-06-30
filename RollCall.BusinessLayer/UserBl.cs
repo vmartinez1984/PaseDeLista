@@ -1,174 +1,181 @@
-﻿using RollCall.BusinessLayer.Mappers;
+﻿using AutoMapper;
+using RollCall.Core.Dtos.Inputs;
+using RollCall.Core.Dtos.Outputs;
+using RollCall.Core.Entities;
+using RollCall.Core.Interfaces.IRepositories;
 using RollCall.Dto;
-using RollCall.Persistence.Dao;
-using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RollCall.BusinessLayer
 {
-  public class UserBl
-  {
-    public static async Task<List<UserDto>> GetAllAsync(bool isActive = true)
+    public class UserBl
     {
-      try
-      {
-        List<UserDto> list;
-        List<User> entities;
 
-        entities = await UserDao.GetAllAsync(isActive);
-        list = UserMapper.GetAll(entities);
+        private IRepository _repository;
+        private IMapper _mapper;
 
-        return list;
-      }
-      catch (Exception)
-      {
-
-        throw;
-      }
-    }
-
-    public static async Task<bool> IsMaximum()
-    {
-      try
-      {
-        bool isMaximum;
-
-        isMaximum = false;
-        await Task.Run(() =>
+        public UserBl(IRepository repository, IMapper mapper)
         {
-          int users;
-          int maxUsers;
-
-          users = UserDao.Count();
-          maxUsers = ConfigBl.GetMaxUsers();
-          if (users == maxUsers)
-            isMaximum = true;
-          else if (users < maxUsers)
-            isMaximum = false;
-          else
-            isMaximum = true;
-        });
-
-        return isMaximum;
-      }
-      catch (Exception)
-      {
-
-        throw;
-      }
-    }
-
-    public static async Task<UserDto> GetAsync(int id)
-    {
-      try
-      {
-        UserDto item;
-        User entity;
-
-        entity = await UserDao.GetAsync(id);
-        item = UserMapper.Get(entity);
-
-        return item;
-      }
-      catch (Exception)
-      {
-
-        throw;
-      }
-    }
-
-    public static async Task<int> AddAsync(UserDto dto)
-    {
-      try
-      {
-        if (IsMaximum().Result)
-        {
-          throw new Exception("Ha alcanzado su limite máximo de usuarios, contacte a su ejecutivo de cuenta.");
+            _repository = repository;
+            _mapper = mapper;
         }
-        User entity;
 
-        entity = UserMapper.Get(dto);
-        await UserDao.AddAsync(entity);
+        public async Task<List<UserDto>> GetAllAsync(bool isActive = true)
+        {
+            try
+            {
+                List<UserDto> list;
+                List<UserEntity> entities;
 
-        return entity.Id;
-      }
-      catch (Exception)
-      {
+                entities = await _repository.User.GetAsync();
+                list = _mapper.Map<List<UserDto>>(entities);
 
-        throw;
-      }
+                return list;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<bool> IsMaximum()
+        {
+            try
+            {
+                bool isMaximum;
+
+                isMaximum = false;
+                await Task.Run(async () =>
+                {
+                    int users;
+                    int maxUsers;
+
+                    users = await _repository.User.CountAsync();
+                    maxUsers = ConfigBl.GetMaxUsers();
+                    if (users == maxUsers)
+                        isMaximum = true;
+                    else if (users < maxUsers)
+                        isMaximum = false;
+                    else
+                        isMaximum = true;
+                });
+
+                return isMaximum;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<UserDto> GetAsync(int id)
+        {
+            try
+            {
+                UserDto item;
+                UserEntity entity;
+
+                entity = await _repository.User.GetAsync(id);
+                item = _mapper.Map<UserDto>(entity);
+
+                return item;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<int> AddAsync(UserDto dto)
+        {
+            try
+            {
+                if (IsMaximum().Result)
+                {
+                    throw new Exception("Ha alcanzado su limite máximo de usuarios, contacte a su ejecutivo de cuenta.");
+                }
+                UserEntity entity;
+
+                entity = _mapper.Map<UserEntity>(dto);
+                await _repository.User.AddAsync(entity);
+
+                return entity.Id;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task UpdateAsync(UserDto dto)
+        {
+            try
+            {
+                UserEntity entity;
+
+                entity = _mapper.Map<UserEntity>(dto);
+                entity.IsActive = true;
+                await _repository.User.UpdateAsync(entity);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<int> CountAsync()
+        {
+            try
+            {
+                return await _repository.User.CountAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<UserDto> LoginAsync(UserLoginDto userLoginDto)
+        {
+            try
+            {
+                UserDto dto;
+                UserEntity entity;
+
+                entity = await _repository.User.GetAsync(userLoginDto.Email);
+                if (entity == null)
+                    dto = null;
+                else
+                    dto = _mapper.Map<UserDto>(entity);
+
+                return dto;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task DeleteAsync(UserDto dto)
+        {
+            try
+            {
+                await _repository.User.DeleteAsync(dto.Id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
-
-    public static async Task UpdateAsync(UserDto dto)
-    {
-      try
-      {
-        User entity;
-
-        entity = UserMapper.Get(dto);
-        entity.IsActive = true;
-        await UserDao.UpdateAsync(entity);
-      }
-      catch (Exception)
-      {
-
-        throw;
-      }
-    }
-
-    public static int Count()
-    {
-      try
-      {
-        return UserDao.Count();
-      }
-      catch (Exception)
-      {
-
-        throw;
-      }
-    }
-
-    public static async Task<UserDto> LoginAsync(UserLoginDto userLoginDto)
-    {
-      try
-      {
-        UserDto dto;
-        User entity;
-
-        entity = await UserDao.Login(userLoginDto.Email, userLoginDto.Password);
-        if (entity == null)
-          dto = null;
-        else
-          dto = UserMapper.Get(entity);
-
-        return dto;
-      }
-      catch (Exception)
-      {
-
-        throw;
-      }
-    }
-
-    public static async Task DeleteAsync(UserDto dto)
-    {
-      try
-      {
-        User user;
-
-        user = await UserDao.GetAsync(dto.Id);
-        user.IsActive = false;
-        user.DischargeDate = DateTime.Now;
-        await UserDao.UpdateAsync(user);
-      }
-      catch (Exception)
-      {
-
-        throw;
-      }
-    }
-  }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RollCall.Core.Entities;
 using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace RollCall.Persistence.Dao
 {
 	public class AssistanceDao
 	{
-		public static async Task<List<AssistanceLog>> GetAllAsync()
+		public static async Task<List<AssistanceLogEntity>> GetAllAsync()
 		{
 			try
 			{
-				List<AssistanceLog> list;
+				List<AssistanceLogEntity> list;
 
 				using (var db = new AppDbContext())
 				{
@@ -29,15 +30,15 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<List<AssistanceLog>> GetAllNowAsync()
+		public static async Task<List<AssistanceLogEntity>> GetAllNowAsync()
 		{
 			try
 			{
-				List<AssistanceLog> list;
+				List<AssistanceLogEntity> list;
 
 				using (var db = new AppDbContext())
 				{
-					list = await db.AssistanceLog.Where(x => x.RegistrationDate.Date == DateTime.Now.Date).ToListAsync();
+					list = await db.AssistanceLog.Where(x => x.DateRegistration.Date == DateTime.Now.Date).ToListAsync();
 				}
 
 				return list;
@@ -49,15 +50,15 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<List<AssistanceLog>> GetAllByDate(DateTime date)
+		public static async Task<List<AssistanceLogEntity>> GetAllByDate(DateTime date)
 		{
 			try
 			{
-				List<AssistanceLog> list;
+				List<AssistanceLogEntity> list;
 
 				using (var db = new AppDbContext())
 				{
-					list = await db.AssistanceLog.Where(x => x.RegistrationDate.Date >= date.Date).ToListAsync();
+					list = await db.AssistanceLog.Where(x => x.DateRegistration.Date >= date.Date).ToListAsync();
 				}
 
 				return list;
@@ -69,18 +70,18 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<List<AssistanceLog>> GetAllByDates(DateTime startDate, DateTime stopDate)
+		public static async Task<List<AssistanceLogEntity>> GetAllByDates(DateTime startDate, DateTime stopDate)
 		{
 			try
 			{
-				List<AssistanceLog> list;
+				List<AssistanceLogEntity> list;
 
 				using (var db = new AppDbContext())
 				{
 					list = await db.AssistanceLog.Where(x =>
-					x.RegistrationDate.Date >= startDate.Date
+					x.DateRegistration.Date >= startDate.Date
 					&&
-					x.RegistrationDate.Date <= stopDate.Date
+					x.DateRegistration.Date <= stopDate.Date
 					).ToListAsync();
 				}
 
@@ -93,18 +94,18 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<List<AssistanceLog>> GetAll(int month, int year)
+		public static async Task<List<AssistanceLogEntity>> GetAll(int month, int year)
 		{
 			try
 			{
-				List<AssistanceLog> list;
+				List<AssistanceLogEntity> list;
 
 				using (var db = new AppDbContext())
 				{
 					list = await db.AssistanceLog.Where(x =>
-					x.RegistrationDate.Month == month
+					x.DateRegistration.Month == month
 					&&
-					x.RegistrationDate.Year == year
+					x.DateRegistration.Year == year
 					).ToListAsync();
 				}
 
@@ -117,20 +118,20 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<List<AssistanceLog>> GetAllAsync(int userId, int month, int year)
+		public static async Task<List<AssistanceLogEntity>> GetAllAsync(int userId, int month, int year)
 		{
 			try
 			{
-				List<AssistanceLog> list;
+				List<AssistanceLogEntity> list;
 
 				using (var db = new AppDbContext())
 				{
 					list = await db.AssistanceLog.Where(x =>
 					x.EmployeeId == userId
 					&&
-					x.RegistrationDate.Month == month
+					x.DateRegistration.Month == month
 					&&
-					x.RegistrationDate.Year == year
+					x.DateRegistration.Year == year
 					).ToListAsync();
 				}
 
@@ -143,11 +144,11 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<List<AssistanceLog>> GetAllByAreaId(int areaId, int month, int year)
+		public static async Task<List<AssistanceLogEntity>> GetAllByAreaId(int areaId, int month, int year)
 		{
 			try
 			{
-				List<AssistanceLog> list;
+				List<AssistanceLogEntity> list;
 
 				using (var db = new AppDbContext())
 				{
@@ -156,9 +157,9 @@ namespace RollCall.Persistence.Dao
 					.Where(x =>
 					x.Employee.AreaId == areaId
 					&&
-					x.RegistrationDate.Month == month
+					x.DateRegistration.Month == month
 					&&
-					x.RegistrationDate.Year == year
+					x.DateRegistration.Year == year
 					).ToListAsync();
 				}
 
@@ -171,11 +172,11 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<List<AssistanceLog>> GetAllByScheduleId(int scheduleId, int month, int year)
+		public static async Task<List<AssistanceLogEntity>> GetAllByScheduleId(int scheduleId, int month, int year)
 		{
 			try
 			{
-				List<AssistanceLog> list;
+				List<AssistanceLogEntity> list;
 
 				using (var db = new AppDbContext())
 				{
@@ -184,9 +185,9 @@ namespace RollCall.Persistence.Dao
 					.Where(x =>
 					x.Employee.ScheduleId == scheduleId
 					&&
-					x.RegistrationDate.Month == month
+					x.DateRegistration.Month == month
 					&&
-					x.RegistrationDate.Year == year
+					x.DateRegistration.Year == year
 					).ToListAsync();
 				}
 
@@ -199,11 +200,11 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<List<AssistanceLog>> GetAllByAreaIdAndSheduleId(int areaId, int scheduleId, int month, int year)
+		public static async Task<List<AssistanceLogEntity>> GetAllByAreaIdAndSheduleId(int areaId, int scheduleId, int month, int year)
 		{
 			try
 			{
-				List<AssistanceLog> list;
+				List<AssistanceLogEntity> list;
 
 				using (var db = new AppDbContext())
 				{
@@ -212,9 +213,9 @@ namespace RollCall.Persistence.Dao
 					.Where(x =>
 					x.Employee.AreaId == areaId && x.Employee.ScheduleId == scheduleId
 					&&
-					x.RegistrationDate.Month == month
+					x.DateRegistration.Month == month
 					&&
-					x.RegistrationDate.Year == year
+					x.DateRegistration.Year == year
 					).ToListAsync();
 				}
 
@@ -227,11 +228,11 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<List<AssistanceLog>> GetAllAsync(int userId)
+		public static async Task<List<AssistanceLogEntity>> GetAllAsync(int userId)
 		{
 			try
 			{
-				List<AssistanceLog> list;
+				List<AssistanceLogEntity> list;
 
 				using (var db = new AppDbContext())
 				{
@@ -247,7 +248,7 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<int> AddAsync(AssistanceLog item)
+		public static async Task<int> AddAsync(AssistanceLogEntity item)
 		{
 			try
 			{

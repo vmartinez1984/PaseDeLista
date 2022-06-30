@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RollCall.Core.Entities;
+using RollCall.Core.Interfaces.IRepositories;
 using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,82 +9,82 @@ using System.Threading.Tasks;
 
 namespace RollCall.Persistence.Dao
 {
-	public class ScheduleDao
-	{
-		public static async Task<List<Schedule>> GetAllAsync(bool isActive)
-		{
-			try
-			{
-				List<Schedule> list;
+    public class ScheduleDao : IScheduleRepository
+    {
+        private AppDbContext _appDbContext;
 
-				using (var db = new AppDbContext())
-				{
-					list = await db.Schedule.Where(x => x.IsActive == isActive).ToListAsync();
-				}
+        public ScheduleDao(AppDbContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
+		
+        public async Task<List<ScheduleEntity>> GetAsync()
+        {
+            try
+            {
+                List<ScheduleEntity> list;
 
-				return list;
-			}
-			catch (Exception)
-			{
+                list = await _appDbContext.Schedule.Where(x => x.IsActive).ToListAsync();
 
-				throw;
-			}
-		}
+                return list;
+            }
+            catch (Exception)
+            {
 
-		public static async Task<Schedule> GetAsync(int id)
-		{
-			try
-			{
-				Schedule item;
+                throw;
+            }
+        }
 
-				using (var db = new AppDbContext())
-				{
-					item = await db.Schedule.Where(x => x.Id == id).FirstOrDefaultAsync();
-				}
+        public async Task<ScheduleEntity> GetAsync(int id)
+        {
+            try
+            {
+                ScheduleEntity item;
 
-				return item;
-			}
-			catch (Exception)
-			{
+                item = await _appDbContext.Schedule.Where(x => x.Id == id).FirstOrDefaultAsync();
 
-				throw;
-			}
-		}
+                return item;
+            }
+            catch (Exception)
+            {
 
-		public static async Task<int> AddAsync(Schedule item)
-		{
-			try
-			{
-				using (var db = new AppDbContext())
-				{
-					db.Schedule.Add(item);
-					await db.SaveChangesAsync();
-				}
+                throw;
+            }
+        }
 
-				return item.Id;
-			}
-			catch (Exception)
-			{
+        public async Task<int> AddAsync(ScheduleEntity item)
+        {
+            try
+            {
+                _appDbContext.Schedule.Add(item);
+                await _appDbContext.SaveChangesAsync();
 
-				throw;
-			}
-		}
+                return item.Id;
+            }
+            catch (Exception)
+            {
 
-		public static void Update(Schedule item)
-		{
-			try
-			{
-				using (var db = new AppDbContext())
-				{
-					db.Entry<Schedule>(item).State = EntityState.Modified;
-					db.SaveChanges();
-				}
-			}
-			catch (Exception)
-			{
+                throw;
+            }
+        }
 
-				throw;
-			}
-		}
-	}
+        public async Task UpdateAsync(ScheduleEntity item)
+        {
+            try
+            {
+                _appDbContext.Entry<ScheduleEntity>(item).State = EntityState.Modified;
+                await _appDbContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

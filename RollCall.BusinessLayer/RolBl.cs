@@ -1,4 +1,5 @@
-﻿using RollCall.Dto;
+﻿using RollCall.Core.Dtos.Outputs;
+using RollCall.Dto;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

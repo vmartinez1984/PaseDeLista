@@ -1,10 +1,11 @@
-﻿@using RollCall.Dto;
-@model List<SecurityQuestionDto>
+﻿@using RollCall.Core.Dtos.Outputs;
+@using RollCall.Core.Dtos.Inputs;
+@model List<SecurityQuestionDtoOut>
 @{
     ViewData["Title"] = "Index";
 }
 
 <div class="container">
-    @await Html.PartialAsync("_Create",new SecurityQuestionDto())
+    @await Html.PartialAsync("_Create",new SecurityQuestionDtoIn())
     @await Html.PartialAsync("_List", Model)
 </div>

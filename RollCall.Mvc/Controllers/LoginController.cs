@@ -1,73 +1,82 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RollCall.BusinessLayer;
+using RollCall.Core.Dtos.Inputs;
+using RollCall.Core.Dtos.Outputs;
+using RollCall.Core.Interfaces.InterfacesBl;
 using RollCall.Dto;
 using System;
 using System.Threading.Tasks;
 
 namespace RollCall.Mvc.Controllers
 {
-	public class LoginController : Controller
-	{
-		[HttpGet]
-		public IActionResult Index()
-		{
-			return View();
-		}
+    public class LoginController : Controller
+    {
+        private IUnitOfWorkBl _unitOfWorkBl;
 
-		[HttpPost]
-		public async Task<IActionResult> Index(UserLoginDto userLogin)
-		{
-			try
-			{
-				if (ModelState.IsValid)
-				{
-					UserDto userDto;
+        public LoginController(IUnitOfWorkBl unitOfWorkBl)
+        {
+            _unitOfWorkBl = unitOfWorkBl;
+        }
 
-					userDto = await UserBl.LoginAsync(userLogin);
-					if (userDto is null)
-					{
-						ViewBag.Error = "Usuario y/o contraseña no validos";
-						return View();
-					}
-					else
-					{
-						HttpContext.Session.SetInt32("userId", userDto.Id);
-						HttpContext.Session.SetInt32("userRolId", userDto.RolId);
-						HttpContext.Session.SetString("userName", $"{userDto.Name} {userDto.LastName}");
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
 
-						switch (userDto.RolId)
-						{
-							case Rol.Administrador:
-								return RedirectToAction("Index", "Administration");
-								//break;
-							case Rol.Empleado:
-								return RedirectToAction("Index", "EmployeeAssistance", new { area = "Employees" });
-								//break;
-							default:
-								return RedirectToAction("Index", "Home");
-								//break;
-						}
-					}
-				}
-				else
-				{
-					return View();
-				}
-			}
-			catch (Exception)
-			{
+        [HttpPost]
+        public async Task<IActionResult> Index(UserLoginDto userLogin)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    UserDto userDto;
 
-				throw;
-			}
-		}
+                    userDto = await _unitOfWorkBl.Login.LoginAsync(userLogin);
+                    if (userDto is null)
+                    {
+                        ViewBag.Error = "Usuario y/o contraseña no validos";
+                        return View();
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetInt32("userId", userDto.Id);
+                        HttpContext.Session.SetInt32("userRolId", userDto.RolId);
+                        HttpContext.Session.SetString("userName", $"{userDto.Name} {userDto.LastName}");
 
-		[HttpGet]
-		public IActionResult LogOut()
-		{
-			HttpContext.Session.Clear();
+                        switch (userDto.RolId)
+                        {
+                            case Rol.Administrador:
+                                return RedirectToAction("Index", "Administration");
+                            //break;
+                            case Rol.Empleado:
+                                return RedirectToAction("Index", "EmployeeAssistance", new { area = "Employees" });
+                            //break;
+                            default:
+                                return RedirectToAction("Index", "Home");
+                                //break;
+                        }
+                    }
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
 
-			return RedirectToAction("Index");
-		}
-	}
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public IActionResult LogOut()
+        {
+        	HttpContext.Session.Clear();
+
+        	return RedirectToAction("Index");
+        }
+    }
 }

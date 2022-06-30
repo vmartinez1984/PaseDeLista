@@ -1,125 +1,130 @@
-﻿using RollCall.BusinessLayer.Mappers;
+﻿using AutoMapper;
+using RollCall.Core.Entities;
+using RollCall.Core.Interfaces.IRepositories;
 using RollCall.Dto;
 using RollCall.Persistence.Dao;
-using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RollCall.BusinessLayer
 {
-	public class ScheduleBl
-	{
-		public static async Task<int> AddAsync(ScheduleDto dto)
-		{
-			try
-			{
-				Schedule entity;
+    public class ScheduleBl
+    {
+        private IRepository _repository;
+        private IMapper _mapper;
 
-				entity = ScheduleMapper.Get(dto);
-				entity.IsActive = true;
-				entity.RegistrationDate = DateTime.Now;
-				await ScheduleDao.AddAsync(entity);
+        public ScheduleBl(IRepository repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+        }
 
-				return entity.Id;
-			}
-			catch (Exception)
-			{
+        public async Task<int> AddAsync(ScheduleDto dto)
+        {
+            try
+            {
+                ScheduleEntity entity;
 
-				throw;
-			}
-		}
+                entity = _mapper.Map<ScheduleEntity>(dto);
 
-		public static async Task DeleteAsync(ScheduleDto dto)
-		{
-			try
-			{
-				Schedule entity;
+                await _repository.Schedule.AddAsync(entity);
 
-				entity = await ScheduleDao.GetAsync(dto.Id);
-				entity.IsActive = false;
-				ScheduleDao.Update(entity);
-			}
-			catch (Exception)
-			{
+                return entity.Id;
+            }
+            catch (Exception)
+            {
 
-				throw;
-			}
-		}
+                throw;
+            }
+        }
 
-		public static async Task<List<ScheduleDto>> GetAllAsync(bool isActive = true)
-		{
-			try
-			{
-				List<ScheduleDto> dtos;
-				List<Schedule> entities;
+        public async Task DeleteAsync(ScheduleDto dto)
+        {
+            try
+            {
+                await _repository.Schedule.DeleteAsync(dto.Id);
+            }
+            catch (Exception)
+            {
 
-				entities = await ScheduleDao.GetAllAsync(isActive);
-				dtos = ScheduleMapper.GetAll(entities);
+                throw;
+            }
+        }
 
-				return dtos;
-			}
-			catch (Exception)
-			{
+        public async Task<List<ScheduleDto>> GetAllAsync(bool isActive = true)
+        {
+            try
+            {
+                List<ScheduleDto> dtos;
+                List<ScheduleEntity> entities;
 
-				throw;
-			}
-		}
+                entities = await _repository.Schedule.GetAsync();
+                dtos = _mapper.Map<List<ScheduleDto>>(entities);
 
-		public static async Task<ScheduleDto> GetAsync(int id)
-		{
-			try
-			{
-				ScheduleDto dto;
-				Schedule entity;
+                return dtos;
+            }
+            catch (Exception)
+            {
 
-				entity = await ScheduleDao.GetAsync(id);
-				dto = ScheduleMapper.Get(entity);
+                throw;
+            }
+        }
 
-				return dto;
-			}
-			catch (Exception)
-			{
+        public async Task<ScheduleDto> GetAsync(int id)
+        {
+            try
+            {
+                ScheduleDto dto;
+                ScheduleEntity entity;
 
-				throw;
-			}
-		}
+                entity = await _repository.Schedule.GetAsync(id);
+                dto = _mapper.Map<ScheduleDto>(entity);
 
-		public static async Task UpdateAsync(ScheduleDto dto)
-		{
-			try
-			{
-				Schedule entity;
-				Schedule schedule;
+                return dto;
+            }
+            catch (Exception)
+            {
 
-				entity = ScheduleMapper.Get(dto);
-				schedule = await ScheduleDao.GetAsync(dto.Id);
-				entity.IsActive = schedule.IsActive;
-				entity.RegistrationDate = schedule.RegistrationDate;
-				ScheduleDao.Update(entity);
-			}
-			catch (Exception)
-			{
+                throw;
+            }
+        }
 
-				throw;
-			}
-		}
+        public async Task UpdateAsync(ScheduleDto dto)
+        {
+            try
+            {
+                ScheduleEntity entity;
+                //ScheduleEntity schedule;
 
-		public static async Task DeleteAsync(int scheduleId)
-		{
-			try
-			{
-				Schedule entity;
+                entity = _mapper.Map<ScheduleEntity>(dto);
+                //schedule = await _repository.Schedule.GetAsync(dto.Id);
+                entity.Id = dto.Id;
+                await _repository.Schedule.UpdateAsync(entity);
+            }
+            catch (Exception)
+            {
 
-				entity = await ScheduleDao.GetAsync(scheduleId);
-				entity.IsActive = false;
-				ScheduleDao.Update(entity);
-			}
-			catch (Exception)
-			{
+                throw;
+            }
+        }
 
-				throw;
-			}
-		}
-	}
+        public async Task DeleteAsync(int scheduleId)
+        {
+            try
+            {
+                ScheduleEntity entity;
+
+                entity = await _repository.Schedule.GetAsync(scheduleId);
+                entity.IsActive = false;
+                
+                await _repository.Schedule.UpdateAsync(entity);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+    }
 }

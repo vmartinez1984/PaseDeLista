@@ -1,108 +1,113 @@
-﻿using RollCall.BusinessLayer.Mappers;
+﻿using AutoMapper;
+using RollCall.Core.Dtos.Inputs;
+using RollCall.Core.Dtos.Outputs;
+using RollCall.Core.Entities;
+using RollCall.Core.Interfaces.IRepositories;
 using RollCall.Dto;
 using RollCall.Persistence.Dao;
-using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RollCall.BusinessLayer
 {
-	public class SecurityQuestionBl
-	{
-		public static async Task<int> AddAsync(SecurityQuestionDto dto)
-		{
-			try
-			{
-				SecurityQuestion entity;
+    public class SecurityQuestionBl
+    {
+        private IRepository _repository;
+        private IMapper _mapper;
 
-				entity = SecurityQuestionMapper.Get(dto);
-				entity.IsActive = true;
-				entity.RegistrationDate = DateTime.Now;
-				await SecurityQuestionDao.AddAsync(entity);
+        public SecurityQuestionBl(IRepository repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+        }
+        public async Task<int> AddAsync(SecurityQuestionDtoIn dto)
+        {
+            try
+            {
+                SecurityQuestionEntity entity;
 
-				return entity.Id;
-			}
-			catch (Exception)
-			{
+                entity = _mapper.Map<SecurityQuestionEntity>(dto);
+                await _repository.SecurityQuestion.AddAsync(entity);
 
-				throw;
-			}
-		}
+                return entity.Id;
+            }
+            catch (Exception)
+            {
 
-		public static async Task DeleteAsync(int id)
-		{
-			try
-			{
-				SecurityQuestion entity;
+                throw;
+            }
+        }
 
-				entity = await SecurityQuestionDao.GetAsync(id);
-				entity.IsActive = false;
-				await SecurityQuestionDao.UpdateAsync(entity);
-			}
-			catch (Exception)
-			{
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                await _repository.SecurityQuestion.DeleteAsync(id);
+            }
+            catch (Exception)
+            {
 
-				throw;
-			}
-		}
+                throw;
+            }
+        }
 
-		public static async Task<List<SecurityQuestionDto>> GetAllAsync(int employeeId, bool isActive = true)
-		{
-			try
-			{
-				List<SecurityQuestionDto> dtos;
-				List<SecurityQuestion> entities;
+        public async Task<List<SecurityQuestionDtoOut>> GetAllAsync(int employeeId, bool isActive = true)
+        {
+            try
+            {
+                List<SecurityQuestionDtoOut> dtos;
+                List<SecurityQuestionEntity> entities;
 
-				entities = await SecurityQuestionDao.GetAllAsync(employeeId, isActive);
-				dtos = SecurityQuestionMapper.GetAll(entities);
+                entities = await _repository.SecurityQuestion.GetAllAsync(employeeId);
+                dtos = _mapper.Map<List<SecurityQuestionDtoOut>>(entities);
 
-				return dtos;
-			}
-			catch (Exception)
-			{
+                return dtos;
+            }
+            catch (Exception)
+            {
 
-				throw;
-			}
-		}
+                throw;
+            }
+        }
 
-		public static async Task<SecurityQuestionDto> GetAsync(int id)
-		{
-			try
-			{
-				SecurityQuestionDto dto;
-				SecurityQuestion entity;
+        public async Task<SecurityQuestionDtoOut> GetAsync(int id)
+        {
+            try
+            {
+                SecurityQuestionDtoOut dto;
+                SecurityQuestionEntity entity;
 
-				entity = await SecurityQuestionDao.GetAsync(id);
-				dto = SecurityQuestionMapper.Get(entity);
+                entity = await _repository.SecurityQuestion.GetAsync(id);
+                dto = _mapper.Map<SecurityQuestionDtoOut>(entity);
 
-				return dto;
-			}
-			catch (Exception)
-			{
+                return dto;
+            }
+            catch (Exception)
+            {
 
-				throw;
-			}
-		}
+                throw;
+            }
+        }
 
-		public static async Task UpdateAsync(SecurityQuestionDto dto)
-		{
-			try
-			{
-				SecurityQuestion entity;
-				SecurityQuestion SecurityQuestion;
+        public async Task UpdateAsync(SecurityQuestionDtoOut dto)
+        {
+            try
+            {
+                SecurityQuestionEntity entity;
+                SecurityQuestionEntity SecurityQuestion;
 
-				entity = SecurityQuestionMapper.Get(dto);
-				SecurityQuestion = await SecurityQuestionDao.GetAsync(dto.Id);
-				entity.IsActive = SecurityQuestion.IsActive;
-				entity.RegistrationDate = SecurityQuestion.RegistrationDate;
-				await SecurityQuestionDao.UpdateAsync(entity);
-			}
-			catch (Exception)
-			{
+                entity = _mapper.Map<SecurityQuestionEntity>(dto);
+                SecurityQuestion = await _repository.SecurityQuestion.GetAsync(dto.Id);
+                entity.IsActive = SecurityQuestion.IsActive;
+                entity.DateRegistration = SecurityQuestion.DateRegistration;
+                await _repository.SecurityQuestion.UpdateAsync(entity);
+            }
+            catch (Exception)
+            {
 
-				throw;
-			}
-		}
-	}
+                throw;
+            }
+        }
+    }
 }

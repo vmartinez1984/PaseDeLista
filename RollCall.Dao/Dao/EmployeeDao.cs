@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RollCall.Core.Entities;
+using RollCall.Core.Interfaces.IRepositories;
 using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,159 +9,161 @@ using System.Threading.Tasks;
 
 namespace RollCall.Persistence.Dao
 {
-  public class EmployeeDao
-  {
-    public static List<EmployeeEntity> GetAll(bool isActive = true)
+    public class EmployeeDao : IEmployeeRepository
     {
-      try
-      {
-        List<EmployeeEntity> list;
+        private AppDbContext _appDbContext;
 
-        using (var db = new AppDbContext())
+        public EmployeeDao(AppDbContext appDbContext)
         {
-          list = db.Employee
-            .Include(x => x.Schedule)
-            .Where(x => x.IsActive == isActive).ToList();
+            _appDbContext = appDbContext;
         }
 
-        return list;
-      }
-      catch (Exception)
-      {
-
-        throw;
-      }
-    }
-
-    public static async Task<EmployeeEntity> GetAsync(string employeeNumber)
-    {
-      try
-      {
-        EmployeeEntity item;
-
-        using (var db = new AppDbContext())
+        public async Task<List<EmployeeEntity>> GetAsync(bool isActive = true)
         {
-          item = await db.Employee
-            .Where(x => x.EmployeeNumber == employeeNumber)
-            .Where(x => x.IsActive == true)
-            .FirstOrDefaultAsync();
+            try
+            {
+                List<EmployeeEntity> list;
+
+                list = await _appDbContext.Employee
+                  .Include(x => x.Schedule)
+                  .Where(x => x.IsActive == isActive).ToListAsync();
+
+                return list;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        return item;
-      }
-      catch (Exception)
-      {
-
-        throw;
-      }
-    }
-
-    public static async Task<List<EmployeeEntity>> GetAllAsync(bool isActive)
-    {
-      try
-      {
-        List<EmployeeEntity> list;
-
-        using (var db = new AppDbContext())
+        public async Task<EmployeeEntity> GetAsync(string employeeNumber)
         {
-          list = await db.Employee
-            .Include(x => x.ListSecurityQuestions.Where(x => x.IsActive))
-            .Include(x => x.Area)
-            .Include(x => x.Schedule)
-            .Where(x => x.IsActive == isActive && x.Id != 1).ToListAsync();
+            try
+            {
+                EmployeeEntity item;
+
+
+                item = await _appDbContext.Employee
+                  .Where(x => x.EmployeeNumber == employeeNumber)
+                  .Where(x => x.IsActive == true)
+                  .FirstOrDefaultAsync();
+
+
+                return item;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        return list;
-      }
-      catch (Exception)
-      {
+        // public async Task<List<EmployeeEntity>> GetAsync(bool isActive)
+        // {
+        //     try
+        //     {
+        //         List<EmployeeEntity> list;
 
-        throw;
-      }
-    }
+        //         using (var db = new AppDbContext())
+        //         {
+        //             list = await db.Employee
+        //               .Include(x => x.ListSecurityQuestions.Where(x => x.IsActive))
+        //               .Include(x => x.Area)
+        //               .Include(x => x.Schedule)
+        //               .Where(x => x.IsActive == isActive && x.Id != 1).ToListAsync();
+        //         }
 
-    public static async Task<EmployeeEntity> GetAsync(int id)
-    {
-      try
-      {
-        EmployeeEntity item;
+        //         return list;
+        //     }
+        //     catch (Exception)
+        //     {
 
-        using (var db = new AppDbContext())
+        //         throw;
+        //     }
+        // }
+
+        public async Task<EmployeeEntity> GetAsync(int id)
         {
-          item = await db.Employee
-            .Include(x => x.Area)
-            .Include(x => x.Schedule)
-            .Include(x => x.ListSecurityQuestions.Where(x => x.IsActive))
-            .Where(x => x.Id == id)
-            .FirstOrDefaultAsync();
+            try
+            {
+                EmployeeEntity item;
+
+                item = await _appDbContext.Employee
+                  .Include(x => x.Area)
+                  .Include(x => x.Schedule)
+                  .Include(x => x.ListSecurityQuestions.Where(x => x.IsActive))
+                  .Where(x => x.Id == id)
+                  .FirstOrDefaultAsync();
+
+                return item;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        return item;
-      }
-      catch (Exception)
-      {
-
-        throw;
-      }
-    }
-
-    public static async Task<int> AddAsync(EmployeeEntity entity)
-    {
-      try
-      {
-        using (var db = new AppDbContext())
+        public async Task<int> AddAsync(EmployeeEntity entity)
         {
-          entity.IsActive = true;
-          entity.RegistrationDate = DateTime.Now;
-          db.Employee.Add(entity);
-          await db.SaveChangesAsync();
+            try
+            {
+
+                entity.IsActive = true;
+                entity.DateRegistration = DateTime.Now;
+                _appDbContext.Employee.Add(entity);
+                await _appDbContext.SaveChangesAsync();
+
+
+                return entity.Id;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        return entity.Id;
-      }
-      catch (Exception)
-      {
-
-        throw;
-      }
-    }
-
-    public static async Task UpdateAsync(EmployeeEntity entity)
-    {
-      try
-      {
-        using (var db = new AppDbContext())
+        public async Task UpdateAsync(EmployeeEntity entity)
         {
-          db.Entry<EmployeeEntity>(entity).State = EntityState.Modified;
-          await db.SaveChangesAsync();
-        }
-      }
-      catch (Exception)
-      {
+            try
+            {
+                _appDbContext.Entry<EmployeeEntity>(entity).State = EntityState.Modified;
+                await _appDbContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
 
-        throw;
-      }
-    }
-
-    public static int Count()
-    {
-      try
-      {
-        int total;
-
-        using (var db = new AppDbContext())
-        {
-          total = db.User.Count(x => x.IsActive == true);
+                throw;
+            }
         }
 
-        return total;
-      }
-      catch (Exception)
-      {
+        public async  Task<int> CountAsync()
+        {
+            try
+            {
+                int total;
+                
+                total = await _appDbContext.User.CountAsync(x => x.IsActive == true);                
 
-        throw;
-      }
-    }
+                return total;
+            }
+            catch (Exception)
+            {
 
-  }//end class
+                throw;
+            }
+        }
+
+        public Task<List<EmployeeEntity>> GetAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }//end class
 }

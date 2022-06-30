@@ -1,4 +1,5 @@
-﻿@model RollCall.Dto.EmployeeDto
+﻿@using RollCall.Core.Dtos.Inputs;
+@model RollCall.Core.Dtos.Outputs.EmployeeDto
 
 @{
     ViewData["Title"] = "Editar empleado";
@@ -56,7 +57,7 @@
                     </div>
                 </form>
                 <div id="divSecurityQuestions">
-                    @await Html.PartialAsync("_CreateSecurityQuestion",new RollCall.Dto.SecurityQuestionDto{EmployeeId= Model.Id})
+                    @await Html.PartialAsync("_CreateSecurityQuestion",new SecurityQuestionDtoIn{EmployeeId= Model.Id})
                 </div>
                 <table class="table table-hover">
                     <thead>

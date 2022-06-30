@@ -1,4 +1,5 @@
-﻿@model RollCall.Dto.ListAssitenceDto
+﻿@using RollCall.Core.Dtos.Outputs;
+@model ListAssitenceDto
 
 @{
     @using Microsoft.AspNetCore.Http
@@ -9,7 +10,7 @@
 }
 
 <h1>Lista</h1>
-@await Html.PartialAsync("_FormSearch", new RollCall.Dto.SearchAssistenceDto())
+@await Html.PartialAsync("_FormSearch", new SearchAssistenceDto())
 <div class="scroll-horizontal">
     <table class="table table-hover">
         <thead class="text-info">

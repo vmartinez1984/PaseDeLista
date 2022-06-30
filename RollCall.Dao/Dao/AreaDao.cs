@@ -1,25 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RollCall.Core.Entities;
+using RollCall.Core.Interfaces.IRepositories;
 using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RollCall.Persistence.Dao
 {
-	public class AreaDao
+    public class AreaDao : IAreaRepository
 	{
 
-		public static async Task<List<Area>> GetAllAsync(bool isActive)
+		public async Task<List<AreaEntity>> GetAsync()
 		{
 			try
 			{
-				List<Area> list;
+				List<AreaEntity> list;
 
 				using (var db = new AppDbContext())
 				{
-					list = await db.Area.Where(x => x.IsActive == isActive).ToListAsync();
+					list = await db.Area.Where(x => x.IsActive == true).ToListAsync();
 				}
 
 				return list;
@@ -31,11 +32,11 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<Area> GetAsync(int id)
+		public async Task<AreaEntity> GetAsync(int id)
 		{
 			try
 			{
-				Area item;
+				AreaEntity item;
 
 				using (var db = new AppDbContext())
 				{
@@ -51,7 +52,7 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task<int> AddAsync(Area item)
+		public async Task<int> AddAsync(AreaEntity item)
 		{
 			try
 			{
@@ -70,13 +71,13 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public static async Task Update(Area item)
+		public async Task UpdateAsync(AreaEntity item)
 		{
 			try
 			{
 				using (var db = new AppDbContext())
 				{
-					db.Entry<Area>(item).State = EntityState.Modified;
+					db.Entry<AreaEntity>(item).State = EntityState.Modified;
 					await db.SaveChangesAsync();
 				}
 			}
@@ -86,5 +87,10 @@ namespace RollCall.Persistence.Dao
 				throw;
 			}
 		}
-	}
+
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

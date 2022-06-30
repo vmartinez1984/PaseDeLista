@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using RollCall.Core.Entities;
 using RollCall.Persistence.Dao;
 using RollCall.Persistence.Entities;
 using System;

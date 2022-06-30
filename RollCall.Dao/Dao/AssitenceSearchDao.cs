@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RollCall.Core.Entities;
 using RollCall.Persistence.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace RollCall.Persistence.Dao
 	public class AssitenceSearchDao
 	{
 		private List<EmployeeEntity> ListEmployee { get; set; }
-		private List<AssistanceLog> ListAssistances { get; set; }
+		private List<AssistanceLogEntity> ListAssistances { get; set; }
 		private int CountRegister { get; set; }
 		private SearchAssitence SearchAssistence { get; set; }
 		private List<int> ListEmployeesId;
@@ -43,7 +44,7 @@ namespace RollCall.Persistence.Dao
 
 				using (var db = new AppDbContext())
 				{
-					IQueryable<AssistanceLog> assistances = db.AssistanceLog
+					IQueryable<AssistanceLogEntity> assistances = db.AssistanceLog
 							.Include(x => x.Employee);
 					if (!string.IsNullOrEmpty(this.SearchAssistence.EmployeeNumber))
 					{
@@ -60,20 +61,20 @@ namespace RollCall.Persistence.Dao
 					if (this.SearchAssistence.DateStart is not null && this.SearchAssistence.DateStop is null)
 					{
 						assistances = assistances.Where(
-							x => x.RegistrationDate.Day == ((DateTime)this.SearchAssistence.DateStart).Day
+							x => x.DateRegistration.Day == ((DateTime)this.SearchAssistence.DateStart).Day
 							&&
-							x.RegistrationDate.Month == ((DateTime)this.SearchAssistence.DateStart).Month
+							x.DateRegistration.Month == ((DateTime)this.SearchAssistence.DateStart).Month
 							&&
-							x.RegistrationDate.Year == ((DateTime)this.SearchAssistence.DateStart).Year
+							x.DateRegistration.Year == ((DateTime)this.SearchAssistence.DateStart).Year
 						);
 					}
 					if (this.SearchAssistence.DateStart is not null && this.SearchAssistence.DateStop is not null)
 					{
-						assistances = assistances.Where(x => x.RegistrationDate >= this.SearchAssistence.DateStart && x.RegistrationDate <= ((DateTime)this.SearchAssistence.DateStop).AddDays(1));
+						assistances = assistances.Where(x => x.DateRegistration >= this.SearchAssistence.DateStart && x.DateRegistration <= ((DateTime)this.SearchAssistence.DateStop).AddDays(1));
 					}
 					var query = assistances.ToQueryString();
 					listEmployeesId = await assistances
-					.Where(x => x.RegistrationDate >= this.SearchAssistence.DateStart && x.RegistrationDate < ((DateTime)this.SearchAssistence.DateStop).AddDays(1))
+					.Where(x => x.DateRegistration >= this.SearchAssistence.DateStart && x.DateRegistration < ((DateTime)this.SearchAssistence.DateStop).AddDays(1))
 					.Select(x => x.EmployeeId)
 					.Distinct()
 					.ToListAsync();
@@ -88,21 +89,21 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		private async Task<List<AssistanceLog>> GetListAssistencesAsync()
+		private async Task<List<AssistanceLogEntity>> GetListAssistencesAsync()
 		{
 			try
 			{
-				List<AssistanceLog> entities;
+				List<AssistanceLogEntity> entities;
 
-				entities = new List<AssistanceLog>();
+				entities = new List<AssistanceLogEntity>();
 				using (var db = new AppDbContext())
 				{
 					entities = await db.AssistanceLog
-						.Where(x => x.RegistrationDate >= this.SearchAssistence.DateStart && x.RegistrationDate < ((DateTime)this.SearchAssistence.DateStop).AddDays(1))
+						.Where(x => x.DateRegistration >= this.SearchAssistence.DateStart && x.DateRegistration < ((DateTime)this.SearchAssistence.DateStop).AddDays(1))
 						.Where(x => ListEmployeesId.Contains(x.EmployeeId))
 						.ToListAsync();
 					var query = db.AssistanceLog
-						.Where(x => x.RegistrationDate >= this.SearchAssistence.DateStart && x.RegistrationDate < ((DateTime)this.SearchAssistence.DateStop).AddDays(1))
+						.Where(x => x.DateRegistration >= this.SearchAssistence.DateStart && x.DateRegistration < ((DateTime)this.SearchAssistence.DateStop).AddDays(1))
 						.Where(x => ListEmployeesId.Contains(x.Id)).ToQueryString();
 					this.CountRegister = await db.AssistanceLog.Where(x => ListEmployeesId.Contains(x.EmployeeId)).CountAsync();
 				}
@@ -116,7 +117,7 @@ namespace RollCall.Persistence.Dao
 			}
 		}
 
-		public List<AssistanceLog> GetLisAssistences()
+		public List<AssistanceLogEntity> GetLisAssistences()
 		{
 			return this.ListAssistances;
 		}
