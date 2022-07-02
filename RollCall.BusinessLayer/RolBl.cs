@@ -1,4 +1,5 @@
 ﻿using RollCall.Core.Dtos.Outputs;
+using RollCall.Core.Interfaces.InterfacesBl;
 using RollCall.Dto;
 using System;
 using System.Collections.Generic;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace RollCall.BusinessLayer
 {
-	public class RolBl
+	public class RolBl : IRoleBl
 	{
-		public static async Task<List<RolDto>> GetAllAsync()
+		public async Task<List<RolDto>> GetAsync()
 		{
 			try
 			{

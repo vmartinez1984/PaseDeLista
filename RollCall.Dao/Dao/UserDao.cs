@@ -24,7 +24,9 @@ namespace RollCall.Persistence.Dao
             {
                 List<UserEntity> list;
 
-                list = await _appDbContext.User.Where(x => x.IsActive == true).ToListAsync();
+                list = await _appDbContext.User
+                .Include(x => x.Rol)
+                .Where(x => x.IsActive == true).ToListAsync();
 
                 return list;
             }
@@ -139,9 +141,11 @@ namespace RollCall.Persistence.Dao
             }
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var entity = await _appDbContext.User.Where(x => x.Id == id).FirstAsync();
+            entity.IsActive = false;
+            await _appDbContext.SaveChangesAsync();
         }
     }//end class
 }

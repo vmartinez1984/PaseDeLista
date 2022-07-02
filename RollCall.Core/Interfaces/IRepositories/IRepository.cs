@@ -13,8 +13,16 @@ namespace RollCall.Core.Interfaces.IRepositories
         public IUserRepository User { get; }
 
         public IScheduleRepository Schedule { get; }
-        
+
         public IAssistanceLog AssistanceLog { get; }
+        
+        public IConfigurationRepository Configuration { get; }
+    }
+
+    public interface IConfigurationRepository
+    {
+        int GetMaxUsers();
+        int GetMaxEmployees();
     }
 
     public interface IBase01Repository<T> where T : class

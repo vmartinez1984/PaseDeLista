@@ -1,43 +1,50 @@
-﻿using RollCall.Persistence.Dao;
+﻿using RollCall.Core.Interfaces.IRepositories;
+using RollCall.Persistence.Dao;
 using System;
 
 namespace RollCall.BusinessLayer
 {
-  public class ConfigBl
-  {
-    public static int GetMaxUsers()
+    public class ConfigBl
     {
-      try
-      {
-        int maxUser;
+        private IRepository _repository;
 
-        maxUser = ConfigDao.GetMaxUsers();
+        public ConfigBl(IRepository repository)
+        {
+            _repository = repository;
+        }
+        public int GetMaxUsers()
+        {
+            try
+            {
+                int maxUser;
 
-        return maxUser;
-      }
-      catch (Exception)
-      {
+                maxUser = _repository.Configuration.GetMaxUsers();
 
-        throw;
-      }
-    }
+                return maxUser;
+            }
+            catch (Exception)
+            {
 
-    public static int GetMaxEmployees()
-    {
-      try
-      {
-        int max;
+                throw;
+            }
+        }
 
-        max = ConfigDao.GetMaxEmployees();
+        public int GetMaxEmployees()
+        {
+            try
+            {
+                int max;
 
-        return max;
-      }
-      catch (Exception)
-      {
+                max = _repository.Configuration.GetMaxEmployees();
 
-        throw;
-      }
-    }
+                return max;
+            }
+            catch (Exception)
+            {
 
-  }//end clas
+                throw;
+            }
+        }
+
+    }//end clas
 }

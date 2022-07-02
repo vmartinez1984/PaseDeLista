@@ -48,7 +48,7 @@ namespace RollCall.BusinessLayer
                 int maxEmployees;
 
                 employees = await _repository.Employee.CountAsync();
-                maxEmployees = ConfigBl.GetMaxEmployees();
+                maxEmployees = _repository.Configuration.GetMaxEmployees();
                 if (employees == maxEmployees)
                     isMaximum = true;
                 else if (employees < maxEmployees)

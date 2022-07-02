@@ -34,11 +34,17 @@ namespace RollCall.Mvc
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //DbContext
             services.AddScoped<AppDbContext>();
+            services.AddScoped<IScheduleRepository, ScheduleDao>();
             services.AddScoped<IUserRepository, UserDao>();
             services.AddScoped<IAreaRepository, AreaDao>();
+            services.AddScoped<IConfigurationRepository, ConfigDao>();
             services.AddScoped<IRepository, Repository>();
+            //BussinesLayer
+            services.AddScoped<IScheduleBl, ScheduleBl>();
             services.AddScoped<ILoginBl, LoginBl>();
             services.AddScoped<IAreaBl, AreaBl>();
+            services.AddScoped<IUserBl, UserBl>();
+            services.AddScoped<IRoleBl, RolBl>();            
             services.AddScoped<IUnitOfWorkBl, UnitOfWork>();
             services.AddSwaggerGen(c =>
             {
@@ -52,6 +58,8 @@ namespace RollCall.Mvc
             {
                 mapperConfig.AddProfile<AreaMapper>();
                 mapperConfig.AddProfile<UserMapper>();
+                mapperConfig.AddProfile<RoleMapper>();
+                mapperConfig.AddProfile<ScheduleMapper>();
             });
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);

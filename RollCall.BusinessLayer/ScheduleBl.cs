@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
+using RollCall.Core.Dtos.Inputs;
+using RollCall.Core.Dtos.Outputs;
 using RollCall.Core.Entities;
+using RollCall.Core.Interfaces.InterfacesBl;
 using RollCall.Core.Interfaces.IRepositories;
-using RollCall.Dto;
-using RollCall.Persistence.Dao;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RollCall.BusinessLayer
 {
-    public class ScheduleBl
+    public class ScheduleBl: IScheduleBl
     {
         private IRepository _repository;
         private IMapper _mapper;
@@ -20,7 +21,7 @@ namespace RollCall.BusinessLayer
             _mapper = mapper;
         }
 
-        public async Task<int> AddAsync(ScheduleDto dto)
+        public async Task<int> AddAsync(ScheduleDtoIn dto)
         {
             try
             {
@@ -39,11 +40,11 @@ namespace RollCall.BusinessLayer
             }
         }
 
-        public async Task DeleteAsync(ScheduleDto dto)
+        public async Task DeleteAsync(int id)
         {
             try
             {
-                await _repository.Schedule.DeleteAsync(dto.Id);
+                await _repository.Schedule.DeleteAsync(id);
             }
             catch (Exception)
             {
@@ -52,7 +53,7 @@ namespace RollCall.BusinessLayer
             }
         }
 
-        public async Task<List<ScheduleDto>> GetAllAsync(bool isActive = true)
+        public async Task<List<ScheduleDto>> GetAsync()
         {
             try
             {
@@ -90,7 +91,7 @@ namespace RollCall.BusinessLayer
             }
         }
 
-        public async Task UpdateAsync(ScheduleDto dto)
+        public async Task UpdateAsync(ScheduleDtoIn dto, int id)
         {
             try
             {
@@ -99,7 +100,7 @@ namespace RollCall.BusinessLayer
 
                 entity = _mapper.Map<ScheduleEntity>(dto);
                 //schedule = await _repository.Schedule.GetAsync(dto.Id);
-                entity.Id = dto.Id;
+                entity.Id = id;
                 await _repository.Schedule.UpdateAsync(entity);
             }
             catch (Exception)
@@ -109,22 +110,5 @@ namespace RollCall.BusinessLayer
             }
         }
 
-        public async Task DeleteAsync(int scheduleId)
-        {
-            try
-            {
-                ScheduleEntity entity;
-
-                entity = await _repository.Schedule.GetAsync(scheduleId);
-                entity.IsActive = false;
-                
-                await _repository.Schedule.UpdateAsync(entity);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-    }
+    }//end class
 }

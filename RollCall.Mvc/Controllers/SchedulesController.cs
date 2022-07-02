@@ -1,111 +1,120 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RollCall.Dto;
+using RollCall.Core.Dtos.Inputs;
+using RollCall.Core.Dtos.Outputs;
+using RollCall.Core.Interfaces.InterfacesBl;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RollCall.Mvc.Controllers
 {
-	public class SchedulesController : Controller
-	{
-		// public async Task<IActionResult> Index()
-		// {
-		// 	List<ScheduleDto> list;
+    public class SchedulesController : Controller
+    {
+        private IUnitOfWorkBl _unitOfWorkBl;
 
-		// 	list = await ScheduleBl.GetAllAsync();
+        public SchedulesController(IUnitOfWorkBl unitOfWorkBl)
+        {
+            _unitOfWorkBl = unitOfWorkBl;
+        }
 
-		// 	return View(list);
-		// }
 
-		// [HttpGet]
-		// public IActionResult Create()
-		// {
-		// 	return View();
-		// }
+        public async Task<IActionResult> Index()
+        {
+            List<ScheduleDto> list;
 
-		// [HttpPost]
-		// public async Task<IActionResult> Create(ScheduleDto dto)
-		// {
-		// 	try
-		// 	{
-		// 		await ScheduleBl.AddAsync(dto);
+            list = await _unitOfWorkBl.Schedule.GetAsync();
 
-		// 		return RedirectToAction(nameof(Index));
-		// 	}
-		// 	catch (Exception)
-		// 	{
+            return View(list);
+        }
 
-		// 		throw;
-		// 	}
-		// }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-		// public async Task<IActionResult> Edit(int id)
-		// {
-		// 	try
-		// 	{
-		// 		ScheduleDto dto;
+        [HttpPost]
+        public async Task<IActionResult> Create(ScheduleDtoIn dto)
+        {
+            try
+            {
+                await _unitOfWorkBl.Schedule.AddAsync(dto);
 
-		// 		dto = await ScheduleBl.GetAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
 
-		// 		return View(dto);
-		// 	}
-		// 	catch (Exception)
-		// 	{
+                throw;
+            }
+        }
 
-		// 		throw;
-		// 	}
-		// }
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                ScheduleDto dto;
 
-		// [HttpPost]
-		// public async Task<IActionResult> Edit(ScheduleDto dto)
-		// {
-		// 	try
-		// 	{
-		// 		await ScheduleBl.UpdateAsync(dto);
+                dto = await _unitOfWorkBl.Schedule.GetAsync(id);
 
-		// 		return RedirectToAction(nameof(Index));
-		// 	}
-		// 	catch (Exception)
-		// 	{
+                return View(dto);
+            }
+            catch (Exception)
+            {
 
-		// 		throw;
-		// 	}
-		// }
+                throw;
+            }
+        }
 
-		// [HttpGet]
-		// public async Task<IActionResult> Delete(int id)
-		// {
-		// 	try
-		// 	{
-		// 		ScheduleDto dto;
+        [HttpPost]
+        public async Task<IActionResult> Edit(ScheduleDtoIn dto, int id)
+        {
+            try
+            {
+                await _unitOfWorkBl.Schedule.UpdateAsync(dto, id);
 
-		// 		dto = await ScheduleBl.GetAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
 
-		// 		return View(dto);
-		// 	}
-		// 	catch (Exception)
-		// 	{
+                throw;
+            }
+        }
 
-		// 		throw;
-		// 	}
-		// }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                ScheduleDto dto;
 
-		// [HttpPost]
-		// public async Task<IActionResult> Delete(ScheduleDto dto)
-		// {
-		// 	try
-		// 	{
-		// 		await ScheduleBl.DeleteAsync(dto);
+                dto = await _unitOfWorkBl.Schedule.GetAsync(id);
 
-		// 		return RedirectToAction(nameof(Index));
-		// 	}
-		// 	catch (Exception)
-		// 	{
+                return View(dto);
+            }
+            catch (Exception)
+            {
 
-		// 		throw;
-		// 	}
-		// }
+                throw;
+            }
+        }
 
-	}//end class
+        [HttpPost]
+        public async Task<IActionResult> Delete(ScheduleDto dto)
+        {
+            try
+            {
+                await _unitOfWorkBl.Schedule.DeleteAsync(dto.Id);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+    }//end class
 }

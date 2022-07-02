@@ -82,9 +82,11 @@ namespace RollCall.Persistence.Dao
             }
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var entity = await _appDbContext.Schedule.Where(x=> x.Id == id).FirstAsync();
+            entity.IsActive = false;
+            await _appDbContext.SaveChangesAsync();
         }
     }
 }

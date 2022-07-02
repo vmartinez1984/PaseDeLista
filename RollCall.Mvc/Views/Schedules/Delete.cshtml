@@ -1,41 +1,61 @@
-﻿@model RollCall.Dto.ScheduleDto
+﻿@using RollCall.Core.Dtos.Outputs;
+@model ScheduleDto
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Borrar";
 }
 
 <h1>Borrar</h1>
 
-<h3>¿Esta seguro de borrar?</h3>
-<div>
-    <h4>Horario</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StopTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StopTime)
-        </dd>
-    </dl>
+<div class="card border-left-danger shadow h-100 py-2">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <h6 class="m-0 font-weight-bold text-danger">
+                    <i class="fa fa-eraser"></i>
+                    ¿Desea borrar?
+                </h6>
+            </div>
+            <hr />
+            <div class="col-12">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Id)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Id)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.StartTime)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.StartTime)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.StopTime)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.StopTime)
+                    </dd>
+                </dl>
+            </div>
+            
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-eraser"></i>
+                    Borrar
+                </button>        
+            </form>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <button type="submit" class="btn btn-danger">
-            Borrar
-        </button> |
-        <a asp-action="Index">Regresar a la lista</a>
-    </form>
+        </div>
+    </div>
+</div>
+
+<br/>
+<div>
+    <a asp-action="Index">
+        <i class="fa fa-list"></i>
+        Regresar a la lista
+    </a>
 </div>

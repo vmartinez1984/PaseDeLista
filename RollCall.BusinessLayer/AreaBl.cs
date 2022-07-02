@@ -58,15 +58,15 @@ namespace RollCall.BusinessLayer
             }
         }
 
-        public async Task<AreaDtoIn> GetAsync(int id)
+        public async Task<AreaDtoOut> GetAsync(int id)
         {
             try
             {
-                AreaDtoIn dto;
+                AreaDtoOut dto;
                 AreaEntity entity;
 
                 entity = await _repository.Area.GetAsync(id);
-                dto = _mapper.Map<AreaDtoIn>(entity);
+                dto = _mapper.Map<AreaDtoOut>(entity);
 
                 return dto;
             }
@@ -85,6 +85,7 @@ namespace RollCall.BusinessLayer
 
                 entity = await _repository.Area.GetAsync(id);
                 entity.Name = dto.Name;
+                entity.Description = dto.Description;
                 await _repository.Area.UpdateAsync(entity);
             }
             catch (Exception)
@@ -107,9 +108,5 @@ namespace RollCall.BusinessLayer
             }
         }
 
-        Task<AreaDtoOut> IBaseBl<AreaDtoIn, AreaDtoOut>.GetAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
     }//end class
 }

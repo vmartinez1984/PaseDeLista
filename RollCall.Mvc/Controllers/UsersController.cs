@@ -1,170 +1,175 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using RollCall.Dto;
+﻿using Microsoft.AspNetCore.Mvc;
+using RollCall.Core.Dtos.Inputs;
+using RollCall.Core.Dtos.Outputs;
+using RollCall.Core.Interfaces.InterfacesBl;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RollCall.Mvc.Controllers
 {
-	public class UsersController : Controller
-	{
-		// GET: UsersController
-		//[Route("{}")]
-		// public async Task<ActionResult> Index()
-		// {
-		// 	try
-		// 	{
-		// 		List<UserDto> list;
+    public class UsersController : Controller
+    {
+        private IUnitOfWorkBl _unitOfWorkBl;
 
-		// 		list = await UserBl.GetAllAsync();
-		// 		ViewBag.IsMaximum = await UserBl.IsMaximum();
+        public UsersController(IUnitOfWorkBl unitOfWorkBl)
+        {
+            _unitOfWorkBl = unitOfWorkBl;
+        }
+        //GET: UsersController		
+        public async Task<ActionResult> Index()
+        {
+            try
+            {
+                List<UserDto> list;
 
-		// 		return View(list);
-		// 	}
-		// 	catch (Exception)
-		// 	{
+                list = await _unitOfWorkBl.User.GetAsync();
+                ViewBag.IsMaximum = await _unitOfWorkBl.User.IsMaximum();
 
-		// 		throw;
-		// 	}
-		// }
+                return View(list);
+            }
+            catch (Exception)
+            {
 
-		// // GET: UsersController/Details/5
-		// public async Task<ActionResult> Details(int id)
-		// {
-		// 	try
-		// 	{
-		// 		UserDto userDto;
+                throw;
+            }
+        }
 
-		// 		userDto = await UserBl.GetAsync(id);
+        // GET: UsersController/Details/5
+        public async Task<ActionResult> Details(int id)
+        {
+            try
+            {
+                UserDto userDto;
 
-		// 		return View(userDto);
-		// 	}
-		// 	catch (Exception)
-		// 	{
+                userDto = await _unitOfWorkBl.User.GetAsync(id);
 
-		// 		throw;
-		// 	}
-		// }
+                return View(userDto);
+            }
+            catch (Exception)
+            {
 
-		// // GET: UsersController/Create
-		// public async Task<ActionResult> Create()
-		// {
-		// 	try
-		// 	{
-		// 		ViewBag.ListRoles = await RolBl.GetAllAsync();
+                throw;
+            }
+        }
 
-		// 		return View();
-		// 	}
-		// 	catch (Exception)
-		// 	{
+        // GET: UsersController/Create
+        public async Task<ActionResult> Create()
+        {
+            try
+            {
+                ViewBag.ListRoles = await _unitOfWorkBl.Role.GetAsync();
 
-		// 		throw;
-		// 	}
-		// }
+                return View();
+            }
+            catch (Exception)
+            {
 
-		// // POST: UsersController/Create
-		// [HttpPost]
-		// [ValidateAntiForgeryToken]
-		// public async Task<ActionResult> Create(UserDto user)
-		// {
-		// 	try
-		// 	{				
-		// 		if (ModelState.IsValid)
-		// 		{
-		// 			await UserBl.AddAsync(user);
-		// 			return RedirectToAction(nameof(Index));
-		// 		}
-		// 		else
-		// 		{
-		// 			ViewBag.ListRoles = await RolBl.GetAllAsync();
-		// 			return View();
-		// 		}
-		// 	}
-		// 	catch (Exception)
-		// 	{
-		// 		throw;
-		// 	}
-		// }
+                throw;
+            }
+        }
 
-		// // GET: UsersController/Edit/5
-		// public async Task<ActionResult> Edit(int id)
-		// {
-		// 	try
-		// 	{
-		// 		UserDto userDto;
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(UserDtoIn user)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _unitOfWorkBl.User.AddAsync(user);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.ListRoles = _unitOfWorkBl.Role.GetAsync();
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-		// 		userDto = await UserBl.GetAsync(id);
-		// 		ViewBag.ListRoles = await RolBl.GetAllAsync();
+        // GET: UsersController/Edit/5
+        public async Task<ActionResult> Edit(int id)
+        {
+            try
+            {
+                UserDto userDto;
 
-		// 		return View(userDto);
-		// 	}
-		// 	catch (Exception)
-		// 	{
+                userDto = await _unitOfWorkBl.User.GetAsync(id);
+                ViewBag.ListRoles = await _unitOfWorkBl.Role.GetAsync();
 
-		// 		throw;
-		// 	}
-		// }
+                return View(userDto);
+            }
+            catch (Exception)
+            {
 
-		// // POST: UsersController/Edit/5
-		// [HttpPost]
-		// [ValidateAntiForgeryToken]
-		// public async Task<ActionResult> Edit(UserDto user)
-		// {
-		// 	try
-		// 	{
-		// 		if (ModelState.IsValid)
-		// 		{
-		// 			await UserBl.UpdateAsync(user);
+                throw;
+            }
+        }
 
-		// 			return RedirectToAction(nameof(Index));
-		// 		}
-		// 		else
-		// 		{
-		// 			ViewBag.ListRoles = await RolBl.GetAllAsync();
+        // POST: UsersController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(UserDtoIn user, int id)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _unitOfWorkBl.User.UpdateAsync(user, id);
 
-		// 			return View();
-		// 		}
-		// 	}
-		// 	catch
-		// 	{
-		// 		throw;
-		// 	}
-		// }
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.ListRoles = await _unitOfWorkBl.Role.GetAsync();
 
-		// // GET: UsersController/Delete/5
-		// public async Task<ActionResult> Delete(int id)
-		// {
-		// 	try
-		// 	{
-		// 		UserDto userDto;
+                    return View();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
-		// 		userDto = await UserBl.GetAsync(id);
+        // GET: UsersController/Delete/5
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                UserDto userDto;
 
-		// 		return View(userDto);
-		// 	}
-		// 	catch (Exception)
-		// 	{
+                userDto = await _unitOfWorkBl.User.GetAsync(id);
 
-		// 		throw;
-		// 	}
-		// }
+                return View(userDto);
+            }
+            catch (Exception)
+            {
 
-		// // POST: UsersController/Delete/5
-		// [HttpPost]
-		// [ValidateAntiForgeryToken]
-		// public async Task<ActionResult> Delete(UserDto user)
-		// {
-		// 	try
-		// 	{
-		// 		await UserBl.DeleteAsync(user);
-		// 		return RedirectToAction(nameof(Index));
-		// 	}
-		// 	catch
-		// 	{
-		// 		return View();
-		// 	}
-		// }
-	}
+                throw;
+            }
+        }
+
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(UserDto user)
+        {
+            try
+            {
+                await _unitOfWorkBl.User.DeleteAsync(user.Id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+    }
 }

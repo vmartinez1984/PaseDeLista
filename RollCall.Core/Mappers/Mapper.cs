@@ -28,7 +28,26 @@ namespace RollCall.Core.Mappers
         public UserMapper()
         {
             CreateMap<UserEntity, UserDto>();
+            CreateMap<UserDtoIn, UserEntity>();
             CreateMap<UserLoginDto, UserEntity>();
         }
     }
-}
+
+    public class ScheduleMapper : Profile
+    {
+        public ScheduleMapper()
+        {
+            CreateMap<ScheduleEntity, ScheduleDto>();
+            CreateMap<ScheduleDtoIn, ScheduleEntity>();
+        }
+    }
+
+    public class RoleMapper : Profile
+    {
+        public RoleMapper()
+        {
+            CreateMap<RolEntity, RolDto>();
+        }
+    }
+    
+}//end namespace

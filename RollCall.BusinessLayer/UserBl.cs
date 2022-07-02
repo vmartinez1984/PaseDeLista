@@ -2,15 +2,15 @@
 using RollCall.Core.Dtos.Inputs;
 using RollCall.Core.Dtos.Outputs;
 using RollCall.Core.Entities;
+using RollCall.Core.Interfaces.InterfacesBl;
 using RollCall.Core.Interfaces.IRepositories;
-using RollCall.Dto;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RollCall.BusinessLayer
 {
-    public class UserBl
+    public class UserBl :IUserBl
     {
 
         private IRepository _repository;
@@ -22,7 +22,7 @@ namespace RollCall.BusinessLayer
             _mapper = mapper;
         }
 
-        public async Task<List<UserDto>> GetAllAsync(bool isActive = true)
+        public async Task<List<UserDto>> GetAsync()
         {
             try
             {
@@ -54,7 +54,7 @@ namespace RollCall.BusinessLayer
                     int maxUsers;
 
                     users = await _repository.User.CountAsync();
-                    maxUsers = ConfigBl.GetMaxUsers();
+                    maxUsers = _repository.Configuration.GetMaxUsers();
                     if (users == maxUsers)
                         isMaximum = true;
                     else if (users < maxUsers)
@@ -91,7 +91,7 @@ namespace RollCall.BusinessLayer
             }
         }
 
-        public async Task<int> AddAsync(UserDto dto)
+        public async Task<int> AddAsync(UserDtoIn dto)
         {
             try
             {
@@ -113,14 +113,14 @@ namespace RollCall.BusinessLayer
             }
         }
 
-        public async Task UpdateAsync(UserDto dto)
+        public async Task UpdateAsync(UserDtoIn dto, int id)
         {
             try
             {
                 UserEntity entity;
 
-                entity = _mapper.Map<UserEntity>(dto);
-                entity.IsActive = true;
+                entity = _mapper.Map<UserEntity>(dto);                
+                entity.Id = id;
                 await _repository.User.UpdateAsync(entity);
             }
             catch (Exception)
@@ -165,11 +165,11 @@ namespace RollCall.BusinessLayer
             }
         }
 
-        public async Task DeleteAsync(UserDto dto)
+        public async Task DeleteAsync(int id)
         {
             try
             {
-                await _repository.User.DeleteAsync(dto.Id);
+                await _repository.User.DeleteAsync(id);
             }
             catch (Exception)
             {

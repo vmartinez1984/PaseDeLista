@@ -41,8 +41,8 @@ namespace RollCall.Persistence.Entities
             {
 				string connectionString;
 
-				//connectionString = _configuration.GetConnectionString("ConnectionStringSqlserver");
-                connectionString = "Server=192.168.1.66; Database=RollCall; user id=sa; pwd=macross#7";
+				connectionString = _configuration.GetConnectionString("ConnectionStringSqlserver");
+                //connectionString = "Server=192.168.1.66; Database=RollCall; user id=sa; pwd=macross#7";
                 optionsBuilder.UseSqlServer(connectionString);
             }
         }

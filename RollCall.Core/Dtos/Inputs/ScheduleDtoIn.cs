@@ -1,13 +1,9 @@
-﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace RollCall.Dto
+namespace RollCall.Core.Dtos.Inputs
 {
-	public class ScheduleDto
-	{
-		[Key]
-		public int Id { get; set; }
-
+    public class ScheduleDtoIn
+    {
 		[Display(Name = "Inicio de turno")]
 		[DataType(DataType.Time)]
 		public DateTime StartTime { get; set; }
@@ -17,5 +13,5 @@ namespace RollCall.Dto
 		public DateTime StopTime { get; set; }
 
 		public string Schedule { get { return StartTime.ToShortTimeString() + " " + StopTime.ToShortTimeString(); } }
-	}
+    }
 }

@@ -1,54 +1,58 @@
-﻿using RollCall.Persistence.Entities;
+﻿using RollCall.Core.Interfaces.IRepositories;
+using RollCall.Persistence.Entities;
 using System;
 using System.Linq;
 
 namespace RollCall.Persistence.Dao
 {
-  public class ConfigDao
-  {
-    public static int GetMaxUsers()
+    public class ConfigDao : IConfigurationRepository
     {
-      try
-      {
-        int total;
+        private AppDbContext _dbContext;
 
-        using (var db = new AppDbContext())
+        public ConfigDao(AppDbContext dbContext)
         {
-          total = db.Config.Where(x => x.Name == "Users")
-            .Select(x => Convert.ToInt32( x.Value))
-            .FirstOrDefault();
+            _dbContext = dbContext;
         }
 
-        return total;
-      }
-      catch (Exception)
-      {
-
-        throw;
-      }
-    } 
-    
-    public static int GetMaxEmployees()
-    {
-      try
-      {
-        int total;
-
-        using (var db = new AppDbContext())
+        public int GetMaxUsers()
         {
-          total = db.Config.Where(x => x.Name == "Employees")
-            .Select(x => Convert.ToInt32( x.Value))
-            .FirstOrDefault();
+            try
+            {
+                int total;
+
+
+                total = _dbContext.Config.Where(x => x.Name == "Users")
+                  .Select(x => Convert.ToInt32(x.Value))
+                  .FirstOrDefault();
+
+
+                return total;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        return total;
-      }
-      catch (Exception)
-      {
+        public int GetMaxEmployees()
+        {
+            try
+            {
+                int total;
 
-        throw;
-      }
-    }
+                total = _dbContext.Config.Where(x => x.Name == "Employees")
+                  .Select(x => Convert.ToInt32(x.Value))
+                  .FirstOrDefault();
 
-  }//End class
+                return total;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+    }//End class
 }
